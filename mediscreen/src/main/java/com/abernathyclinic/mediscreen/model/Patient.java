@@ -48,7 +48,6 @@ public class Patient {
 	@Column(name="date_of_birth")
 	private LocalDate dateOfBirth;
 	
-	//TODO Find Valid constraints for this
 	@NotBlank
 	@Pattern(regexp = "M|F")
 	private String sex;
@@ -63,6 +62,20 @@ public class Patient {
 	
 	@Length(max = 20, message = "max 20 chars")
 	private String city;
+	
+	//Special setters
+	public void setFamily(String family) {
+		lastName = family;
+	}
+	
+	public void setGiven(String given) {
+		firstName = given;
+	}
+	
+	public void setDob(String dob) {
+		LocalDate.parse(dob);
+		dateOfBirth = LocalDate.parse(dob);
+	}
 	
 	
 }
