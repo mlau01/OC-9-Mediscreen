@@ -27,7 +27,8 @@ public class Patient {
 	@Column(name="last_name")
 	private String lastName;
 	
-	private Date birthday;
+	@Column(name="date_of_birth")
+	private Date dateOfBirth;
 	private char sex;
 	private String phone;
 	private String address;

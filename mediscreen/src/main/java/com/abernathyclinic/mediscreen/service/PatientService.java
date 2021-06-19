@@ -7,7 +7,7 @@ import com.abernathyclinic.mediscreen.model.Patient;
 import com.abernathyclinic.mediscreen.repository.PatientRepository;
 
 @Service
-public class PatientManageService {
+public class PatientService implements IPatientService {
 	
 	@Autowired
 	private PatientRepository patientRepository;
