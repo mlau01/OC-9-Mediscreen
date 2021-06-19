@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.abernathyclinic.mediscreen.exception.PatientAlreadyExistsException;
 import com.abernathyclinic.mediscreen.model.Patient;
 import com.abernathyclinic.mediscreen.service.IPatientService;
 
@@ -26,6 +27,7 @@ public class PatientController {
 		patientService = p_patientService;
 	}
 	
+	//TODO Manage http status error code
 	@PostMapping(value = "patient/add")
 	public String addPatient(@Valid Patient patient, BindingResult result, Model model) {
 		
@@ -37,7 +39,11 @@ public class PatientController {
     		return "patient/addform";
     	}
     	else {
-    		patientService.create(patient);
+    		try {
+				patientService.create(patient);
+			} catch (PatientAlreadyExistsException e) {
+				log.warn("POST Request to /patient/add return error: {}", e.getMessage());
+			}
     	}
         
     	return "redirect:/patient/list";
