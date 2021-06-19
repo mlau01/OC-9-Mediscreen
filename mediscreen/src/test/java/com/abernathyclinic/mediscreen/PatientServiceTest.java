@@ -2,12 +2,10 @@ package com.abernathyclinic.mediscreen;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.NoSuchElementException;
 
 import javax.validation.ConstraintViolationException;
 
@@ -27,8 +25,8 @@ public class PatientServiceTest {
 	private PatientService patientService;
 	
 	@Test
-	@Disabled
 	public void createNewPatientTest_shouldCreatePatientCorrectly() {
+		//Set data
 		LocalDate dateOfBirth = LocalDate.of(1984, 8, 30);
 		String firstName = "John";
 		String lastName = "Do";
@@ -37,18 +35,13 @@ public class PatientServiceTest {
 		String address = "524 Ch Rastine";
 		String city = "Antibes";
 		
-		Patient patient = new Patient();
-		patient.setFirstName(firstName);
-		patient.setLastName(lastName);
-		patient.setDateOfBirth(dateOfBirth);
-		patient.setPhone(phone);
-		patient.setSex(sex);
-		patient.setAddress(address);
-		patient.setCity(city);
+		Patient patient = new Patient(null, firstName, lastName, dateOfBirth, sex, phone, address, city);
 		
+		//Create patient
 		Patient createdPatient = patientService.create(patient);
 		
-		assertNotNull(createdPatient.getId());
+		//Assert
+		assertNotNull(patientService.read(createdPatient.getId()));
 		assertEquals(firstName, createdPatient.getFirstName());
 		assertEquals(lastName, createdPatient.getLastName());
 		assertEquals(dateOfBirth, createdPatient.getDateOfBirth());
@@ -56,6 +49,14 @@ public class PatientServiceTest {
 		assertEquals(sex, createdPatient.getSex());
 		assertEquals(address, createdPatient.getAddress());
 		assertEquals(city, createdPatient.getCity());
+		
+		//Delete patient
+		int saveId = createdPatient.getId();
+		patientService.delete(createdPatient);
+		//Assert
+		Assertions.assertThatExceptionOfType(NoSuchElementException.class).isThrownBy( () -> patientService.read(saveId));
+		
+		
 	}
 	
 	@Test
@@ -103,6 +104,9 @@ public class PatientServiceTest {
 		
 		Patient patient13 = new Patient(null, "John", "Do", LocalDate.of(2222, 8, 30), null, "555-3456", "524 Ch Rastine", "Antibes");
 		Assertions.assertThatExceptionOfType(ConstraintViolationException.class).isThrownBy( () -> patientService.create(patient13));
+		
+		Patient patient14 = new Patient(null, "John", "Do", LocalDate.of(2222, 8, 30), "Male", "555-3456", "524 Ch Rastine", "Antibes");
+		Assertions.assertThatExceptionOfType(ConstraintViolationException.class).isThrownBy( () -> patientService.create(patient14));
 		
 	}
 

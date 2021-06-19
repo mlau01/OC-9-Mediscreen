@@ -12,8 +12,24 @@ public class PatientService implements IPatientService {
 	@Autowired
 	private PatientRepository patientRepository;
 	
+	@Override
 	public Patient create(Patient patient) {
 		return patientRepository.save(patient);
+	}
+
+	@Override
+	public Patient read(Integer id) {
+		return patientRepository.findById(id).get();
+	}
+
+	@Override
+	public Patient update(Patient patient) {
+		return patientRepository.save(patient);
+	}
+
+	@Override
+	public void delete(Patient patient) {
+		patientRepository.delete(patient);
 	}
 
 }
