@@ -1,5 +1,8 @@
 package com.abernathyclinic.mediscreen.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +37,13 @@ public class PatientService implements IPatientService {
 	@Override
 	public void delete(Patient patient) {
 		patientRepository.delete(patient);
+	}
+
+	@Override
+	public Iterable<Patient> getAllPatient() {
+		Iterable<Patient> patients = patientRepository.findAll();
+//		ArrayList<Patient> patients = new ArrayList<>();
+		return patients;
 	}
 
 }

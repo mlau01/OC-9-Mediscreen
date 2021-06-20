@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../static/general-style.css"  th:href="@{general-style.css}"/>
+        <title>Mediscreen - Patients Management</title>
+    </head>
+    <body>
+        <section id="transaction">
+            <div id="patient_list">
+                <span>Patient list</span>
+            </div>
+            <table id="patient_table" class="table">
+                <tr>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Sex</th>
+                    <th>Date of Birth</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>Phone</th>
+                    
+                </tr>
+                <tr th:each="patient : ${patients}">
+                    <td th:utext="${patient.firstName}"></td>
+                    <td th:utext="${patient.lastName}"></td>
+                    <td th:utext="${patient.sex}"></td>
+                    <td th:utext="${patient.dateOfBirth}"></td>
+                    <td th:utext="${patient.address}"></td>
+                    <td th:utext="${patient.city}"></td>
+                    <td th:utext="${patient.phone}"></td>  
+                </tr>
+                
+            </table>
+        </section>
+    </body>
+</html>

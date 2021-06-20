@@ -2,8 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="general-style.css"/>
-        <link rel="stylesheet" href="../static/general-style.css"/>
+        <link rel="stylesheet" href="../static/general-style.css"  th:href="@{general-style.css}"/>
         <title>Mediscreen - Add patient</title>
     </head>
 
@@ -17,11 +16,11 @@
         <input type="text" class="form_input" placeholder="Last name" name="lastName" th:value="${patient.lastName}"/>
         <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="spanerror">Last name error</span>
 
-        <input type="text" class="form_input" placeholder="Date of birth" name="dateOfBirth" th:value="${patient.dateOfBirth}"/>
-        <span th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}" class="spanerror">Date of birth error</span>
-
         <input type="text" class="form_input" placeholder="Sex" name="sex" th:value="${patient.sex}"/>
         <span th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}" class="spanerror">Sex error</span>
+
+        <input type="text" class="form_input" placeholder="Date of birth" name="dateOfBirth" th:value="${patient.dateOfBirth}"/>
+        <span th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}" class="spanerror">Date of birth error</span>
 
         <input type="text" class="form_input" placeholder="Phone" name="sex" th:value="${patient.phone}"/>
         <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="spanerror">Phone error</span>
