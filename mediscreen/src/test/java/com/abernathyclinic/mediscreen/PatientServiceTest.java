@@ -1,6 +1,7 @@
 package com.abernathyclinic.mediscreen;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -22,6 +23,12 @@ public class PatientServiceTest {
 	
 	@Autowired
 	private PatientService patientService;
+	
+	@Test
+	public void listPatientsTest_shouldReturnPatientList() {
+		patientService.getAllPatient().forEach(patient -> assertNotNull(patient.getId()));
+		
+	}
 	
 	@Test
 	public void createNewPatientTest_shouldCreatePatientCorrectly() throws PatientAlreadyExistsException {
@@ -109,7 +116,6 @@ public class PatientServiceTest {
 		
 		Patient patient14 = new Patient(null, "John", "Do", LocalDate.of(2222, 8, 30), "Male", "555-3456", "524 Ch Rastine", "Antibes");
 		assertThrows(ConstraintViolationException.class, () -> patientService.create(patient14));
-		
 	}
 
 }

@@ -16,6 +16,8 @@ import com.abernathyclinic.mediscreen.exception.PatientAlreadyExistsException;
 import com.abernathyclinic.mediscreen.model.Patient;
 import com.abernathyclinic.mediscreen.service.IPatientService;
 
+import io.swagger.annotations.ApiOperation;
+
 @Controller
 public class PatientController {
 	
@@ -56,6 +58,7 @@ public class PatientController {
     	return "redirect:" + TEMPLATE_LIST_PATIENT;
 	}
 	
+	@ApiOperation(value = "Get the patient list")
 	@GetMapping(value = "patient/list")
 	public String listPatient(Model model) {
 		model.addAttribute("patients", patientService.getAllPatient());
