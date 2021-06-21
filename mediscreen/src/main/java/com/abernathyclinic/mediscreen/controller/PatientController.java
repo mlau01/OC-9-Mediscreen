@@ -2,15 +2,22 @@ package com.abernathyclinic.mediscreen.controller;
 
 import javax.validation.Valid;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.abernathyclinic.mediscreen.exception.PatientAlreadyExistsException;
 import com.abernathyclinic.mediscreen.model.Patient;
@@ -18,7 +25,8 @@ import com.abernathyclinic.mediscreen.service.IPatientService;
 
 import io.swagger.annotations.ApiOperation;
 
-@Controller
+@RestController
+@CrossOrigin(origins = "http://localhost:4200") //Allow HTTP request from angular
 public class PatientController {
 	
 	private static Logger log = LoggerFactory.getLogger(PatientController.class);
@@ -60,10 +68,9 @@ public class PatientController {
 	
 	@ApiOperation(value = "Get the patient list")
 	@GetMapping(value = "patient/list")
-	public String listPatient(Model model) {
-		model.addAttribute("patients", patientService.getAllPatient());
-		
-		return TEMPLATE_LIST_PATIENT;
+	public ResponseEntity<Iterable<Patient>> listPatient() {
+		log.info("Get Request to /patient/list");
+		return new ResponseEntity<Iterable<Patient>>(patientService.getAllPatient(), HttpStatus.OK);
 	}
 
 }
