@@ -9,5 +9,5 @@ import com.abernathyclinic.mediscreen.model.Patient;
 public interface PatientRepository extends CrudRepository<Patient, Integer> {
 
 	boolean existsByFirstNameAndLastName(String firstName, String lastName);
-
+	Patient findByFirstNameAndLastName(String firstName, String lastName);
 }

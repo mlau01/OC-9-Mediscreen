@@ -1,12 +1,12 @@
 package com.abernathyclinic.mediscreen.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.abernathyclinic.mediscreen.exception.PatientAlreadyExistsException;
+import com.abernathyclinic.mediscreen.exception.NoSuchPatientException;
+import com.abernathyclinic.mediscreen.exception.AlreadyExistsPatientException;
 import com.abernathyclinic.mediscreen.model.Patient;
 import com.abernathyclinic.mediscreen.repository.PatientRepository;
 
@@ -17,32 +17,56 @@ public class PatientService implements IPatientService {
 	private PatientRepository patientRepository;
 	
 	@Override
-	public Patient create(Patient patient) throws PatientAlreadyExistsException {
+	public Patient create(Patient patient) throws AlreadyExistsPatientException {
 		if(patientRepository.existsByFirstNameAndLastName(patient.getFirstName(), patient.getLastName())) {
-			throw new PatientAlreadyExistsException("Patient already exists");
+			throw new AlreadyExistsPatientException("Patient " + patient.getFirstName() + " " + patient.getLastName() + " already exists");
 		}
 		return patientRepository.save(patient);
 	}
 
 	@Override
-	public Patient read(Integer id) {
-		return patientRepository.findById(id).get();
+	public Patient read(Integer id) throws NoSuchPatientException {
+		Optional<Patient> patient = patientRepository.findById(id);
+		if( ! patient.isPresent()) {
+			throw new NoSuchPatientException("Patient with id: " + id + " not found");
+		}
+		return patient.get();
 	}
 
 	@Override
-	public Patient update(Patient patient) {
-		return patientRepository.save(patient);
+	public Patient update(Patient patient) throws NoSuchPatientException {
+		Optional<Patient> odb_patient = patientRepository.findById(patient.getId());
+		if( ! odb_patient.isPresent()) {
+			throw new NoSuchPatientException("Patient with id: " + patient.getId() + " not found");
+		}
+		Patient db_patient = odb_patient.get();
+		
+		db_patient.setFirstName(patient.getFirstName());
+		db_patient.setLastName(patient.getLastName());
+		db_patient.setAddress(patient.getAddress());
+		db_patient.setDateOfBirth(patient.getDateOfBirth());
+		db_patient.setSex(patient.getSex());
+		db_patient.setPhone(patient.getPhone());
+		db_patient.setCity(patient.getCity());
+		
+		return patientRepository.save(db_patient);
+		
 	}
 
 	@Override
-	public void delete(Patient patient) {
-		patientRepository.delete(patient);
+	public void delete(Patient patient) throws NoSuchPatientException {
+		if(patientRepository.existsByFirstNameAndLastName(patient.getFirstName(), patient.getLastName())) {
+			patientRepository.delete(patient);
+		}
+		else {
+			throw new NoSuchPatientException("Patient " + patient.getFirstName() + " " + patient.getLastName() + " not found");
+		}
+		
 	}
 
 	@Override
 	public Iterable<Patient> getAllPatient() {
 		Iterable<Patient> patients = patientRepository.findAll();
-//		ArrayList<Patient> patients = new ArrayList<>();
 		return patients;
 	}
 

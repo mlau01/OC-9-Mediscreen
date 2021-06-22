@@ -22,12 +22,30 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "patient")
 @Entity
 public class Patient {
 	
+	
+	
+	
+	public Patient(@NotBlank @Length(max = 20, message = "max 20 chars") String firstName,
+			@NotBlank @Length(max = 20, message = "max 20 chars") String lastName, @Past @NotNull LocalDate dateOfBirth,
+			@NotBlank @Pattern(regexp = "M|F") String sex,
+			@NotBlank @Length(max = 20, message = "max 20 chars") String phone,
+			@NotBlank @Length(max = 100, message = "max 100 chars") String address,
+			@Length(max = 20, message = "max 20 chars") String city) {
+		
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+		this.sex = sex;
+		this.phone = phone;
+		this.address = address;
+		this.city = city;
+	}
+
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
