@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
 
-  db:
+  mysqlhost:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -13,25 +13,32 @@ services:
     volumes:
       - "./mysql/config/my.conf:/etc/mysql/conf.d/config-file.cnf"
       - "./mysql/data:/var/lib/mysql:rw"
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8085:8080
       
-  mongo:
+  mongohost:
     image: mongo
+    ports:
+      - 27017:27017
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
-
-  mongo-express:
-    image: mongo-express
-    restart: always
+      
+        
+  patienthost:
+    image: mediscreen/patient
     ports:
-      - 8086:8081
+      - 8081:8080
+    restart: always
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      mysqlhost: mysqlhost:3306
+      
+  uihost:
+    image: mediscreen/ui
+    volumes:
+      - '../mediscreen-ui/:/app'
+      - '/app/node_modules'
+    ports:
+      - 4201:4200
+    environment:
+      patienthost: patienthost
+
