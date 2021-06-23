@@ -34,14 +34,14 @@ subprojects {
 		dependsOn "bootJar" 
 		group = "Docker"
 		description = "Build the docker image"
-		commandLine "docker", "build", "--build-arg", "JAR_FILE=build/libs/*.jar", "-t", "mediscreen-" + project.name.toLowerCase(), "."
+		commandLine "docker", "build", "--build-arg", "JAR_FILE=build/libs/*.jar", "-t", project.name.toLowerCase(), "."
 	}
 
 	task cleanDocker (type: Exec) {
 		group = "Docker"
 		ignoreExitValue = "true"
 		description = "Delete the docker container"
-		commandLine "docker", "rmi", "-f", "mediscreen-" + project.name.toLowerCase()
+		commandLine "docker", "rmi", "-f", project.name.toLowerCase()
 	}
 }
 
@@ -58,7 +58,7 @@ task stopDbDocker (type: Exec) {
 }
 
 task runBackDocker (type: Exec) {
-	dependsOn "mediscreen:buildDocker"
+	dependsOn "mediscreen-patient:buildDocker"
 	group = "Docker"
 	description = "Start all project micro services"
 	commandLine "docker" ,"compose", "-p", "mediscreen", "-f", "docker/docker-compose-back.yml", "up", "-d"
@@ -68,7 +68,7 @@ task stopBackDocker (type: Exec) {
 	group = "Docker"
 	description = "Stop all project micro services"
 	commandLine "docker" ,"compose", "-p", "mediscreen", "-f", "docker/docker-compose-back.yml", "down"
-	finalizedBy "mediscreen:cleanDocker"
+	finalizedBy "mediscreen-patient:cleanDocker"
 }
 
 task runDocker (type: Exec) {
