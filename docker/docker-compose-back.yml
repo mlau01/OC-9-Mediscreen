@@ -25,7 +25,7 @@ services:
       
         
   patienthost:
-    image: mediscreen/patient
+    image: mediscreen-patient
     ports:
       - 8081:8080
     restart: always

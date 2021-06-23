@@ -25,15 +25,13 @@ services:
       
         
   patienthost:
-    image: mediscreen/patient
+    image: mediscreen-patient
     ports:
       - 8081:8080
     restart: always
-    environment:
-      mysqlhost: mysqlhost:3306
       
   uihost:
-    image: mediscreen/ui
+    image: mediscreen-ui
     volumes:
       - '../mediscreen-ui/:/app'
       - '/app/node_modules'

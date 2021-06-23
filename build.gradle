@@ -45,18 +45,6 @@ subprojects {
 	}
 }
 
-task runDbDocker (type: Exec) {
-	group = "Docker"
-	description = "Start all project micro services"
-	commandLine "docker" ,"compose", "-p", "mediscreen", "-f", "docker/docker-compose-db.yml", "up", "-d"
-}
-
-task stopDbDocker (type: Exec) {
-	group = "Docker"
-	description = "Stop all project micro services"
-	commandLine "docker" ,"compose", "-p", "mediscreen", "-f", "docker/docker-compose-db.yml", "down"
-}
-
 task runBackDocker (type: Exec) {
 	dependsOn "mediscreen-patient:buildDocker"
 	group = "Docker"
