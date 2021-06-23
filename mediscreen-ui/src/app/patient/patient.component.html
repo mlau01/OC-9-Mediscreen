@@ -12,7 +12,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let patient of patients">
+    <tr *ngFor="let patient of patients" [id]="patient.id">
       <th scope="row" >{{patient.id}}</th>
       <td>{{patient.firstName}}</td>
       <td>{{patient.lastName}}</td>

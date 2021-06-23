@@ -30,21 +30,19 @@ subprojects {
     }
 	
 	// CUSTOM DOCKER TASKS
-	/*
 	task buildDocker (type: Exec) {
 		dependsOn "bootJar" 
 		group = "Docker"
 		description = "Build the docker image"
-		commandLine "docker", "build", "--build-arg", "JAR_FILE=build/libs/*.jar", "-t", "tourguide/" + project.name.toLowerCase(), "."
+		commandLine "docker", "build", "--build-arg", "JAR_FILE=build/libs/*.jar", "-t", "mediscreen-" + project.name.toLowerCase(), "."
 	}
 
 	task cleanDocker (type: Exec) {
 		group = "Docker"
 		ignoreExitValue = "true"
 		description = "Delete the docker container"
-		commandLine "docker", "rmi", "-f", "tourguide/" + project.name.toLowerCase()
+		commandLine "docker", "rmi", "-f", "mediscreen-" + project.name.toLowerCase()
 	}
-	*/
 }
 
 task runDbDocker (type: Exec) {
@@ -57,6 +55,18 @@ task stopDbDocker (type: Exec) {
 	group = "Docker"
 	description = "Stop all project micro services"
 	commandLine "docker" ,"compose", "-p", "mediscreen", "-f", "docker/docker-compose-db.yml", "down"
+}
+
+task runBackDocker (type: Exec) {
+	group = "Docker"
+	description = "Start all project micro services"
+	commandLine "docker" ,"compose", "-p", "mediscreen", "-f", "docker/docker-compose-back.yml", "up", "-d"
+}
+
+task stopBackDocker (type: Exec) {
+	group = "Docker"
+	description = "Stop all project micro services"
+	commandLine "docker" ,"compose", "-p", "mediscreen", "-f", "docker/docker-compose-back.yml", "down"
 }
 
 task runDocker (type: Exec) {

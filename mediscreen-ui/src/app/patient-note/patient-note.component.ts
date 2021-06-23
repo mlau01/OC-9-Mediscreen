@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NoteService } from '../services/note.service';
 
 @Component({
   selector: 'app-patient-note',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PatientNoteComponent implements OnInit {
 
-  constructor() { }
+  constructor(private noteService: NoteService) { }
+
+  patientId!: String;
 
   ngOnInit(): void {
+    this.patientId = this.noteService.patientId;
   }
 
 }
