@@ -10,6 +10,7 @@ import { PatientNoteComponent } from './patient-note/patient-note.component'
 import { RouterModule, Routes } from '@angular/router';
 import {PatientFormComponent} from "./patient-form/patient-form.component";
 import {FormsModule} from "@angular/forms";
+import {DatePipe} from "@angular/common";
 
 //ROUTES CONFIGURATION
 const appRoutes: Routes = [

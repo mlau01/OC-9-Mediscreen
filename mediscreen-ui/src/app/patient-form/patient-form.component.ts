@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
+import {PatientService} from "../services/patient.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-patient-form',
@@ -8,12 +10,19 @@ import {NgForm} from "@angular/forms";
 })
 export class PatientFormComponent implements OnInit {
 
-  constructor() { }
+  error: any;
+
+  constructor(private patientService: PatientService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
   onSubmit(f: NgForm) {
-    console.log(f.value)
+    this.patientService.createPatient(f.value).subscribe((patientCreated) => {
+      this.router.navigate(['/patient']);
+    }, (error) =>
+      {
+        this.error = error;
+      });
   }
 }

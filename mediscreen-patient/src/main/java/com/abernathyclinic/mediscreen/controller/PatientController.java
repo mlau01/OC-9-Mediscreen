@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.abernathyclinic.mediscreen.exception.AlreadyExistsPatientException;
@@ -84,7 +87,7 @@ public class PatientController {
 	
 	//DELETE
 	@DeleteMapping(value = "patient/delete")
-	public ResponseEntity<String> deletePatient(Patient patient)  {
+	public ResponseEntity<String> deletePatient(@Valid Patient patient)  {
 
     	log.info("DELETE Request to /patient/delete with value: {}", patient);
 

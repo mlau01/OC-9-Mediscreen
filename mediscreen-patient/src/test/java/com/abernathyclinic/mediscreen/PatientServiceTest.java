@@ -92,7 +92,7 @@ public class PatientServiceTest {
 		int saveId = createdPatient.getId();
 		patientService.delete(createdPatient);
 		//Assert
-		assertThrows(NoSuchElementException.class, () -> patientService.read(saveId));
+		assertThrows(NoSuchPatientException.class, () -> patientService.read(saveId));
 		
 		
 	}
