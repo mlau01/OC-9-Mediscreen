@@ -29,4 +29,8 @@ export class PatientService {
     console.log('post formdata object:' + formData);
     return this.httpClient.post<any>(this.apiUrl + '/patient/add', formData);
   }
+
+  deletePatient(id: number) {
+    return this.httpClient.delete(this.apiUrl + '/patient/delete/' + id);
+  }
 }

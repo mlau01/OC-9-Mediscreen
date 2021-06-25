@@ -24,7 +24,7 @@
       <td>{{patient.phone}}</td>
       <td>
         <span><button type="button" class="btn btn-warning">Edit</button></span>
-        <span><button type="button" class="btn btn-danger">Delete</button></span>
+        <span><button type="button" class="btn btn-danger" (click)="onDelete(patient.id)">Delete</button></span>
         <span><button type="button" class="btn btn-info" routerLink="note">Note</button></span>
       </td>
     </tr>

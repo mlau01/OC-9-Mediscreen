@@ -27,4 +27,12 @@ export class PatientComponent implements OnInit {
     )
   }
 
+  onDelete(id: number) {
+    this.patientService.deletePatient(id).subscribe((result) => {
+
+    }, (error) => {
+
+      }
+      );
+  }
 }
