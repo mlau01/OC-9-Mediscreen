@@ -54,10 +54,10 @@ public class PatientService implements IPatientService {
 	}
 
 	@Override
-	public void delete(Patient patient) throws NoSuchPatientException {
-		Optional<Patient> odb_patient = patientRepository.findByFirstNameAndLastName(patient.getFirstName(), patient.getLastName());
+	public void delete(String id) throws NoSuchPatientException {
+		Optional<Patient> odb_patient = patientRepository.findById(Integer.valueOf(id));
 		if( ! odb_patient.isPresent()) {
-			throw new NoSuchPatientException("Patient with fullname: " + patient.getFirstName() + " " + patient.getLastName() + " not found");
+			throw new NoSuchPatientException("Patient with id " + id + " not found");
 		}
 
 		patientRepository.delete(odb_patient.get());

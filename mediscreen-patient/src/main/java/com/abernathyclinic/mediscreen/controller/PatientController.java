@@ -2,6 +2,7 @@ package com.abernathyclinic.mediscreen.controller;
 
 import javax.validation.Valid;
 
+import org.mapstruct.MappingTarget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -86,13 +88,13 @@ public class PatientController {
 	}
 	
 	//DELETE
-	@DeleteMapping(value = "patient/delete")
-	public ResponseEntity<String> deletePatient(@Valid Patient patient)  {
+	@DeleteMapping(value = "patient/delete/{id}")
+	public ResponseEntity<String> deletePatient(@PathVariable("id") String id)  {
 
-    	log.info("DELETE Request to /patient/delete with value: {}", patient);
+    	log.info("DELETE Request to /patient/delete/{}", id);
 
 		try {
-			patientService.delete(patient);
+			patientService.delete(id);
 		} catch (NoSuchPatientException e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);

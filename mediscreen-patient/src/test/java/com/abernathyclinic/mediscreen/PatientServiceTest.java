@@ -90,7 +90,7 @@ public class PatientServiceTest {
 		
 		//Delete patient
 		int saveId = createdPatient.getId();
-		patientService.delete(createdPatient);
+		patientService.delete(String.valueOf(saveId));
 		//Assert
 		assertThrows(NoSuchPatientException.class, () -> patientService.read(saveId));
 		
