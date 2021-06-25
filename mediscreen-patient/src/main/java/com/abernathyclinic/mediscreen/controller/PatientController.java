@@ -37,20 +37,28 @@ public class PatientController {
 	public PatientController(IPatientService p_patientService){
 		patientService = p_patientService;
 	}
+	
+	@Deprecated
+	@PostMapping(value = "patient/add") //For old curl request
+	public ResponseEntity<Patient> oldAddPatient(@Valid Patient patient) {
+    	log.info("POST Request to /patient/add with value: {}", patient);
+    	
+    	return addPatient(patient);
+	}
 
 	//CRUD
 	//POST
-	@PostMapping(value = {"patient","patient/add"})
+	@PostMapping(value = "patient")
 	public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient patient) {
 		
 		
-    	log.info("POST Request to /patient/add with value: {}", patient);
+    	log.info("POST Request to /patient with value: {}", patient);
     	
 		try {
 			Patient createdPatient = patientService.create(patient);
 			return new ResponseEntity<Patient>(createdPatient, HttpStatus.CREATED);
 		} catch (AlreadyExistsPatientException e) {
-			log.warn("POST Request to /patient/add return error: {}", e.getMessage());
+			log.warn("POST Request to /patient return error: {}", e.getMessage());
 			return new ResponseEntity<Patient>(HttpStatus.BAD_REQUEST);
 		}
     	
