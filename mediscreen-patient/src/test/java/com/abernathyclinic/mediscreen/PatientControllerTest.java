@@ -34,10 +34,6 @@ public class PatientControllerTest {
 	
 	@Test
 	public void postPatientTest_shouldPerformPostAndDeleteWithoutErrors() throws Exception {
-		
-		String json = "{\"firstName\":\"Mathias\",\"lastName\":\"LAUER\",\"dateOfBirth\":\"1986-08-30\",\"sex\":\"M\",\"address\":\"5 Chemin du Parc de Vaugrenier\",\"city\":\"ANTIBES\",\"phone\":\"0660328349\"}";
-		String urlencoded = "firstName=Mathias&lastName=LAUER&dob=1986-08-30&sex=M&address=5+Chemin+du+Parc+de+Vaugrenier&city=ANTIBES&phone=0660328349";
-		
 		LocalDate dateOfBirth = LocalDate.of(1984, 8, 30);
 		String firstName = "John";
 		String lastName = "Do";
@@ -50,16 +46,16 @@ public class PatientControllerTest {
 		
 		mockMvc.perform(
 	            post("/patient/add")
-				.content(oMapper.writeValueAsString(patient)));
+				.content(oMapper.writeValueAsString(patient))).andExpect(status().isCreated());
 	            
-		/*
-		Optional<Patient> patient = patientRepo.findByFirstNameAndLastName("Mathias", "Lauer");
+		
+		Optional<Patient> db_patient = patientRepo.findByFirstNameAndLastName("John", "Do");
 		
 		
 		mockMvc.perform(
-	            delete("/patient/delete/" + patient.get().getId()))
+	            delete("/patient/delete/" + db_patient.get().getId()))
 	            .andExpect(status().isOk());
-	            */
+	            
 	}
 	
 }
