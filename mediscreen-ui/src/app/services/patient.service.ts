@@ -14,23 +14,14 @@ export class PatientService {
   constructor(private httpClient: HttpClient, @Inject(LOCALE_ID) private locale: string) { }
 
   getPatients() : Observable<Patient[]> {
-    return this.httpClient.get<Patient[]>(this.apiUrl + '/patient/list');
+    return this.httpClient.get<Patient[]>(this.apiUrl + '/patient');
   }
 
   createPatient(patient: Patient) : Observable<Patient>{
-    let formData = new FormData();
-    formData.append("firstName", patient.firstName);
-    formData.append("lastName", patient.lastName);
-    formData.append("sex", patient.sex);
-    formData.append("dob", formatDate(patient.dateOfBirth, 'yyyy-MM-dd', this.locale));
-    formData.append("address", patient.address);
-    formData.append("city", patient.city);
-    formData.append("phone", patient.phone);
-    console.log('post formdata object:' + formData);
-    return this.httpClient.post<any>(this.apiUrl + '/patient/add', formData);
+    return this.httpClient.post<Patient>(this.apiUrl + '/patient', patient);
   }
 
   deletePatient(id: number): Observable<string> {
-    return this.httpClient.delete<string>(this.apiUrl + '/patient/delete/' + id);
+    return this.httpClient.delete<string>(this.apiUrl + '/patient/' + id);
   }
 }
