@@ -1,5 +1,7 @@
 package com.abernathyclinic.mediscreen.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.mapstruct.MappingTarget;
@@ -61,14 +63,14 @@ public class PatientController {
 	//GET
 	@ApiOperation(value = "Get the patient list")
 	@GetMapping(value = "patient/list")
-	public ResponseEntity<Iterable<Patient>> listPatient() {
+	public ResponseEntity<List<Patient>> listPatient() {
 		log.info("Get Request to /patient/list");
-		Iterable<Patient> iterablePatient = patientService.getAllPatient();
+		List<Patient> iterablePatient = patientService.getAllPatient();
 		if(iterablePatient == null) {
 			log.error("Internal error object Iterable<Patient> is null");
-			return new ResponseEntity<Iterable<Patient>>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<List<Patient>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<Iterable<Patient>>(iterablePatient, HttpStatus.OK);
+		return new ResponseEntity<List<Patient>>(iterablePatient, HttpStatus.OK);
 	}
 	
 	//UPDATE

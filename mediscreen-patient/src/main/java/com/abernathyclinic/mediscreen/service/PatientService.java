@@ -1,5 +1,6 @@
 package com.abernathyclinic.mediscreen.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,8 +67,8 @@ public class PatientService implements IPatientService {
 	}
 
 	@Override
-	public Iterable<Patient> getAllPatient() {
-		Iterable<Patient> patients = patientRepository.findAll();
+	public List<Patient> getAllPatient() {
+		List<Patient> patients = patientRepository.findAll();
 		return patients;
 	}
 
