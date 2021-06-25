@@ -8,6 +8,7 @@ export class Patient {
     public city: string;
     public phone: string;
     public dateOfBirth: Date;
+    public note: string | undefined;
 
     constructor(id: number, firstName: string, lastName: string,
                 sex: string, address: string, city: string, phone: string, dateOfBirth: Date) {

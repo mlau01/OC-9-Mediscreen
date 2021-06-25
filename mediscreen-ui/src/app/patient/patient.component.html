@@ -23,8 +23,10 @@
       <td>
         <span><button type="button" class="btn btn-warning">Edit</button></span>
         <span><button type="button" class="btn btn-danger" (click)="onDelete(patient.id)">Delete</button></span>
-        <span><button type="button" class="btn btn-info" routerLink="note">Note</button></span>
       </td>
+      <div *ngIf="noteShown" class="row container-fluid" id="noteShow">
+        <textarea id="note">{{patient.note}}</textarea>
+      </div>
     </tr>
   </tbody>
 </table>
