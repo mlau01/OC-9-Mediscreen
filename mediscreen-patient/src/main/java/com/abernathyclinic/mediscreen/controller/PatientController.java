@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.abernathyclinic.mediscreen.exception.AlreadyExistsPatientException;
@@ -33,22 +34,21 @@ public class PatientController {
 	private IPatientService patientService;
 
 	@Autowired
-	public PatientController(IPatientService p_patientService)
-	{
+	public PatientController(IPatientService p_patientService){
 		patientService = p_patientService;
 	}
-	
+
 	//CRUD
-	
 	//POST
-	@PostMapping(value = "patient/add")
-	public ResponseEntity<Patient> addPatient(@Valid Patient patient) {
+	@PostMapping(value = {"patient","patient/add"})
+	public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient patient) {
 		
 		
     	log.info("POST Request to /patient/add with value: {}", patient);
     	
 		try {
-			return new ResponseEntity<Patient>(patientService.create(patient), HttpStatus.CREATED);
+			Patient createdPatient = patientService.create(patient);
+			return new ResponseEntity<Patient>(createdPatient, HttpStatus.CREATED);
 		} catch (AlreadyExistsPatientException e) {
 			log.warn("POST Request to /patient/add return error: {}", e.getMessage());
 			return new ResponseEntity<Patient>(HttpStatus.BAD_REQUEST);
@@ -58,20 +58,20 @@ public class PatientController {
 	
 	//GET
 	@ApiOperation(value = "Get the patient list")
-	@GetMapping(value = "patient/list")
+	@GetMapping(value = "patient")
 	public ResponseEntity<List<Patient>> listPatient() {
-		log.info("Get Request to /patient/list");
-		List<Patient> iterablePatient = patientService.getAllPatient();
-		if(iterablePatient == null) {
-			log.error("Internal error object Iterable<Patient> is null");
+		log.info("Get Request to /patient");
+		List<Patient> listPatient = patientService.getAllPatient();
+		if(listPatient == null) {
+			log.error("Internal error object List<Patient> is null");
 			return new ResponseEntity<List<Patient>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<List<Patient>>(iterablePatient, HttpStatus.OK);
+		return new ResponseEntity<List<Patient>>(listPatient, HttpStatus.OK);
 	}
 	
 	//UPDATE
-	@PutMapping(value = "patient/update")
-	public ResponseEntity<Patient> updatePatient(@Valid Patient patient)  {
+	@PutMapping(value = "patient")
+	public ResponseEntity<Patient> updatePatient(@Valid @RequestBody Patient patient)  {
 
     	log.info("PUT Request to /patient/update with value: {}", patient);
     	
@@ -86,7 +86,7 @@ public class PatientController {
 	}
 	
 	//DELETE
-	@DeleteMapping(value = "patient/delete/{id}")
+	@DeleteMapping(value = "patient/{id}")
 	public ResponseEntity<String> deletePatient(@PathVariable("id") String id)  {
 
     	log.info("DELETE Request to /patient/delete/{}", id);
