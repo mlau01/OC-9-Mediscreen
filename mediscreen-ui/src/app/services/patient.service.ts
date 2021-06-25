@@ -30,7 +30,7 @@ export class PatientService {
     return this.httpClient.post<any>(this.apiUrl + '/patient/add', formData);
   }
 
-  deletePatient(id: number) {
-    return this.httpClient.delete(this.apiUrl + '/patient/delete/' + id);
+  deletePatient(id: number): Observable<string> {
+    return this.httpClient.delete<string>(this.apiUrl + '/patient/delete/' + id);
   }
 }

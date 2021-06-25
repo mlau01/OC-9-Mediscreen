@@ -1,7 +1,6 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
       <th scope="col">First name</th>
       <th scope="col">Last name</th>
       <th scope="col">Sex</th>
@@ -14,7 +13,6 @@
   </thead>
   <tbody>
     <tr *ngFor="let patient of patients" [id]="patient.id">
-      <th scope="row" >{{patient.id}}</th>
       <td>{{patient.firstName}}</td>
       <td>{{patient.lastName}}</td>
       <td>{{patient.sex}}</td>
