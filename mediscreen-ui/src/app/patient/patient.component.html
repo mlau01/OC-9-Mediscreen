@@ -21,12 +21,9 @@
       <td>{{patient.city}}</td>
       <td>{{patient.phone}}</td>
       <td>
-        <span><button type="button" class="btn btn-warning">Edit</button></span>
-        <span><button type="button" class="btn btn-danger" (click)="onDelete(patient.id)">Delete</button></span>
+        <button type="button" class="btn btn-warning">Edit</button>
+        <button type="button" class="btn btn-danger" (click)="onDelete(patient.id)">Delete</button>
       </td>
-      <div *ngIf="noteShown" class="row container-fluid" id="noteShow">
-        <textarea id="note">{{patient.note}}</textarea>
-      </div>
     </tr>
   </tbody>
 </table>

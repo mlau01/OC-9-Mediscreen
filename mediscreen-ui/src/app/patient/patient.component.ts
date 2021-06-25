@@ -13,7 +13,6 @@ export class PatientComponent implements OnInit {
   constructor(private patientService: PatientService, private router: Router) { }
 
   patients: Patient[] = [];
-  noteShown: boolean = false;
 
   ngOnInit(): void {
     this.getPatients();
