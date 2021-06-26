@@ -79,7 +79,7 @@ public class PatientController {
 	
 	//UPDATE
 	@PutMapping(value = "patient")
-	public ResponseEntity<Patient> updatePatient(@Valid @RequestBody Patient patient)  {
+	public ResponseEntity<String> updatePatient(@Valid @RequestBody Patient patient)  {
 
     	log.info("PUT Request to /patient/update with value: {}", patient);
     	
@@ -88,9 +88,13 @@ public class PatientController {
 			updatedPatient = patientService.update(patient);
 		} catch (NoSuchPatientException e) {
 			log.error(e.getMessage());
-			return new ResponseEntity<Patient>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("\"Patient id: " + patient.getId() + " not found\"", HttpStatus.NOT_FOUND);
+		} catch (AlreadyExistsPatientException e) {
+			log.warn("POST Request to /patient return error: {}", e.getMessage());
+			return new ResponseEntity<String>("\"" + e.getMessage() + "\"", HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<Patient>(updatedPatient , HttpStatus.CREATED);
+		
+		return new ResponseEntity<String>("\"Patient id: " + updatedPatient.getId() + " updated\"", HttpStatus.CREATED);
 	}
 	
 	//DELETE

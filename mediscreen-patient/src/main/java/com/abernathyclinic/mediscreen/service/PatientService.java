@@ -35,13 +35,18 @@ public class PatientService implements IPatientService {
 	}
 
 	@Override
-	public Patient update(Patient patient) throws NoSuchPatientException {
+	public Patient update(Patient patient) throws NoSuchPatientException, AlreadyExistsPatientException {
 		Optional<Patient> odb_patient = patientRepository.findById(patient.getId());
 		if( ! odb_patient.isPresent()) {
 			throw new NoSuchPatientException("Patient with id: " + patient.getId() + " not found");
 		}
 		Patient db_patient = odb_patient.get();
 		
+		if( (! db_patient.getFirstName().equals(patient.getFirstName())) || (! db_patient.getLastName().equals(patient.getLastName()))) {
+			if(patientRepository.existsByFirstNameAndLastName(patient.getFirstName(), patient.getLastName())) {
+				throw new AlreadyExistsPatientException("Patient " + patient.getFirstName() + " " + patient.getLastName() + " already exists");
+			}
+		}
 		db_patient.setFirstName(patient.getFirstName());
 		db_patient.setLastName(patient.getLastName());
 		db_patient.setAddress(patient.getAddress());
