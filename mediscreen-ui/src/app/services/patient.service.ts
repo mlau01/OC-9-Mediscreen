@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import {Inject, Injectable, LOCALE_ID} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import { Observable } from 'rxjs';
 import { Patient } from 'src/app/models/patient'
 import {DatePipe, formatDate} from "@angular/common";
@@ -11,7 +11,7 @@ export class PatientService {
 
   apiUrl = 'http://localhost:8081';
 
-  constructor(private httpClient: HttpClient, @Inject(LOCALE_ID) private locale: string) { }
+  constructor(private httpClient: HttpClient) { }
 
   getPatients() : Observable<Patient[]> {
     return this.httpClient.get<Patient[]>(this.apiUrl + '/patient');
