@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
-import { Observable } from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import { Patient } from 'src/app/models/patient'
 import {DatePipe, formatDate} from "@angular/common";
 
@@ -10,11 +10,19 @@ import {DatePipe, formatDate} from "@angular/common";
 export class PatientService {
 
   apiUrl = 'http://localhost:8081';
+  patientSubject = new Subject<Patient[]>()
+  patients: Patient[] = [];
 
   constructor(private httpClient: HttpClient) { }
 
-  getPatients() : Observable<Patient[]> {
-    return this.httpClient.get<Patient[]>(this.apiUrl + '/patient');
+  getPatients() {
+    this.httpClient.get<Patient[]>(this.apiUrl + '/patient').subscribe((result) =>
+    {
+      this.patients = result;
+      this.emitPatientSubject();
+    }, (error) => {
+
+    })
   }
 
   createPatient(patient: Patient) : Observable<Patient>{
@@ -23,5 +31,9 @@ export class PatientService {
 
   deletePatient(id: number): Observable<string> {
     return this.httpClient.delete<string>(this.apiUrl + '/patient/' + id);
+  }
+
+  public emitPatientSubject() {
+    this.patientSubject.next(this.patients.slice());
   }
 }

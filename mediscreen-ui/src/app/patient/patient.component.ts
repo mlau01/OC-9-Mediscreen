@@ -15,17 +15,12 @@ export class PatientComponent implements OnInit {
   patients: Patient[] = [];
 
   ngOnInit(): void {
-    this.getPatients();
-  }
-
-  getPatients() {
-    this.patientService.getPatients().subscribe(
-      result => {
-        if(result && result != null) {
-          this.patients = result;
-        }
+    this.patientService.getPatients();
+    this.patientService.patientSubject.subscribe((patient: Patient[]) => {
+        this.patients = patient;
       }
-    )
+    );
+    this.patientService.emitPatientSubject();
   }
 
   onDelete(id: number) {
