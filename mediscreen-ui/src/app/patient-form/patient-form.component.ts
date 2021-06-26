@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {PatientService} from "../services/patient.service";
 import {Router} from "@angular/router";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-patient-form',
@@ -11,6 +12,7 @@ import {Router} from "@angular/router";
 export class PatientFormComponent implements OnInit {
 
   error: any;
+  showError: boolean = false;
 
   constructor(private patientService: PatientService, private router: Router) { }
 
@@ -22,7 +24,10 @@ export class PatientFormComponent implements OnInit {
       this.router.navigate(['/patient']);
     }, (error) =>
       {
-        this.error = error;
+        if(error instanceof HttpErrorResponse) {
+          this.error = error.error;
+          this.showError = true;
+        }
       });
   }
 }

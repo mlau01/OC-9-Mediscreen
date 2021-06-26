@@ -37,4 +37,5 @@
       <button class="btn btn-primary" type="submit" [disabled]="f.invalid">Add</button>
     </form>
   </div>
+  <div *ngIf="showError">Error: {{error}}</div>
 </div>

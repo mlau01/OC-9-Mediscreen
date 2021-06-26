@@ -56,10 +56,10 @@ public class PatientController {
     	
 		try {
 			Patient createdPatient = patientService.create(patient);
-			return new ResponseEntity<String>("Patient id :" + createdPatient.getId() + " created", HttpStatus.CREATED);
+			return new ResponseEntity<String>("\"Patient id: " + createdPatient.getId() + " created\"", HttpStatus.CREATED);
 		} catch (AlreadyExistsPatientException e) {
 			log.warn("POST Request to /patient return error: {}", e.getMessage());
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("\"" + e.getMessage() + "\"", HttpStatus.BAD_REQUEST);
 		}
     	
 	}

@@ -25,8 +25,8 @@ export class PatientService {
     })
   }
 
-  createPatient(patient: Patient) : Observable<Patient>{
-    return this.httpClient.post<Patient>(this.apiUrl + '/patient', patient);
+  createPatient(patient: Patient) : Observable<string>{
+    return this.httpClient.post<string>(this.apiUrl + '/patient', patient);
   }
 
   deletePatient(id: number): Observable<string> {
