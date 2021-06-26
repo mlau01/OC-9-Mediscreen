@@ -25,11 +25,12 @@ export class PatientComponent implements OnInit {
 
   onDelete(id: number) {
     this.patientService.deletePatient(id).subscribe((result) => {
-        for(let i = 0; i < this.patients.length; i++){
-          if ( this.patients[i].id === id) {
-            this.patients.splice(i, 1);
+        for(let i = 0; i < this.patientService.patients.length; i++){
+          if ( this.patientService.patients[i].id === id) {
+            this.patientService.patients.splice(i, 1);
           }
         }
+        this.patientService.emitPatientSubject();
 
       }, (error) => {
 
