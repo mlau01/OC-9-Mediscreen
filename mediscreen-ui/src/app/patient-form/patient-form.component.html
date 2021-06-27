@@ -2,39 +2,39 @@
 
   <div class="col-sm-8 col-sm-offset-2">
     <button class="btn btn-secondary" routerLink="/patient">Back</button>
-    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="firstName">First name</label>
-        <input type="text" id="firstName" class="form-control" name="firstName" ngModel required>
+        <input type="text" id="firstName" class="form-control" formControlName="firstName">
       </div>
       <div class="form-group">
         <label for="lastName">Last name</label>
-        <input type="text" id="lastName" class="form-control" name="lastName" ngModel required>
+        <input type="text" id="lastName" class="form-control" formControlName="lastName">
       </div>
       <div class="form-group">
         <label for="birthday">Birthday</label>
-        <input type="date" id="birthday" class="form-control" name="dateOfBirth" ngModel required>
+        <input type="date" id="birthday" class="form-control" formControlName="dateOfBirth">
       </div>
       <div class="form-group">
         <label for="sex">Sex</label>
-        <select id="sex" class="form-control" name="sex" ngModel required>
+        <select id="sex" class="form-control" formControlName="sex">
           <option value="M">Male</option>
           <option value="F">Female</option>
         </select>
       </div>
       <div class="form-group">
         <label for="address">Address</label>
-        <input type="text" id="address" class="form-control" name="address" ngModel required>
+        <input type="text" id="address" class="form-control" formControlName="address">
       </div>
       <div class="form-group">
         <label for="city">City</label>
-        <input type="text" id="city" class="form-control" name="city" ngModel>
+        <input type="text" id="city" class="form-control" formControlName="city">
       </div>
       <div class="form-group">
         <label for="phone">Phone</label>
-        <input type="text" id="phone" class="form-control" name="phone" ngModel>
+        <input type="text" id="phone" class="form-control" formControlName="phone">
       </div>
-      <button class="btn btn-primary" type="submit" [disabled]="f.invalid">Add</button>
+      <button class="btn btn-primary" type="submit">Add</button>
     </form>
   </div>
   <div *ngIf="showError">Error: {{error}}</div>

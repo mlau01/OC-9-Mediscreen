@@ -8,7 +8,7 @@ import { PatientService } from './services/patient.service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import {PatientFormComponent} from "./patient-form/patient-form.component";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DatePipe} from "@angular/common";
 
 //ROUTES CONFIGURATION
@@ -29,6 +29,7 @@ const appRoutes: Routes = [
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     //APPLY ROUTE CONFIG
     RouterModule.forRoot(appRoutes)
   ],
