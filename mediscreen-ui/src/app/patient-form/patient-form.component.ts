@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, NgForm} from "@angular/forms";
+import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
 import {PatientService} from "../services/patient.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -33,13 +33,13 @@ export class PatientFormComponent implements OnInit {
     this.isUpdateMode = !!this.id;
 
     this.patientForm = this.formBuilder.group({
-      firstName: '',
-      lastName: '',
-      sex: '',
-      dateOfBirth: '',
-      address: '',
+      firstName: ['', [Validators.required, Validators.maxLength(20), Validators.minLength(2)]],
+      lastName: ['', [Validators.required, Validators.maxLength(20), Validators.minLength(2)]],
+      sex: ['', [Validators.required]],
+      dateOfBirth: ['', [Validators.required]],
+      address: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
       city: '',
-      phone: ''});
+      phone: ['', [Validators.required, Validators.maxLength(20), Validators.minLength(2)]],});
 
 
     if(this.isUpdateMode) {

@@ -34,8 +34,8 @@
         <label for="phone">Phone</label>
         <input type="text" id="phone" class="form-control" formControlName="phone">
       </div>
-      <button class="btn btn-primary" type="submit">Save</button>
+      <button class="btn btn-primary" type="submit" [disabled]="patientForm.invalid || ! patientForm.touched">Save</button>
     </form>
   </div>
-  <div *ngIf="showError">Error: {{error}}</div>
+  <div *ngIf="showError" class="col-sm-8 col-sm-offset-2 alert alert-danger alert-dismissible fade show">Error: {{error}}</div>
 </div>
