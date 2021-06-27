@@ -15,6 +15,7 @@ import {DatePipe} from "@angular/common";
 const appRoutes: Routes = [
   { path: 'patient', component: PatientComponent},
   { path: 'patientForm', component: PatientFormComponent},
+  { path: 'patientForm/:id', component: PatientFormComponent},
   { path: '', component: PatientComponent}
 ]
 

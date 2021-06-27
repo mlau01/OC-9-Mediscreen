@@ -36,4 +36,18 @@ export class PatientService {
   public emitPatientSubject() {
     this.patientSubject.next(this.patients.slice());
   }
+
+  getById(id: string) : Patient | undefined {
+    for(let patient of this.patients){
+      if(patient.id === Number.parseInt(id)){
+        return patient;
+      }
+    }
+    return undefined;
+  }
+
+  editPatient(id: string, patient: Patient) {
+    patient.id = Number.parseInt(id);
+    return this.httpClient.put<string>(this.apiUrl + '/patient/', patient);
+  }
 }

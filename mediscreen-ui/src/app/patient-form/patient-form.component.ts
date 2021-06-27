@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, NgForm} from "@angular/forms";
 import {PatientService} from "../services/patient.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
+import {Patient} from "../models/patient";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-patient-form',
@@ -14,14 +16,22 @@ export class PatientFormComponent implements OnInit {
   error: any;
   showError: boolean = false;
   patientForm!: FormGroup;
+  id!: string;
+  isUpdateMode!: boolean;
 
-  constructor(private patientService: PatientService, private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private patientService: PatientService,
+              private router: Router,
+              private formBuilder: FormBuilder,
+              private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.initForm();
   }
 
   initForm() {
+    this.id = this.route.snapshot.params['id'];
+    this.isUpdateMode = !!this.id;
+
     this.patientForm = this.formBuilder.group({
       firstName: '',
       lastName: '',
@@ -30,10 +40,25 @@ export class PatientFormComponent implements OnInit {
       address: '',
       city: '',
       phone: ''});
+
+
+    if(this.isUpdateMode) {
+      let patient = this.patientService.getById(this.id);
+      if(patient != undefined) {
+        this.patientForm.patchValue(patient);
+      }
+    }
+
   }
 
   onSubmit() {
-    this.patientService.createPatient(this.patientForm?.value).subscribe((patientCreated) => {
+    let method!: Observable<string>;
+    if( ! this.isUpdateMode) {
+      method = this.patientService.createPatient(this.patientForm?.value);
+    } else {
+      method = this.patientService.editPatient(this.id, this.patientForm?.value);
+    }
+    method.subscribe((patientCreated) => {
       this.router.navigate(['/patient']);
     }, (error) =>
       {

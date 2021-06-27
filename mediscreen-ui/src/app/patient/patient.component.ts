@@ -37,4 +37,8 @@ export class PatientComponent implements OnInit {
       }
       );
   }
+
+  onEdit(id: number) {
+    this.router.navigate(['/patientForm/' + id]);
+  }
 }
