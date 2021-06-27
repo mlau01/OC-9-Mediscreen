@@ -24,6 +24,9 @@ export class PatientComponent implements OnInit {
   }
 
   onDelete(id: number) {
+    if( ! confirm("Are you sure?")){
+      return;
+    }
     this.patientService.deletePatient(id).subscribe((result) => {
         for(let i = 0; i < this.patientService.patients.length; i++){
           if ( this.patientService.patients[i].id === id) {
@@ -41,4 +44,6 @@ export class PatientComponent implements OnInit {
   onEdit(id: number) {
     this.router.navigate(['/patientForm/' + id]);
   }
+
+
 }
