@@ -18,6 +18,13 @@ public class PatientService implements IPatientService {
 	private PatientRepository patientRepository;
 	
 	@Override
+	/**
+	 * Create a patient
+	 * @param patient to create
+	 * @return Patient created if succeed
+	 * @throws AlreadyExistPatientException when a patient with this full name already exists
+	 * 28 juin 2021
+	 */
 	public Patient create(Patient patient) throws AlreadyExistsPatientException {
 		if(patientRepository.existsByFirstNameAndLastName(patient.getFirstName(), patient.getLastName())) {
 			throw new AlreadyExistsPatientException("Patient " + patient.getFirstName() + " " + patient.getLastName() + " already exists");
@@ -26,6 +33,13 @@ public class PatientService implements IPatientService {
 	}
 
 	@Override
+	/**
+	 * Get a patient by his id
+	 * @param id
+	 * @return Patient if found
+	 * @throw NoSuchPatientException when not found
+	 * 28 juin 2021
+	 */
 	public Patient read(Integer id) throws NoSuchPatientException {
 		Optional<Patient> patient = patientRepository.findById(id);
 		if( ! patient.isPresent()) {
@@ -35,6 +49,14 @@ public class PatientService implements IPatientService {
 	}
 
 	@Override
+	/**
+	 * Update a patient
+	 * @param patient to update, will be searched by the id present in data
+	 * @return Patient updated if succeed
+	 * @throw NoSuchPatientException when no patient found with this id
+	 * @throw AlreadyExistsPatientException when the full name chosen already exist
+	 * 28 juin 2021
+	 */
 	public Patient update(Patient patient) throws NoSuchPatientException, AlreadyExistsPatientException {
 		Optional<Patient> odb_patient = patientRepository.findById(patient.getId());
 		if( ! odb_patient.isPresent()) {
@@ -60,6 +82,12 @@ public class PatientService implements IPatientService {
 	}
 
 	@Override
+	/**
+	 * Delete a patient
+	 * @param patient to delete, searched by the id present in data
+	 * @throw NoSuchPatientException when no patient with this id was found
+	 * 28 juin 2021
+	 */
 	public void delete(Patient patient) throws NoSuchPatientException {
 		Optional<Patient> odb_patient = patientRepository.findById(patient.getId());
 		if( ! odb_patient.isPresent()) {
@@ -72,6 +100,11 @@ public class PatientService implements IPatientService {
 	}
 
 	@Override
+	/**
+	 * Get all patients list
+	 * @return List<Patient>
+	 * 28 juin 2021
+	 */
 	public List<Patient> getAllPatient() {
 		List<Patient> patients = patientRepository.findAll();
 		return patients;

@@ -17,6 +17,8 @@ import com.abernathyclinic.mediscreen.model.Patient;
 import com.abernathyclinic.mediscreen.service.IPatientService;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200") //Allow HTTP request from angular
@@ -32,6 +34,7 @@ public class PatientController {
 	}
 	
 	@Deprecated
+	@ApiOperation(value = "Deprecated URI for old curl request, return same responses as /patient")
 	@PostMapping(value = "patient/add") //For old curl request
 	public ResponseEntity<String> oldAddPatient(@Valid Patient patient) {
     	log.info("POST Request to /patient/add with value: {}", patient);
@@ -41,7 +44,11 @@ public class PatientController {
 
 	//CRUD
 	//POST
+	
 	@ApiOperation(value = "Add a patient")
+	 @ApiResponses(value = { 
+			 @ApiResponse(code = 400, message = "Patient with this fullname already exist")
+			 })
 	@PostMapping(value = "patient")
 	public ResponseEntity<String> addPatient(@Valid @RequestBody Patient patient) {
 		
@@ -60,6 +67,9 @@ public class PatientController {
 	
 	//GET ALL
 	@ApiOperation(value = "Get all patients list")
+	 @ApiResponses(value = { 
+			 @ApiResponse(code = 500, message = "Cannot retrieve patients list")
+			 })
 	@GetMapping(value = "patients")
 	public ResponseEntity<List<Patient>> listPatient() {
 		log.info("Get Request to /patients");
@@ -73,6 +83,10 @@ public class PatientController {
 
 	//READ
 	@ApiOperation(value = "Get a patient by id")
+	 @ApiResponses(value = { 
+			 @ApiResponse(code = 400, message = "Id parse error"),
+			 @ApiResponse(code = 404, message = "No patient found with this id")
+			 })
 	@GetMapping(value = "patient/{id}")
 	public ResponseEntity<Patient> getPatient(@PathVariable("id") String id) {
 		log.info("GET request to /patient/{}", id);
@@ -89,6 +103,10 @@ public class PatientController {
 	
 	//UPDATE
 	@ApiOperation(value = "Update a patient")
+	 @ApiResponses(value = { 
+			 @ApiResponse(code = 404, message = "No patient found with this id"),
+			 @ApiResponse(code = 400, message = "Patient with this fullname already exist")
+			 })
 	@PutMapping(value = "patient")
 	public ResponseEntity<String> updatePatient(@Valid @RequestBody Patient patient)  {
 
@@ -109,6 +127,9 @@ public class PatientController {
 	
 	//DELETE
 	@ApiOperation(value = "Delete a patient")
+	 @ApiResponses(value = { 
+			 @ApiResponse(code = 404, message = "No patient found with this id")
+			 })
 	@DeleteMapping(value = "patient")
 	public ResponseEntity<String> deletePatient(@RequestBody Patient patient)  {
 
