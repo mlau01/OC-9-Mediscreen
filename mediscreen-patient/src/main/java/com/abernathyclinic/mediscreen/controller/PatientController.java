@@ -104,6 +104,7 @@ public class PatientController {
 	//UPDATE
 	@ApiOperation(value = "Update a patient")
 	 @ApiResponses(value = { 
+			 @ApiResponse(code = 404, message = "No patient found with this id"),
 			 @ApiResponse(code = 400, message = "Patient with this fullname already exist")
 			 })
 	@PutMapping(value = "patient")
