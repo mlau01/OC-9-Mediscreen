@@ -1,12 +1,10 @@
 package com.abernathyclinic.mediscreen;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 
 import javax.validation.ConstraintViolationException;
 
@@ -90,7 +88,7 @@ public class PatientServiceTest {
 		
 		//Delete patient
 		int saveId = createdPatient.getId();
-		patientService.delete(String.valueOf(saveId));
+		patientService.delete(createdPatient);
 		//Assert
 		assertThrows(NoSuchPatientException.class, () -> patientService.read(saveId));
 		

@@ -1,24 +1,21 @@
 package com.abernathyclinic.mediscreen;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Optional;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +26,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.abernathyclinic.mediscreen.model.Patient;
-import com.abernathyclinic.mediscreen.repository.PatientRepository;
 import com.abernathyclinic.mediscreen.service.PatientService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -46,9 +42,11 @@ public class PatientControllerTest {
 
 	@Autowired
 	private ObjectMapper oMapper;
-
-	@Test
-	public void postPatientTest_shouldPerformPostWithoutErrors() throws Exception {
+	
+	private static Patient patientTest;
+	
+	@BeforeAll
+	public static void setUp() {
 		LocalDate dateOfBirth = LocalDate.of(1984, 8, 30);
 		String firstName = "John";
 		String lastName = "Do";
@@ -57,53 +55,60 @@ public class PatientControllerTest {
 		String address = "524 Ch Rastine";
 		String city = "Antibes";
 
-		Patient patient = new Patient(firstName, lastName, dateOfBirth, sex, phone, address, city);
-		when(patientService.create(any(Patient.class))).thenReturn(patient);
+		patientTest = new Patient(firstName, lastName, dateOfBirth, sex, phone, address, city);
+	}
+
+	@Test
+	public void postPatientTest() throws Exception {
+	
+		when(patientService.create(patientTest)).thenReturn(patientTest);
 		
 		mockMvc.perform(post("/patient")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(oMapper.writeValueAsString(patient)))
+				.content(oMapper.writeValueAsString(patientTest)))
 				.andExpect(status().isCreated());
 		
-		verify(patientService, Mockito.times(1)).create(any(Patient.class));
+		verify(patientService, Mockito.times(1)).create(patientTest);
 
 	}
 
 	@Test
 	public void deletePatientTest_() throws Exception {
-	
-		mockMvc.perform(delete("/patient/25")).andExpect(status().isOk());
-		verify(patientService, Mockito.times(1)).delete(anyString());
+		mockMvc.perform(delete("/patient")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(oMapper.writeValueAsString(patientTest)))
+				.andExpect(status().isOk());
+		verify(patientService, Mockito.times(1)).delete(patientTest);
 	}
 	
 	@Test
 	public void getAllPatientTest() throws Exception {
 		when(patientService.getAllPatient()).thenReturn(new ArrayList<Patient>());
 		
-		mockMvc.perform(get("/patient")).andExpect(status().isOk());
+		mockMvc.perform(get("/patients")).andExpect(status().isOk());
 		
 		verify(patientService, Mockito.times(1)).getAllPatient();
 	}
 	
 	@Test
+	public void getSinglePatientTest() throws Exception {
+		when(patientService.read(0)).thenReturn(patientTest);
+		
+		mockMvc.perform(get("/patient/0")).andExpect(status().isOk());
+		
+		verify(patientService, Mockito.times(1)).read(0);
+	}
+	
+	@Test
 	public void putPatientTest() throws Exception {
-		LocalDate dateOfBirth = LocalDate.of(1984, 8, 30);
-		String firstName = "John";
-		String lastName = "Do";
-		String phone = "555-5534";
-		String sex = "M";
-		String address = "524 Ch Rastine";
-		String city = "Antibes";
-
-		Patient patient = new Patient(firstName, lastName, dateOfBirth, sex, phone, address, city);
-		when(patientService.update(any(Patient.class))).thenReturn(patient);
+		when(patientService.update(patientTest)).thenReturn(patientTest);
 		
 		mockMvc.perform(put("/patient")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(oMapper.writeValueAsString(patient)))
+				.content(oMapper.writeValueAsString(patientTest)))
 				.andExpect(status().isCreated());
 		
-		verify(patientService, Mockito.times(1)).update(any(Patient.class));
+		verify(patientService, Mockito.times(1)).update(patientTest);
 		
 	}
 
