@@ -16,7 +16,7 @@ export class PatientService {
   constructor(private httpClient: HttpClient) { }
 
   getPatients() {
-    this.httpClient.get<Patient[]>(this.apiUrl + '/patient').subscribe((result) =>
+    this.httpClient.get<Patient[]>(this.apiUrl + '/patients').subscribe((result) =>
     {
       this.patients = result;
       this.emitPatientSubject();
@@ -26,11 +26,11 @@ export class PatientService {
   }
 
   createPatient(patient: Patient) : Observable<string>{
-    return this.httpClient.post<string>(this.apiUrl + '/patient', patient);
+    return this.httpClient.post<string>(this.apiUrl + '/patients', patient);
   }
 
   deletePatient(id: number): Observable<string> {
-    return this.httpClient.delete<string>(this.apiUrl + '/patient/' + id);
+    return this.httpClient.delete<string>(this.apiUrl + '/patients/' + id);
   }
 
   public emitPatientSubject() {
@@ -48,6 +48,6 @@ export class PatientService {
 
   editPatient(id: string, patient: Patient) {
     patient.id = Number.parseInt(id);
-    return this.httpClient.put<string>(this.apiUrl + '/patient/', patient);
+    return this.httpClient.put<string>(this.apiUrl + '/patients', patient);
   }
 }
