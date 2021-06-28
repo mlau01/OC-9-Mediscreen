@@ -50,17 +50,16 @@ public class PatientService implements IPatientService {
 
 	@Override
 	/**
-	 * Update a patient
+	 * Update a patient, if the patient id do not exists, create a new patient
 	 * @param patient to update, will be searched by the id present in data
 	 * @return Patient updated if succeed
-	 * @throw NoSuchPatientException when no patient found with this id
 	 * @throw AlreadyExistsPatientException when the full name chosen already exist
 	 * 28 juin 2021
 	 */
-	public Patient update(Patient patient) throws NoSuchPatientException, AlreadyExistsPatientException {
+	public Patient update(Patient patient) throws AlreadyExistsPatientException {
 		Optional<Patient> odb_patient = patientRepository.findById(patient.getId());
 		if( ! odb_patient.isPresent()) {
-			throw new NoSuchPatientException("Patient with id: " + patient.getId() + " not found");
+			create(patient);
 		}
 		Patient db_patient = odb_patient.get();
 		
@@ -88,10 +87,10 @@ public class PatientService implements IPatientService {
 	 * @throw NoSuchPatientException when no patient with this id was found
 	 * 28 juin 2021
 	 */
-	public void delete(Patient patient) throws NoSuchPatientException {
-		Optional<Patient> odb_patient = patientRepository.findById(patient.getId());
+	public void delete(String id) throws NoSuchPatientException {
+		Optional<Patient> odb_patient = patientRepository.findById(Integer.parseInt(id));
 		if( ! odb_patient.isPresent()) {
-			throw new NoSuchPatientException("Patient with id " + patient.getId() + " not found");
+			throw new NoSuchPatientException("Patient with id " + id + " not found");
 		}
 
 		patientRepository.delete(odb_patient.get());
