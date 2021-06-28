@@ -63,7 +63,7 @@ public class PatientControllerTest {
 	
 		when(patientService.create(patientTest)).thenReturn(patientTest);
 		
-		mockMvc.perform(post("/patient")
+		mockMvc.perform(post("/patients")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(oMapper.writeValueAsString(patientTest)))
 				.andExpect(status().isCreated());
@@ -74,11 +74,11 @@ public class PatientControllerTest {
 
 	@Test
 	public void deletePatientTest_() throws Exception {
-		mockMvc.perform(delete("/patient")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(oMapper.writeValueAsString(patientTest)))
+		
+		mockMvc.perform(delete("/patients/0"))
 				.andExpect(status().isOk());
-		verify(patientService, Mockito.times(1)).delete(patientTest);
+		
+		verify(patientService, Mockito.times(1)).delete("0");
 	}
 	
 	@Test
@@ -94,7 +94,7 @@ public class PatientControllerTest {
 	public void getSinglePatientTest() throws Exception {
 		when(patientService.read(0)).thenReturn(patientTest);
 		
-		mockMvc.perform(get("/patient/0")).andExpect(status().isOk());
+		mockMvc.perform(get("/patients/0")).andExpect(status().isOk());
 		
 		verify(patientService, Mockito.times(1)).read(0);
 	}
@@ -103,7 +103,7 @@ public class PatientControllerTest {
 	public void putPatientTest() throws Exception {
 		when(patientService.update(patientTest)).thenReturn(patientTest);
 		
-		mockMvc.perform(put("/patient")
+		mockMvc.perform(put("/patients")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(oMapper.writeValueAsString(patientTest)))
 				.andExpect(status().isCreated());

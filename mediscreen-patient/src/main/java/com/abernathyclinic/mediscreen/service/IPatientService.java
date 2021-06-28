@@ -10,8 +10,8 @@ public interface IPatientService {
 	
 	public Patient create(Patient patient) throws AlreadyExistsPatientException;
 	public Patient read(Integer id) throws NoSuchPatientException;
-	public Patient update(Patient patient) throws NoSuchPatientException, AlreadyExistsPatientException;
-	public void delete(Patient patient) throws NoSuchPatientException;
+	public Patient update(Patient patient) throws AlreadyExistsPatientException;
+	public void delete(String id) throws NoSuchPatientException;
 	public List<Patient> getAllPatient();
 
 }

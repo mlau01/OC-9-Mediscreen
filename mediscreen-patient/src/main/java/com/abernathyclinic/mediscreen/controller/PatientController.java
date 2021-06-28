@@ -37,7 +37,7 @@ public class PatientController {
 	@ApiOperation(value = "Deprecated URI for old curl request, return same responses as /patient")
 	@PostMapping(value = "patient/add") //For old curl request
 	public ResponseEntity<String> oldAddPatient(@Valid Patient patient) {
-    	log.info("POST Request to /patient/add with value: {}", patient);
+    	log.info("POST Request to /patients/add with value: {}", patient);
     	
     	return addPatient(patient);
 	}
@@ -49,17 +49,17 @@ public class PatientController {
 	 @ApiResponses(value = { 
 			 @ApiResponse(code = 400, message = "Patient with this fullname already exist")
 			 })
-	@PostMapping(value = "patient")
+	@PostMapping(value = "patients")
 	public ResponseEntity<String> addPatient(@Valid @RequestBody Patient patient) {
 		
 		
-    	log.info("POST Request to /patient with body: {}", patient);
+    	log.info("POST Request to /patients with body: {}", patient);
     	
 		try {
 			patientService.create(patient);
 			return new ResponseEntity<String>(HttpStatus.CREATED);
 		} catch (AlreadyExistsPatientException e) {
-			log.warn("POST Request to /patient return error: {}", e.getMessage());
+			log.warn("POST Request to /patients return error: {}", e.getMessage());
 			return new ResponseEntity<String>(jsonify(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
     	
@@ -75,7 +75,7 @@ public class PatientController {
 		log.info("Get Request to /patients");
 		List<Patient> listPatient = patientService.getAllPatient();
 		if(listPatient == null) {
-			log.error("Internal error object List<Patient> is null");
+			log.error("Internal error object List<Patient> returned by service is null");
 			return new ResponseEntity<List<Patient>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<List<Patient>>(listPatient, HttpStatus.OK);
@@ -87,9 +87,9 @@ public class PatientController {
 			 @ApiResponse(code = 400, message = "Id parse error"),
 			 @ApiResponse(code = 404, message = "No patient found with this id")
 			 })
-	@GetMapping(value = "patient/{id}")
+	@GetMapping(value = "patients/{id}")
 	public ResponseEntity<Patient> getPatient(@PathVariable("id") String id) {
-		log.info("GET request to /patient/{}", id);
+		log.info("GET request to /patients/{}", id);
 		try {
 			return new ResponseEntity<Patient>(patientService.read(Integer.valueOf(id)), HttpStatus.OK);
 		} catch (NumberFormatException e) {
@@ -102,23 +102,19 @@ public class PatientController {
 	}
 	
 	//UPDATE
-	@ApiOperation(value = "Update a patient")
+	@ApiOperation(value = "Update an existing patient based on id or create it if not exists")
 	 @ApiResponses(value = { 
-			 @ApiResponse(code = 404, message = "No patient found with this id"),
 			 @ApiResponse(code = 400, message = "Patient with this fullname already exist")
 			 })
-	@PutMapping(value = "patient")
+	@PutMapping(value = "patients")
 	public ResponseEntity<String> updatePatient(@Valid @RequestBody Patient patient)  {
 
     	log.info("PUT Request to /patient with value: {}", patient);
  
 		try {
 			patientService.update(patient);
-		} catch (NoSuchPatientException e) {
-			log.error(e.getMessage());
-			return new ResponseEntity<String>(jsonify("Patient id: " + patient.getId() + " not found"), HttpStatus.NOT_FOUND);
 		} catch (AlreadyExistsPatientException e) {
-			log.error("POST Request to /patient return error: {}", e.getMessage());
+			log.error("PUT Request to /patients return error: {}", e.getMessage());
 			return new ResponseEntity<String>(jsonify(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 		
@@ -130,13 +126,13 @@ public class PatientController {
 	 @ApiResponses(value = { 
 			 @ApiResponse(code = 404, message = "No patient found with this id")
 			 })
-	@DeleteMapping(value = "patient")
-	public ResponseEntity<String> deletePatient(@RequestBody Patient patient)  {
+	@DeleteMapping(value = "patients/{id}")
+	public ResponseEntity<String> deletePatient(@PathVariable("id") String id)  {
 
-    	log.info("DELETE Request to /patient with body: {}", patient);
+    	log.info("DELETE Request to /patients/{}", id);
 
 		try {
-			patientService.delete(patient);
+			patientService.delete(id);
 		} catch (NoSuchPatientException e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<String>(jsonify(e.getMessage()), HttpStatus.NOT_FOUND);
