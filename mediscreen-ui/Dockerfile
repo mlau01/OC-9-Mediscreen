@@ -1,19 +1,15 @@
+############
+### prod ###
+############
+
 # base image
-FROM node:14.17.1
+FROM nginx
 
-# set working directory
-WORKDIR /app
+# copy artifact build from the 'build environment'
+COPY /dist/mediscreen-ui /usr/share/nginx/html
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+# expose port 80
+EXPOSE 80
 
-# install and cache app dependencies
-COPY package.json /app/package.json
-RUN npm install
-RUN npm install -g @angular/cli@12.0.5
-
-# add app
-COPY . /app
-
-# start app
-CMD ng serve --host 0.0.0.0
+# run nginx
+CMD ["nginx", "-g", "daemon off;"]

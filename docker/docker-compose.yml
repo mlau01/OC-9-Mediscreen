@@ -2,6 +2,8 @@ version: '3.1'
 
 services:
 
+services:
+
   mysqlhost:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
@@ -32,9 +34,7 @@ services:
       
   uihost:
     image: mediscreen-ui
-    volumes:
-      - '../mediscreen-ui/:/app'
-      - '/app/node_modules'
     ports:
-      - 4200:4200
+      - 4200:80
+    restart: always
 

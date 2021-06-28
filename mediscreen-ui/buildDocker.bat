@@ -1,1 +1,1 @@
-docker build -t mediscreen/ui .
+docker build -t mediscreen-ui .
