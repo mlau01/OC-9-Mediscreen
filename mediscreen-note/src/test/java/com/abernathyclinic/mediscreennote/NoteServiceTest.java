@@ -26,8 +26,8 @@ public class NoteServiceTest {
 	private INoteService noteService;
 	
 	@Test
-	public void createReadNoteTest() throws NoSuchNoteException {
-		
+	public void CRUDNoteTest() throws NoSuchNoteException {
+		//Prepare
 		String author = "Laurent Vouaze";
 		LocalDate created = LocalDate.now();
 		int patientId = 21;
@@ -39,9 +39,12 @@ public class NoteServiceTest {
 		note.setPatientId(patientId);
 		note.setNote(note_content);
 		
+		//Create
+		
 		NoteModel noteCreated = noteService.create(note);
 		assertNotNull(noteCreated.getId());
 		
+		//Read
 		NoteModel noteGetted = noteService.getById(noteCreated.getId());
 		
 		assertEquals(author, noteGetted.getAuthor());
@@ -49,6 +52,16 @@ public class NoteServiceTest {
 		assertEquals(patientId, noteGetted.getPatientId());
 		assertEquals(note_content, noteGetted.getNote());
 		
+		//Update
+		noteGetted.setAuthor("Test");
+		noteGetted.setNote("Hello Modified!");
+		
+		NoteModel noteUpdated = noteService.put(noteGetted);
+		
+		assertEquals("Test", noteUpdated.getAuthor());
+		assertEquals("Hello Modified!", noteUpdated.getNote());
+		
+		//Delete
 		String saveId = noteGetted.getId();
 		noteService.delete(saveId);
 		
