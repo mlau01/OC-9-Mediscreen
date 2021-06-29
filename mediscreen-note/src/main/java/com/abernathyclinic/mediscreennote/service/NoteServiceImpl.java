@@ -36,7 +36,24 @@ public class NoteServiceImpl implements INoteService {
 	}
 
 	@Override
-	public List<NoteModel> getByPatientId(String id) throws NoSuchPatientException {
+	public List<NoteModel> getByPatientIdOrderedDesc(int id) throws NoSuchNoteException {
+		Optional<List<NoteModel>> notes = noteRepository.findByPatientIdOrderByCreatedDesc(id);
+		if( ! notes.isPresent()) {
+			throw new NoSuchNoteException("No note found this patient id: " + id);
+		}
+		
+		return notes.get();
+		
+	}
+
+	@Override
+	public void delete(String id) throws NoSuchNoteException {
+		noteRepository.deleteById(id);
+		
+	}
+
+	@Override
+	public NoteModel put(NoteModel note) {
 		// TODO Auto-generated method stub
 		return null;
 	}

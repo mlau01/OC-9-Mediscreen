@@ -10,8 +10,12 @@ public interface INoteService {
 
 	NoteModel create(NoteModel note);
 
-	List<NoteModel> getByPatientId(String id) throws NoSuchPatientException;
+	List<NoteModel> getByPatientIdOrderedDesc(int id) throws NoSuchNoteException;
 	
 	NoteModel getById(String id) throws NoSuchNoteException;
+	
+	void delete(String id) throws NoSuchNoteException;
+	
+	NoteModel put(NoteModel note);
 
 }
