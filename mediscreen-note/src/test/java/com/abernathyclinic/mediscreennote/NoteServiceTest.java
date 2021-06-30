@@ -1,15 +1,15 @@
 package com.abernathyclinic.mediscreennote;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.LocalDate;
-import java.util.Iterator;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import javax.validation.ConstraintViolationException;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class NoteServiceTest {
 	public void CRUDNoteTest() throws NoSuchNoteException {
 		//Prepare
 		String author = "Laurent Vouaze";
-		LocalDate created = LocalDate.now();
+		LocalDateTime created = LocalDateTime.of(2020, 01, 01, 12, 00);
 		int patientId = 21;
 		String note_content = "Hello world!";
 		
@@ -72,13 +72,13 @@ public class NoteServiceTest {
 	public void getPatientNote_shouldReturnOrderedByCreationNotes() throws NoSuchNoteException {
 		NoteModel note1 = new NoteModel();
 		note1.setAuthor("AZERTY");
-		note1.setCreated(LocalDate.of(2012, 01, 01));
+		note1.setCreated(LocalDateTime.of(2012,01,01,12,00));
 		note1.setPatientId(1);
 		note1.setNote("Hello One !");
 		
 		NoteModel note2 = new NoteModel();
 		note2.setAuthor("QSDFGH");
-		note2.setCreated(LocalDate.of(2010, 01, 01));
+		note2.setCreated(LocalDateTime.of(2010,01,01,12,00));
 		note2.setPatientId(1);
 		note2.setNote("Hello Two !");
 		
@@ -102,6 +102,18 @@ public class NoteServiceTest {
 		
 		noteService.delete(id1);
 		noteService.delete(id2);
+	}
+	
+	@Test
+	public void constraintNoteTest() {
+		NoteModel note1 = new NoteModel(null, 0,"", LocalDateTime.now(), "Hello World!");
+		assertThrows(ConstraintViolationException.class, () -> noteService.create(note1));
+		
+		NoteModel note2 = new NoteModel(null, 0,"Test",null, "Hello World!");
+		assertThrows(ConstraintViolationException.class, () -> noteService.create(note2));
+		
+		NoteModel note3 = new NoteModel(null, 0,"Test",LocalDateTime.now(), "");
+		assertThrows(ConstraintViolationException.class, () -> noteService.create(note3));
 	}
 
 }

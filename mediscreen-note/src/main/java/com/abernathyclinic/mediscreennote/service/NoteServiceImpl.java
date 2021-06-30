@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.abernathyclinic.mediscreennote.exception.NoSuchNoteException;
-import com.abernathyclinic.mediscreennote.exception.NoSuchPatientException;
 import com.abernathyclinic.mediscreennote.model.NoteModel;
 import com.abernathyclinic.mediscreennote.repository.NoteRepository;
 
