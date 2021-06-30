@@ -10,12 +10,15 @@ import { RouterModule, Routes } from '@angular/router';
 import {PatientFormComponent} from "./patient-form/patient-form.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DatePipe} from "@angular/common";
+import { PatientDetailsComponent } from './patient-details/patient-details.component';
+import { PatientNoteComponent } from './patient-note/patient-note.component';
 
 //ROUTES CONFIGURATION
 const appRoutes: Routes = [
   { path: 'patient', component: PatientComponent},
   { path: 'patientForm', component: PatientFormComponent},
   { path: 'patientForm/:id', component: PatientFormComponent},
+  { path: 'details/:pid', component: PatientDetailsComponent},
   { path: '', component: PatientComponent}
 ]
 
@@ -23,7 +26,9 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     PatientComponent,
-    PatientFormComponent
+    PatientFormComponent,
+    PatientDetailsComponent,
+    PatientNoteComponent
   ],
   imports: [
     BrowserModule,

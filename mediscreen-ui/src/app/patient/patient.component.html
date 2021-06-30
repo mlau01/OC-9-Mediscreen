@@ -21,8 +21,10 @@
       <td>{{patient.city}}</td>
       <td>{{patient.phone}}</td>
       <td>
+        <button type="button" class="btn btn-success"(click)="onDetails(patient.id)">Details</button>
         <button type="button" class="btn btn-warning" (click)="onEdit(patient.id)">Edit</button>
         <button type="button" class="btn btn-danger" (click)="onDelete(patient.id)">Delete</button>
+
       </td>
     </tr>
   </tbody>

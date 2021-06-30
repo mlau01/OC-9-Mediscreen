@@ -46,4 +46,7 @@ export class PatientComponent implements OnInit {
   }
 
 
+  onDetails(pid: number) {
+    this.router.navigate(['/details/' + pid])
+  }
 }
