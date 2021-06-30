@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import { Patient } from 'src/app/models/patient'
-import {DatePipe, formatDate} from "@angular/common";
 
 @Injectable({
   providedIn: 'root'

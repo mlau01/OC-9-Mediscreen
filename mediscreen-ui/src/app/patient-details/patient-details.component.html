@@ -2,6 +2,10 @@
 
   <div class="col-sm-8 col-sm-offset-2">
     <button class="btn btn-secondary" routerLink="/patient">Back</button>
-    Patient id {{pid}}
+    <app-patient-note *ngFor="let note of notes"
+                      [author]="note.author"
+                      [created]="note.created"
+                      [content]="note.note">
+    </app-patient-note>
   </div>
 </div>
