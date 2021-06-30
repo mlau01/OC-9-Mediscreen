@@ -25,19 +25,16 @@ services:
     volumes:
       - "./mongodb/data/db:/data/db:rw"
       
-  mongo-express:
-    image: mongo-express
-    ports:
-      - 8085:8081
-    restart: always
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_SERVER: mongohost
-        
   patienthost:
     image: mediscreen-patient
     ports:
       - 8081:8080
+    restart: always
+    
+        
+  notehost:
+    image: mediscreen-note
+    ports:
+      - 8082:8080
     restart: always
 
