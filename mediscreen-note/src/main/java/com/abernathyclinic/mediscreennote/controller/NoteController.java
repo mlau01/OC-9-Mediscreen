@@ -40,7 +40,6 @@ public class NoteController {
 	}
 	
 	//CRUD
-	
 	//POST
 	@ApiOperation(value = "Add a note")
 	@PostMapping(value = CRUD_ENDPOINT_NAME)

@@ -33,6 +33,5 @@ public class NoteModel {
 	private LocalDateTime created;
 	
 	@NotBlank
-	@Length(max = 1000, message = "max 1000 chars")
 	private String note;
 }
