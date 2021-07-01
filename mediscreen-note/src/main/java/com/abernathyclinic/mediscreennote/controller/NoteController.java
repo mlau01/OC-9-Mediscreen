@@ -44,13 +44,14 @@ public class NoteController {
 	//POST
 	@ApiOperation(value = "Add a note")
 	@PostMapping(value = CRUD_ENDPOINT_NAME)
-	public ResponseEntity<String> addNote(@Valid @RequestBody NoteModel note) {
+	public ResponseEntity<NoteModel> addNote(@Valid @RequestBody NoteModel note) {
     	log.info("POST Request to {} with body: {}",CRUD_ENDPOINT_NAME, note);
 
-		if(noteService.create(note) != null) {
-			return new ResponseEntity<String>(HttpStatus.CREATED);
+    	NoteModel noteCreated = noteService.create(note);
+		if(noteCreated != null) {
+			return new ResponseEntity<NoteModel>(noteCreated, HttpStatus.CREATED);
 		} else {
-			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<NoteModel>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	
@@ -91,14 +92,15 @@ public class NoteController {
 	@ApiOperation(value = "Update an existing note based on id or create it if not exists")
 	
 	@PutMapping(value = CRUD_ENDPOINT_NAME)
-	public ResponseEntity<String> updateNote(@Valid @RequestBody NoteModel note)  {
+	public ResponseEntity<NoteModel> updateNote(@Valid @RequestBody NoteModel note)  {
 
     	log.info("PUT Request to {} with value: {}",CRUD_ENDPOINT_NAME, note);
  	
-		if(noteService.put(note) != null) {
-			return new ResponseEntity<String>(HttpStatus.CREATED);
+    	NoteModel noteUpdated = noteService.put(note);
+		if(noteUpdated != null) {
+			return new ResponseEntity<NoteModel>(noteUpdated, HttpStatus.CREATED);
 		} else {
-			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<NoteModel>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	
