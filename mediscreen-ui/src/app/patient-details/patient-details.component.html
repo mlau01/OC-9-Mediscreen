@@ -3,28 +3,26 @@
 
   <button class="btn btn-secondary" routerLink="/patient">Back</button>
 
-  <app-patient-note *ngFor="let note of notes"
-                    [author]="note.author"
-                    [created]="note.created"
-                    [content]="note.note">
-  </app-patient-note>
+  <app-patient-note *ngFor="let note of notes" [note]="note"></app-patient-note>
 
-  <form class="form-block">
+  <form class="form-block" [formGroup]="noteForm" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="col-xs-12 col-sm-6">
         <div class="form-group fl_icon">
           <div class="icon"><i class="fa fa-user"></i></div>
-          <input class="form-input" type="text" placeholder="Your name">
+          <input class="form-input" type="text" placeholder="Your name" formControlName="author">
         </div>
       </div>
 
       <div class="col-xs-12">
         <div class="form-group">
-          <textarea class="form-input" required="" placeholder="Your text"></textarea>
+          <textarea class="form-input" required="" placeholder="Your note" formControlName="note"></textarea>
         </div>
       </div>
 
     </div>
-    <button class="btn btn-primary">Submit</button>
+    <button *ngIf="!isEditing" class="btn btn-primary" type="submit" [disabled]="noteForm.invalid || ! noteForm.touched">Submit</button>
+    <button *ngIf="isEditing" class="btn btn-primary" type="submit" [disabled]="noteForm.invalid || ! noteForm.touched">Save</button>
+    <button *ngIf="isEditing" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
   </form>
 </div>

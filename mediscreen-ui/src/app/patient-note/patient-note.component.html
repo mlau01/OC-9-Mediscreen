@@ -1,14 +1,5 @@
 <div class="be-comment-content">
-
-    <span class="be-comment-name">
-      {{author}}
-      </span>
-  <span class="be-comment-time">
-      <i class="fa fa-clock-o"></i>
-    {{created | date}}
-    </span>
-
-  <p class="be-comment-text">
-    {{content}}
-  </p>
+  <span class="be-comment-author">{{note.author}}</span>
+  <span class="be-comment-time">{{note.created | date}}<a (click)="onEdit()" class="btn-comment-action">Edit</a><a class="btn-comment-action">Delete</a></span>
+  <p class="be-comment-text">{{note.note}}</p>
 </div>

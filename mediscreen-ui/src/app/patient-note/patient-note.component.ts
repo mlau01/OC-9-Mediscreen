@@ -1,4 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Subject} from "rxjs";
+import {Note} from "../models/note";
+import {NoteService} from "../services/note.service";
 
 @Component({
   selector: 'app-patient-note',
@@ -7,13 +10,15 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class PatientNoteComponent implements OnInit {
 
-  @Input() author!: string;
-  @Input() created!: Date;
-  @Input() content!: string;
+  @Input() id!: string;
+  @Input() note! : Note;
 
-  constructor() { }
+  constructor(private noteService: NoteService) { }
 
   ngOnInit(): void {
   }
 
+  onEdit() {
+    this.noteService.emitNote(this.note);
+  }
 }
