@@ -1,4 +1,14 @@
-<blockquote class="blockquote text-lg-start">
-  <p class="mb-0">{{content}}</p>
-  <footer class="blockquote-footer">By <cite title="Source Title">{{author}}</cite> at {{created}}</footer>
-</blockquote>
+<div class="be-comment-content">
+
+    <span class="be-comment-name">
+      {{author}}
+      </span>
+  <span class="be-comment-time">
+      <i class="fa fa-clock-o"></i>
+    {{created | date}}
+    </span>
+
+  <p class="be-comment-text">
+    {{content}}
+  </p>
+</div>
