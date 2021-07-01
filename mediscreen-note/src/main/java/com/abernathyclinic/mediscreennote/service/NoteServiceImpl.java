@@ -1,5 +1,6 @@
 package com.abernathyclinic.mediscreennote.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ public class NoteServiceImpl implements INoteService {
 	 * 30 juin 2021
 	 */
 	public NoteModel create(NoteModel note) {
+		note.setCreated(LocalDateTime.now());
 		return noteRepository.save(note);
 	}
 

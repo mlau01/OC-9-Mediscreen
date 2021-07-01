@@ -1,10 +1,8 @@
 package com.abernathyclinic.mediscreennote;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,7 +46,7 @@ public class NoteServiceTest {
 		NoteModel noteGetted = noteService.getById(noteCreated.getId());
 		
 		assertEquals(author, noteGetted.getAuthor());
-		assertEquals(created, noteGetted.getCreated());
+		assertNotNull(noteGetted.getCreated());
 		assertEquals(patientId, noteGetted.getPatientId());
 		assertEquals(note_content, noteGetted.getNote());
 		
@@ -69,16 +67,14 @@ public class NoteServiceTest {
 	}
 	
 	@Test
-	public void getPatientNote_shouldReturnOrderedByCreationNotes() throws NoSuchNoteException {
+	public void getPatientNote_shouldReturnListOfNotes() throws NoSuchNoteException {
 		NoteModel note1 = new NoteModel();
 		note1.setAuthor("AZERTY");
-		note1.setCreated(LocalDateTime.of(2012,01,01,12,00));
 		note1.setPatientId(1);
 		note1.setNote("Hello One !");
 		
 		NoteModel note2 = new NoteModel();
 		note2.setAuthor("QSDFGH");
-		note2.setCreated(LocalDateTime.of(2010,01,01,12,00));
 		note2.setPatientId(1);
 		note2.setNote("Hello Two !");
 		
@@ -86,19 +82,7 @@ public class NoteServiceTest {
 		String id2 = noteService.create(note2).getId();
 		
 		List<NoteModel> notes = noteService.getByPatientIdOrderedDesc(1);
-		assertNotEquals(0, notes.size());
-
-		//Assert that the current note creation date of the iteration is always greater than the previous
-		NoteModel previous = null;
-		for(NoteModel note : notes) {
-			if(previous == null) {
-				previous = note;
-			} else {
-				assertTrue( (note.getCreated().compareTo(previous.getCreated())) <= 0);
-				previous = note;
-			}
-		}
-		
+		assertEquals(2, notes.size());
 		
 		noteService.delete(id1);
 		noteService.delete(id2);
@@ -106,13 +90,10 @@ public class NoteServiceTest {
 	
 	@Test
 	public void constraintNoteTest() {
-		NoteModel note1 = new NoteModel(null, 0,"", LocalDateTime.now(), "Hello World!");
+		NoteModel note1 = new NoteModel(null, 0,"", null, "Hello World!");
 		assertThrows(ConstraintViolationException.class, () -> noteService.create(note1));
 		
-		NoteModel note2 = new NoteModel(null, 0,"Test",null, "Hello World!");
-		assertThrows(ConstraintViolationException.class, () -> noteService.create(note2));
-		
-		NoteModel note3 = new NoteModel(null, 0,"Test",LocalDateTime.now(), "");
+		NoteModel note3 = new NoteModel(null, 0,"Test", null, "");
 		assertThrows(ConstraintViolationException.class, () -> noteService.create(note3));
 	}
 

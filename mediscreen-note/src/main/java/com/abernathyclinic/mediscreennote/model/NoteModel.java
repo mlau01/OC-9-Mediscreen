@@ -29,8 +29,7 @@ public class NoteModel {
 	@NotBlank
 	@Length(max = 20, message = "max 20 chars")
 	private String author;
-	
-	@NotNull
+
 	private LocalDateTime created;
 	
 	@NotBlank

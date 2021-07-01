@@ -54,7 +54,6 @@ public class NoteControllerTest {
 
 		noteTest = new NoteModel();
 		noteTest.setAuthor("Test");
-		noteTest.setCreated(LocalDateTime.now());
 		noteTest.setPatientId(0);
 		noteTest.setNote("Hello World!");
 		
