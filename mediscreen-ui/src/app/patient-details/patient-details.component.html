@@ -3,8 +3,6 @@
 
   <button class="btn btn-secondary" routerLink="/patient">Back</button>
 
-  <app-patient-note *ngFor="let note of notes" [note]="note"></app-patient-note>
-
   <form class="form-block" [formGroup]="noteForm" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="col-xs-12 col-sm-6">
@@ -25,4 +23,6 @@
     <button *ngIf="isEditing" class="btn btn-primary" type="submit" [disabled]="noteForm.invalid || ! noteForm.touched">Save</button>
     <button *ngIf="isEditing" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
   </form>
+
+  <app-patient-note *ngFor="let note of notes" [note]="note"></app-patient-note>
 </div>

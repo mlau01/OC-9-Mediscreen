@@ -3,7 +3,8 @@ body{
   background-color:#e9ebee;
 }
 .form-block {
-  margin-top: 80px;
+  margin-top: 50px;
+  margin-bottom: 30px;
 }
 
 .form-group .form-input {
