@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Subject} from "rxjs";
 import {Note} from "../models/note";
 import {NoteService} from "../services/note.service";
 
@@ -22,7 +21,10 @@ export class PatientNoteComponent implements OnInit {
     this.noteService.emitNoteEdition(this.note);
   }
 
-  onDelete(id: string) {
+  onDelete() {
+    if( ! confirm("Are you sure?")){
+      return;
+    }
     this.noteService.delete(this.note.id);
   }
 }

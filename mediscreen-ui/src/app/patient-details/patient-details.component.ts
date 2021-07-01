@@ -34,11 +34,11 @@ export class PatientDetailsComponent implements OnInit {
 
   initNote() {
     this.pid = this.route.snapshot.params['pid'];
-    this.noteService.getPatientNote(this.pid).subscribe((notes) => {
+    this.noteService.getPatientNote(this.pid);
+
+    this.noteService.noteSubject.subscribe((notes) => {
       this.notes = notes;
-    }, (error) => {
-      console.log(error);
-    });
+    })
   }
 
   initForm(){
@@ -54,48 +54,17 @@ export class PatientDetailsComponent implements OnInit {
   }
 
   onSubmit() {
-    let method!: Observable<Note>;
     if( ! this.isEditing) {
-      method = this.noteService.create(this.noteForm?.value, this.pid);
+      this.noteService.create(this.noteForm?.value, this.pid);
     } else {
-      method = this.noteService.edit(this.editNote, this.noteForm);
+      this.noteService.edit(this.editNote, this.noteForm);
     }
-    method.subscribe((noteCreated) => {
-      if( ! this.isEditing) {
-        this.notes.unshift(noteCreated);
-        this.noteForm.reset();
-      } else {
-        for(let i = 0; i < this.notes.length; i++){
-          if ( this.notes[i].id === noteCreated.id) {
-            this.notes[i] = noteCreated;
-          }
-        }
-        this.cancelEdit();
-      }
-    }, (error) =>
-    {
-      if(error instanceof HttpErrorResponse) {
-        console.log(error);
-        this.error = error.error;
-      }
-    });
+    this.cancelEdit();
+
   }
 
   cancelEdit() {
     this.isEditing = false;
     this.noteForm.reset();
-  }
-
-  onDelete(id: string) {
-    this.noteService.delete(id).subscribe(() => {
-      for(let i = 0; i < this.notes.length; i++){
-        if ( this.notes[i].id === id) {
-          this.notes.slice(i);
-        }
-      }
-    }, (error) => {
-      console.log(error);
-    })
-
   }
 }

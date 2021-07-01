@@ -11,11 +11,15 @@ import {FormGroup} from "@angular/forms";
 export class NoteService {
   apiUrl = 'http://localhost:8082';
   noteEditionSubject = new Subject<Note>();
+  noteSubject = new Subject<Note[]>();
   notes! : Note[];
   constructor(private httpClient: HttpClient) { }
 
-  public getPatientNote(pid: number): Observable<Note[]> {
-    return this.httpClient.get<Note[]>(this.apiUrl + '/notes/patient/' + pid);
+  public getPatientNote(pid: number){
+    return this.httpClient.get<Note[]>(this.apiUrl + '/notes/patient/' + pid).subscribe((notes) => {
+      this.notes = notes;
+      this.emitNote();
+    });
   }
 
   public emitNoteEdition(note: Note) {
@@ -23,18 +27,43 @@ export class NoteService {
 
   }
 
-  create(note: Note, pid: number): Observable<Note> {
+  create(note: Note, pid: number){
     note.patientId = pid;
-    return this.httpClient.post<Note>(this.apiUrl + '/notes', note);
+    this.httpClient.post<Note>(this.apiUrl + '/notes', note).subscribe((noteCreated) => {
+      this.notes.unshift(noteCreated);
+      this.emitNote();
+    }, (error) => {
+      console.log(error);
+    })
   }
 
-  edit(note: Note, form: FormGroup): Observable<Note> {
+  edit(note: Note, form: FormGroup){
     note.author = form.value['author'];
     note.note = form.value['note'];
-    return this.httpClient.put<Note>(this.apiUrl + '/notes', note);
+    return this.httpClient.put<Note>(this.apiUrl + '/notes', note).subscribe((noteUpdated) => {
+      for(let i = 0; i < this.notes.length; i++){
+        if ( this.notes[i].id === noteUpdated.id) {
+          this.notes[i] = noteUpdated;
+          this.emitNote();
+        }
+      }
+    });
   }
 
   delete(id: string) {
-    return this.httpClient.delete(this.apiUrl + '/notes/' + id);
+    this.httpClient.delete(this.apiUrl + '/notes/' + id).subscribe(() => {
+      for(let i = 0; i < this.notes.length; i++) {
+        if (this.notes[i].id === id) {
+          this.notes.splice(i, 1);
+          this.emitNote();
+        }
+      }
+    }, (error) => {
+      console.log(error);
+    });
+  }
+
+  emitNote(){
+    this.noteSubject.next(this.notes);
   }
 }

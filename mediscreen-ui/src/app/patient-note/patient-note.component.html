@@ -2,6 +2,6 @@
   <span class="be-comment-author">{{note.author}}</span>
   <span class="be-comment-time">{{note.created | date}}
     <a (click)="onEdit()" class="btn-comment-action">Edit</a>
-    <a (click)="onDelete(note.id)" class="btn-comment-action">Delete</a></span>
+    <a (click)="onDelete()" class="btn-comment-action">Delete</a></span>
   <p class="be-comment-text">{{note.note}}</p>
 </div>

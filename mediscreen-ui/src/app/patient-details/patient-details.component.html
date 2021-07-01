@@ -3,7 +3,9 @@
 
   <button class="btn btn-secondary" routerLink="/patient">Back</button>
 
+
   <form class="form-block" [formGroup]="noteForm" (ngSubmit)="onSubmit()">
+    <h3>Add note</h3>
     <div class="row">
       <div class="col-xs-12 col-sm-6">
         <div class="form-group fl_icon">
@@ -24,5 +26,6 @@
     <button *ngIf="isEditing" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
   </form>
 
+  <h3 *ngIf="notes.length">Notes</h3>
   <app-patient-note *ngFor="let note of notes" [note]="note"></app-patient-note>
 </div>
