@@ -36,7 +36,7 @@ export class PatientComponent implements OnInit {
         this.patientService.emitPatientSubject();
 
       }, (error) => {
-
+        console.log(error);
       }
       );
   }

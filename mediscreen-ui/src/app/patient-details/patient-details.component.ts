@@ -46,7 +46,7 @@ export class PatientDetailsComponent implements OnInit {
       author: ['', [Validators.required, Validators.maxLength(20), Validators.minLength(2)]],
       note: ['', [Validators.required, Validators.maxLength(1000), Validators.minLength(5)]]});
 
-    this.noteService.noteSubject.subscribe((note) => {
+    this.noteService.noteEditionSubject.subscribe((note) => {
       this.isEditing = true;
       this.noteForm.patchValue(note);
       this.editNote = note;
@@ -54,14 +54,24 @@ export class PatientDetailsComponent implements OnInit {
   }
 
   onSubmit() {
-    let method!: Observable<string>;
+    let method!: Observable<Note>;
     if( ! this.isEditing) {
       method = this.noteService.create(this.noteForm?.value, this.pid);
     } else {
       method = this.noteService.edit(this.editNote, this.noteForm);
     }
-    method.subscribe((patientCreated) => {
-
+    method.subscribe((noteCreated) => {
+      if( ! this.isEditing) {
+        this.notes.unshift(noteCreated);
+        this.noteForm.reset();
+      } else {
+        for(let i = 0; i < this.notes.length; i++){
+          if ( this.notes[i].id === noteCreated.id) {
+            this.notes[i] = noteCreated;
+          }
+        }
+        this.cancelEdit();
+      }
     }, (error) =>
     {
       if(error instanceof HttpErrorResponse) {
@@ -74,5 +84,18 @@ export class PatientDetailsComponent implements OnInit {
   cancelEdit() {
     this.isEditing = false;
     this.noteForm.reset();
+  }
+
+  onDelete(id: string) {
+    this.noteService.delete(id).subscribe(() => {
+      for(let i = 0; i < this.notes.length; i++){
+        if ( this.notes[i].id === id) {
+          this.notes.slice(i);
+        }
+      }
+    }, (error) => {
+      console.log(error);
+    })
+
   }
 }

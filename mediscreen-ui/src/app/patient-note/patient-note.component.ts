@@ -19,6 +19,10 @@ export class PatientNoteComponent implements OnInit {
   }
 
   onEdit() {
-    this.noteService.emitNote(this.note);
+    this.noteService.emitNoteEdition(this.note);
+  }
+
+  onDelete(id: string) {
+    this.noteService.delete(this.note.id);
   }
 }
