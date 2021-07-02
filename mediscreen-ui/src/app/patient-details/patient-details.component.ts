@@ -43,8 +43,8 @@ export class PatientDetailsComponent implements OnInit {
 
   initForm(){
     this.noteForm = this.formBuilder.group({
-      author: ['', [Validators.required, Validators.maxLength(20), Validators.minLength(2)]],
-      note: ['', [Validators.required, Validators.maxLength(1000), Validators.minLength(5)]]});
+      author: ['', [Validators.required, Validators.maxLength(40), Validators.minLength(2)]],
+      note: ['', [Validators.required, Validators.minLength(5)]]});
 
     this.noteService.noteEditionSubject.subscribe((note) => {
       this.isEditing = true;

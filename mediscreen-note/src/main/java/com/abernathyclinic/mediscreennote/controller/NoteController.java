@@ -42,6 +42,7 @@ public class NoteController {
 	//CRUD
 	//POST
 	@ApiOperation(value = "Add a note")
+	@ApiResponses(value = {@ApiResponse(code = 400, message = "Constraint error, author must be 20 chars max")})
 	@PostMapping(value = CRUD_ENDPOINT_NAME)
 	public ResponseEntity<NoteModel> addNote(@Valid @RequestBody NoteModel note) {
     	log.info("POST Request to {} with body: {}",CRUD_ENDPOINT_NAME, note);
