@@ -2,6 +2,9 @@ package com.mediscreen.mediscreendiabetesia.proxy;
 
 import java.time.LocalDate;
 
+import lombok.Data;
+
+@Data
 public class Patient {
 	
 	 Integer id;
