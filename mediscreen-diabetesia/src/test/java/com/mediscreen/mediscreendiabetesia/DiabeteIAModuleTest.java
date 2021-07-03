@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import com.mediscreen.mediscreendiabetesia.proxy.Note;
 import com.mediscreen.mediscreendiabetesia.proxy.NoteProxy;
+import com.mediscreen.mediscreendiabetesia.proxy.Patient;
+import com.mediscreen.mediscreendiabetesia.proxy.PatientProxy;
 
 public class DiabeteIAModuleTest {
 	
@@ -20,6 +22,17 @@ public class DiabeteIAModuleTest {
 		
 		assertNotNull(noteProxy);
 		assertNotNull(notes);
+		
+	}
+	
+	@Test
+	public void getPatientProxy_shouldReturnPatientProxyModule() {
+		DiabetesIAModule diabetesIaModule = new DiabetesIAModule();
+		
+		PatientProxy patientProxy = diabetesIaModule.getProxyPatient("http://localhost:8081");
+		Patient patient = patientProxy.getPatient(99);
+		
+		assertNotNull(patient);
 		
 	}
 }
