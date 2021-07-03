@@ -89,6 +89,11 @@ public class NoteServiceTest {
 	}
 	
 	@Test
+	public void getUnknownPatientNotes_shouldThrowException() {
+		assertThrows(NoSuchNoteException.class, () -> noteService.getByPatientIdOrderedDesc(934));
+	}
+	
+	@Test
 	public void constraintNoteTest() {
 		NoteModel note1 = new NoteModel(null, 0,"", null, "Hello World!");
 		assertThrows(ConstraintViolationException.class, () -> noteService.create(note1));

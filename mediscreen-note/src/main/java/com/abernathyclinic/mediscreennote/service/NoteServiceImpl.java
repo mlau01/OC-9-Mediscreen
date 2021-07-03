@@ -59,7 +59,7 @@ public class NoteServiceImpl implements INoteService {
 	 */
 	public List<NoteModel> getByPatientIdOrderedDesc(int id) throws NoSuchNoteException {
 		Optional<List<NoteModel>> notes = noteRepository.findByPatientIdOrderByCreatedDesc(id);
-		if( ! notes.isPresent()) {
+		if(notes.isPresent() && notes.get().isEmpty()) {
 			throw new NoSuchNoteException("No note found this patient id: " + id);
 		}
 		
