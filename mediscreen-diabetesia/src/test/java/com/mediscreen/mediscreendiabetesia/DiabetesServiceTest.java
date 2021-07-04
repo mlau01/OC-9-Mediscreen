@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -83,7 +84,7 @@ public class DiabetesServiceTest {
 	public void getDiabetesRiskLevelTest_shouldReturnCorrectRiskLevelForEachPatient() {
 		DiabetesService diabetesService = new DiabetesService(noteService, patientService, triggerService);
 		
-		//Patient EarlyOnSet
+		//Patient EarlyOnSet - 9 trigger, Male older than 30
 		doReturn(9).when(triggerService).getTriggerCount(any(List.class));
 		Patient earlyOnSetPatient1 = new Patient(LocalDate.of(1986, 8, 30), "M");
 		doReturn(earlyOnSetPatient1).when(patientService).getPatient(0);
@@ -92,7 +93,7 @@ public class DiabetesServiceTest {
 		
 		verify(patientService, Mockito.times(1)).getPatient(0);
 		
-		//Patient EarlyOnSet 2
+		//Patient EarlyOnSet - 8 trigger, Female youngest than 30
 		doReturn(8).when(triggerService).getTriggerCount(any(List.class));
 		Patient earlyOnSetPatient2 = new Patient(LocalDate.of(1995, 8, 30), "F");
 		doReturn(earlyOnSetPatient2).when(patientService).getPatient(1);
@@ -100,6 +101,64 @@ public class DiabetesServiceTest {
 		assertEquals(RiskLevel.EarlyOnset, diabetesService.getDiabetesRiskLevel(1));
 		
 		verify(patientService, Mockito.times(1)).getPatient(1);
+		
+		//Patient Without any risk - 3 trigger, Female youngest than 30
+		doReturn(3).when(triggerService).getTriggerCount(any(List.class));
+		Patient NoRiskPatient3 = new Patient(LocalDate.of(1995, 8, 30), "F");
+		doReturn(NoRiskPatient3).when(patientService).getPatient(3);
+		
+		assertEquals(RiskLevel.None, diabetesService.getDiabetesRiskLevel(3));
+		
+		verify(patientService, Mockito.times(1)).getPatient(3);
+		
+		//Patient Without any risk - 2 trigger, Male youngest than 30
+		doReturn(2).when(triggerService).getTriggerCount(any(List.class));
+		Patient NoRiskPatient4 = new Patient(LocalDate.of(1995, 8, 30), "M");
+		doReturn(NoRiskPatient4).when(patientService).getPatient(4);
+		
+		assertEquals(RiskLevel.None, diabetesService.getDiabetesRiskLevel(4));
+		
+		verify(patientService, Mockito.times(1)).getPatient(4);
+		
+		//Patient Borderline
+		doReturn(2).when(triggerService).getTriggerCount(any(List.class));
+		Patient NoRiskPatient5 = new Patient(LocalDate.of(1986, 8, 30), "M");
+		doReturn(NoRiskPatient5).when(patientService).getPatient(5);
+		
+		assertEquals(RiskLevel.Borderline, diabetesService.getDiabetesRiskLevel(5));
+		
+		verify(patientService, Mockito.times(1)).getPatient(5);
+		
+		//Patient Borderline
+		doReturn(2).when(triggerService).getTriggerCount(any(List.class));
+		Patient NoRiskPatient6 = new Patient(LocalDate.of(1986, 8, 30), "F");
+		doReturn(NoRiskPatient6).when(patientService).getPatient(6);
+		
+		assertEquals(RiskLevel.Borderline, diabetesService.getDiabetesRiskLevel(6));
+		
+		verify(patientService, Mockito.times(1)).getPatient(6);
+		
+		//Patient InDanger
+		doReturn(4).when(triggerService).getTriggerCount(any(List.class));
+		Patient NoRiskPatient7 = new Patient(LocalDate.of(1995, 8, 30), "M");
+		doReturn(NoRiskPatient7).when(patientService).getPatient(7);
+		
+		assertEquals(RiskLevel.InDanger, diabetesService.getDiabetesRiskLevel(7));
+		
+		verify(patientService, Mockito.times(1)).getPatient(7);
+		
+		//Patient InDanger
+		doReturn(6).when(triggerService).getTriggerCount(any(List.class));
+		Patient NoRiskPatient8 = new Patient(LocalDate.of(1995, 8, 30), "F");
+		doReturn(NoRiskPatient8).when(patientService).getPatient(8);
+		
+		assertEquals(RiskLevel.InDanger, diabetesService.getDiabetesRiskLevel(8));
+		
+		verify(patientService, Mockito.times(1)).getPatient(8);
+		
+		
+		
+		
 		
 	}
 	
