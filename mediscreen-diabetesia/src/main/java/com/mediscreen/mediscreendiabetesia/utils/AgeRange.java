@@ -9,4 +9,9 @@ public class AgeRange {
 	private int start;
 	private int end;	
 	
+	@Override
+	public String toString() {
+		return start + ", " + end;
+	}
+	
 }

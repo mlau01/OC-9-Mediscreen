@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 public class Note {
 	
-	public String id;
-	public Integer patientId;
-	public String author;
-	public LocalDateTime created;
-	public String note;
+	private String id;
+	private Integer patientId;
+	private String author;
+	private LocalDateTime created;
+	private String note;
 
 }

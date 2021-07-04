@@ -2,11 +2,12 @@ package com.mediscreen.mediscreendiabetesia.service;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.temporal.TemporalUnit;
-import java.util.Hashtable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,8 @@ import com.mediscreen.mediscreendiabetesia.utils.RiskParam;
 
 @Service
 public class DiabetesService {
+	
+	private static Logger logger = LoggerFactory.getLogger(DiabetesService.class);
 	
 	private NoteService noteService;
 	private PatientService patientService;
@@ -31,35 +34,57 @@ public class DiabetesService {
 		this.triggerService = triggerService;
 	}
 	
-	public RiskLevel getDiabetesAssess(int pid) {
+	public RiskLevel getDiabetesRiskLevel(int pid) {
 		RiskLevel result = RiskLevel.None;
 		
 		Patient patient = patientService.getPatient(pid);
 		List<Note> patientNotes = noteService.getAllPatientNotes(pid);
-		int triggerCount = triggerService.getTriggerCount(patientNotes);
-		int age = ageOf(patient.getDateOfBirth(), LocalDate.now());
-		String sex = patient.getSex();
-		RiskParam patientParam = new RiskParam(triggerCount, new AgeRange(age,age), sex);
+		int pTriggerCount = triggerService.getTriggerCount(patientNotes);
+		int pAge = ageOf(patient.getDateOfBirth(), LocalDate.now());
+		String pSex = patient.getSex();
 		
-		getRules().forEach((riskLevel, riskParam) -> {
-			//TODO Find a compare method
-		});
+		List<RiskParam> rules = getRules();
+		for(RiskParam riskParam : rules){
+			int triggerLimit = riskParam.getTriggerLimit();
+			int ageMin = riskParam.getAgeRange().getStart();
+			int ageMax = riskParam.getAgeRange().getEnd();
+			String sex = riskParam.getSex();
+			
+			logger.debug("-------------------------------------------------------------------");
+			logger.debug("Start examine Rules(" + riskParam + ") for patient with triggerCount: " + pTriggerCount + ", age: " + pAge + ", sex: " + pSex);
+			if(pTriggerCount >= triggerLimit) {
+				logger.debug("pTriggerCount: " + pTriggerCount + " >= triggerLimit: " + triggerLimit);
+				if(pAge >= ageMin  && pAge < ageMax) {
+					logger.debug("Patient age: " + pAge + " >= ageMin:" + ageMin + " && < " + ageMax);
+					if(sex == null || pSex.equals(sex)) {
+						logger.debug("Patient sex: " + pSex + " == " + sex + " OR rule sex is null, returning: " + riskParam.getRiskLevel());
+						return riskParam.getRiskLevel();
+					}
+				}
+			}
+			logger.debug("-------------------------------------------------------------------");
+		}
 		
 		
 		return result;
 	}
 	
-	public Map<RiskLevel, RiskParam> getRules() {
-		Map<RiskLevel, RiskParam> rules = new Hashtable<RiskLevel, RiskParam>();
-		rules.put(RiskLevel.Borderline, new RiskParam(2, new AgeRange(30, 200), null));
-		rules.put(RiskLevel.InDanger, new RiskParam(3, new AgeRange(0, 30), "M"));
-		rules.put(RiskLevel.InDanger, new RiskParam(4, new AgeRange(0, 30), "F"));
-		rules.put(RiskLevel.InDanger, new RiskParam(4, new AgeRange(30, 200), null));
-		rules.put(RiskLevel.EarlyOnset, new RiskParam(5, new AgeRange(0, 30), "M"));
-		rules.put(RiskLevel.EarlyOnset, new RiskParam(7, new AgeRange(0, 30), "F"));
-		rules.put(RiskLevel.EarlyOnset, new RiskParam(8, new AgeRange(30, 200), null));
+	/**
+	 * Return a sorted map by RiskParam.triggerLimit descendant
+	 * @return SortedMap<RiskParam, RiskLevel>
+	 * 4 juil. 2021
+	 */
+	public List<RiskParam> getRules() {
+		List<RiskParam> rules = new ArrayList<RiskParam>();
+		rules.add(new RiskParam(2, new AgeRange(30, 200), null, RiskLevel.Borderline));
+		rules.add(new RiskParam(3, new AgeRange(0, 30), "M", RiskLevel.InDanger));
+		rules.add(new RiskParam(4, new AgeRange(0, 30), "F", RiskLevel.InDanger));
+		rules.add(new RiskParam(4, new AgeRange(30, 200), null, RiskLevel.InDanger));
+		rules.add(new RiskParam(5, new AgeRange(0, 30), "M", RiskLevel.EarlyOnset));
+		rules.add(new RiskParam(7, new AgeRange(0, 30), "F", RiskLevel.EarlyOnset));
+		rules.add(new RiskParam(8, new AgeRange(30, 200), null, RiskLevel.EarlyOnset));
 		
-		return rules;
+		return rules.stream().sorted().collect(Collectors.toList());
 		
 	}
 	
