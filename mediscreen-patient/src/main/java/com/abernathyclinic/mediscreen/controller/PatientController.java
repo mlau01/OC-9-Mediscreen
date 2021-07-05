@@ -36,7 +36,7 @@ public class PatientController {
 	@Deprecated
 	@ApiOperation(value = "Deprecated URI for old curl request, return same responses as /patient")
 	@PostMapping(value = "patient/add") //For old curl request
-	public ResponseEntity<String> oldAddPatient(@Valid Patient patient) {
+	public ResponseEntity<Patient> oldAddPatient(@Valid Patient patient) {
     	log.info("POST Request to /patients/add with value: {}", patient);
     	
     	return addPatient(patient);
@@ -50,17 +50,17 @@ public class PatientController {
 			 @ApiResponse(code = 400, message = "Patient with this fullname already exist")
 			 })
 	@PostMapping(value = "patients")
-	public ResponseEntity<String> addPatient(@Valid @RequestBody Patient patient) {
+	public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient patient) {
 		
 		
     	log.info("POST Request to /patients with body: {}", patient);
     	
 		try {
-			patientService.create(patient);
-			return new ResponseEntity<String>(HttpStatus.CREATED);
+			Patient patientCreated = patientService.create(patient);
+			return new ResponseEntity<Patient>(patientCreated, HttpStatus.CREATED);
 		} catch (AlreadyExistsPatientException e) {
 			log.warn("POST Request to /patients return error: {}", e.getMessage());
-			return new ResponseEntity<String>(jsonify(e.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Patient>(HttpStatus.BAD_REQUEST);
 		}
     	
 	}
@@ -107,18 +107,19 @@ public class PatientController {
 			 @ApiResponse(code = 400, message = "Patient with this fullname already exist")
 			 })
 	@PutMapping(value = "patients")
-	public ResponseEntity<String> updatePatient(@Valid @RequestBody Patient patient)  {
+	public ResponseEntity<Patient> updatePatient(@Valid @RequestBody Patient patient)  {
 
     	log.info("PUT Request to /patient with value: {}", patient);
  
 		try {
-			patientService.update(patient);
+			Patient patientUpdated = patientService.update(patient);
+			return new ResponseEntity<Patient>(patientUpdated, HttpStatus.CREATED);
 		} catch (AlreadyExistsPatientException e) {
 			log.error("PUT Request to /patients return error: {}", e.getMessage());
-			return new ResponseEntity<String>(jsonify(e.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Patient>(HttpStatus.BAD_REQUEST);
 		}
 		
-		return new ResponseEntity<String>(HttpStatus.CREATED);
+		
 	}
 	
 	//DELETE
