@@ -91,6 +91,7 @@ public class DiabetesServiceTest {
 		verify(patientService, Mockito.times(1)).getPatient(iteration);
 	}
 	
+	
 	@Test
 	public void multipleDiabetesRiskLevelTest_shouldAlwaysReturnConnectRiskLevel() {
 		//Patient 1 EarlyOnSet - 9 trigger, Male older than 30
@@ -116,6 +117,9 @@ public class DiabetesServiceTest {
 		
 		//Patient 8 InDanger - 6 trigger, Female youngest than 30
 		diabetesRiskLevelTest(8, 6, 1995, "F", RiskLevel.InDanger);
+		
+		//Patient 9 EarlyOnSet - 6 trigger, Female youngest than 30
+		diabetesRiskLevelTest(9, 6, 1995, "M", RiskLevel.EarlyOnset);
 	}
 	
 	/*

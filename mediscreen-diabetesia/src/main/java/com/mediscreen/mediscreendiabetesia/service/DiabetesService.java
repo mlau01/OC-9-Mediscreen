@@ -58,6 +58,7 @@ public class DiabetesService {
 					logger.debug("Patient age: " + pAge + " >= ageMin:" + ageMin + " && < " + ageMax);
 					if(sex == null || pSex.equals(sex)) {
 						logger.debug("Patient sex: " + pSex + " == " + sex + " OR rule sex is null, returning: " + riskParam.getRiskLevel());
+						logger.debug("-------------------------------------------------------------------");
 						return riskParam.getRiskLevel();
 					}
 				}
