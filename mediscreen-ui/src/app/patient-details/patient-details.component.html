@@ -26,6 +26,6 @@
     <button *ngIf="isEditing" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
   </form>
 
-  <h3 *ngIf="notes.length">Notes</h3>
+  <h3 *ngIf="notes && notes.length">Notes</h3>
   <app-patient-note *ngFor="let note of notes" [note]="note"></app-patient-note>
 </div>
