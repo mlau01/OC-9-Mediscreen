@@ -15,6 +15,10 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -61,6 +65,8 @@ public class Patient {
 	@Past
 	@NotNull
 	@Column(name="date_of_birth")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@JsonDeserialize(using = LocalDateDeserializer.class)
 	private LocalDate dateOfBirth;
 	
 	@NotBlank
