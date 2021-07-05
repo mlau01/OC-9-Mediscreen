@@ -62,8 +62,11 @@ export class PatientFormComponent implements OnInit {
     }, (error) =>
       {
         if(error instanceof HttpErrorResponse) {
-          this.error = error.error;
-          this.showError = true;
+          if(error.status === 400) {
+            this.error = 'Patient with this full name already exist';
+            this.showError = true;
+          }
+
         }
       });
   }
