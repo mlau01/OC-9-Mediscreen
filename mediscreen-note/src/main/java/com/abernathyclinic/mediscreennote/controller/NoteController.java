@@ -1,5 +1,6 @@
 package com.abernathyclinic.mediscreennote.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -56,8 +57,7 @@ public class NoteController {
 	}
 	
 	//GET ALL
-	@ApiOperation(value = "Get all notes of a patient")
-	@ApiResponses(value = {@ApiResponse(code = 500, message = "Cannot retrieve patients list")})
+	@ApiOperation(value = "Get all notes of a patient, return empty list if no notes was found")
 	
 	@GetMapping(value = CRUD_ENDPOINT_NAME + "/patient/{pid}")
 	public ResponseEntity<List<NoteModel>> listNote(@PathVariable("pid") int pid) {
@@ -67,7 +67,7 @@ public class NoteController {
 			listNote = noteService.getByPatientIdOrderedDesc(pid);
 		} catch (NoSuchNoteException e) {
 			log.error(e.getMessage());
-			return new ResponseEntity<List<NoteModel>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<NoteModel>>(listNote = new ArrayList<NoteModel>(), HttpStatus.OK);
 		}
 		return new ResponseEntity<List<NoteModel>>(listNote, HttpStatus.OK);
 	}
