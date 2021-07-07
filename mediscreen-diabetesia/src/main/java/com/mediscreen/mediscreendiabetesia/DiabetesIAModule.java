@@ -9,6 +9,7 @@ import com.mediscreen.mediscreendiabetesia.proxy.PatientProxy;
 
 import feign.Feign;
 import feign.gson.GsonDecoder;
+import feign.jackson.JacksonDecoder;
 
 @Configuration
 public class DiabetesIAModule {
@@ -17,12 +18,12 @@ public class DiabetesIAModule {
 	
 	@Bean
 	public NoteProxy getProxyNote(@Value("${noteapi.socket}") String noteApiSocket) {
-		return Feign.builder().decoder(new GsonDecoder()).target(NoteProxy.class, noteApiSocket);
+		return Feign.builder().decoder(new JacksonDecoder()).target(NoteProxy.class, noteApiSocket);
 	}
 	
 	@Bean
 	public PatientProxy getProxyPatient(@Value("${patientapi.socket}") String patientApiSocket) {
-		return Feign.builder().decoder(new GsonDecoder()).target(PatientProxy.class, patientApiSocket);
+		return Feign.builder().decoder(new JacksonDecoder()).target(PatientProxy.class, patientApiSocket);
 	}
 
 }

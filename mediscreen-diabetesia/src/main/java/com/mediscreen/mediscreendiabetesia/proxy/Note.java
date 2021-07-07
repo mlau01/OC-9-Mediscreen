@@ -3,7 +3,7 @@ package com.mediscreen.mediscreendiabetesia.proxy;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ public class Note {
 	private Integer patientId;
 	private String author;
 	
-	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDateTime created;
 	private String note;
 	
