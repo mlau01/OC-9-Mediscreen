@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mediscreen.mediscreendiabetesia.model.PatientTestModel;
 import com.mediscreen.mediscreendiabetesia.proxy.Note;
 import com.mediscreen.mediscreendiabetesia.proxy.NoteProxy;
 import com.mediscreen.mediscreendiabetesia.proxy.Patient;
@@ -44,12 +45,12 @@ public class DiabetesServiceIT {
 	@Autowired
 	PatientProxy patientProxy;
 	
-	public static List<PatientTest> patients;
+	public static List<PatientTestModel> patients;
 	
 	@BeforeAll
 	public static void setUp() {
 		
-		patients = new ArrayList<PatientTest>();
+		patients = new ArrayList<PatientTestModel>();
 		Note[] noteFergusen =  { 
 				new Note("Dr Strange", "Le patient déclare qu'il « se sent très bien »\r\n"
 						+ "Poids égal ou inférieur au poids recommandé"),
@@ -61,7 +62,7 @@ public class DiabetesServiceIT {
 						+ "Tests de laboratoire indiquant que les anticorps sont élevés")
 			};
 		
-		patients.add(new PatientTest(
+		patients.add(new PatientTestModel(
 				"Fergusen",
 				new Patient("Lucas", "Fergusen", LocalDate.of(1968, 6, 22), "M", "387-866-1399", "2 Warren Street", null),
 				noteFergusen, 
@@ -78,7 +79,7 @@ public class DiabetesServiceIT {
 						+ "Le laboratoire rapporte que l'hémoglobine A1C dépasse le niveau recommandé\r\n"
 						+ "Le patient déclare qu’il fume depuis longtemps")
 			};
-		patients.add(new PatientTest(
+		patients.add(new PatientTestModel(
 				"Rees",
 				new Patient("Pippa", "Rees", LocalDate.of(1952, 9, 27), "F", "628-423-0993", "745 West Valley Farms Drive", null),
 				noteRees, 
@@ -93,7 +94,7 @@ public class DiabetesServiceIT {
 				new Note("Dr Strange", "Tests de laboratoire indiquant un taux de cholestérol LDL élevé\r\n")
 			};
 		
-		patients.add(new PatientTest(
+		patients.add(new PatientTestModel(
 				"Arnold",
 				new Patient("Edward", "Arnold", LocalDate.of(1952, 11, 11), "M", "123-727-2779", "599 East Garden Ave", null),
 				noteArnold, 
@@ -108,7 +109,7 @@ public class DiabetesServiceIT {
 				new Note("Dr Strange", "Le patient déclare avoir commencé à fumer depuis peu\r\n"
 						+ "Hémoglobine A1C supérieure au niveau recommandé")
 			};
-		patients.add(new PatientTest(
+		patients.add(new PatientTestModel(
 				"Sharp",
 				new Patient("Anthony", "Sharp", LocalDate.of(1946, 11, 26), "M", "451-761-8383", "894 Hall Street", null),
 				noteSharp, 
@@ -130,7 +131,7 @@ public class DiabetesServiceIT {
 						+ "")
 			};
 		
-		patients.add(new PatientTest(
+		patients.add(new PatientTestModel(
 				"Ince",
 				new Patient("Wendy", "Ince", LocalDate.of(1958, 6, 29), "F", "802-911-9975", "4 Southampton Road", null),
 				noteInce, 
@@ -142,7 +143,7 @@ public class DiabetesServiceIT {
 				new Note("Dr Strange", "Le patient déclare qu'il se sent bien\r\n")
 			};
 		
-		patients.add(new PatientTest(
+		patients.add(new PatientTestModel(
 				"Ross",
 				new Patient("Tracey", "Ross", LocalDate.of(1949, 12, 7), "F", "131-396-5049", "40 Sulphur Springs Dr", null),
 				noteRoss, 
@@ -156,7 +157,7 @@ public class DiabetesServiceIT {
 						+ "Tests de laboratoire indiquant un taux de cholestérol LDL élevé")
 			};
 		
-		patients.add(new PatientTest(
+		patients.add(new PatientTestModel(
 				"Wilson",
 				new Patient("Claire", "Wilson", LocalDate.of(1949, 12, 7), "F", "131-396-5049", "40 Sulphur Springs Dr", null),
 				noteWilson, 
@@ -167,7 +168,7 @@ public class DiabetesServiceIT {
 						+ "Hémoglobine A1C supérieure au niveau recommandé")	
 			};
 		
-		patients.add(new PatientTest(
+		patients.add(new PatientTestModel(
 				"Buckland",
 				new Patient("Max", "Buckland", LocalDate.of(1945, 6, 24), "M", "833-534-0864", "193 Vale St", null),
 				noteBuckland, 
@@ -184,7 +185,7 @@ public class DiabetesServiceIT {
 						+ "Tests de laboratoire indiquant que les anticorps sont élevés")
 			};
 		
-		patients.add(new PatientTest(
+		patients.add(new PatientTestModel(
 				"Clark",
 				new Patient("Natalie", "Clark", LocalDate.of(1964, 6, 18), "F", "241-467-9197", "12 Beechwood Road", null),
 				noteClark, 
@@ -202,7 +203,7 @@ public class DiabetesServiceIT {
 						+ "Tests de laboratoire indiquant une microalbumine élevée")
 			};
 		
-		patients.add(new PatientTest(
+		patients.add(new PatientTestModel(
 				"Bailey",
 				new Patient("Piers", "Bailey", LocalDate.of(1959, 6, 22), "M", "747-815-0557", "1202 Bumble Dr", null),
 				noteBailey, 
@@ -216,7 +217,7 @@ public class DiabetesServiceIT {
 	public void addDemoPatients() 
 						throws JsonProcessingException{
 		
-		for(PatientTest pt : patients) {
+		for(PatientTestModel pt : patients) {
 			int id = patientProxy.addPatient(objectMapper.writeValueAsString(pt.getPatient())).getId();
 			Note[] pNotes = pt.getNotes();
 			for(int i = 0; i < pNotes.length; i++) {
@@ -231,7 +232,7 @@ public class DiabetesServiceIT {
 	public void getDiabetesRiskTest_shouldReturnCorrectRiskLevel() {
 		List<Patient> db_patients = patientProxy.getAllPatients();
 		
-		for(PatientTest pt : patients) {
+		for(PatientTestModel pt : patients) {
 			for(Patient p : db_patients) {
 				if(pt.getLastName().equals(p.getLastName())) {
 					assertEquals(pt.getRiskLevel(), diabetesService.getDiabetesRiskLevel(p.getId()));

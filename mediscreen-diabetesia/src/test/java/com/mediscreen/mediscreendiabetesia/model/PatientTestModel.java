@@ -1,4 +1,4 @@
-package com.mediscreen.mediscreendiabetesia;
+package com.mediscreen.mediscreendiabetesia.model;
 
 import com.mediscreen.mediscreendiabetesia.proxy.Note;
 import com.mediscreen.mediscreendiabetesia.proxy.Patient;
@@ -9,7 +9,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class PatientTest {
+public class PatientTestModel {
 	String lastName;
 	Patient patient;
 	Note[] notes;
