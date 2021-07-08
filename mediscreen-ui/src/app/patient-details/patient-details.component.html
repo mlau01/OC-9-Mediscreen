@@ -2,8 +2,23 @@
 
 
   <button class="btn btn-secondary" routerLink="/patient">Back</button>
+  <h2>Patient Details</h2>
 
-
+  <div class="row align-items-start">
+    <div class="col">
+      <p>First Name: {{patient!.firstName}}</p>
+      <p>Last Name: {{patient!.lastName}}</p>
+      <p>Address: {{patient!.address}}</p>
+      <p>Phone: {{patient!.phone}}</p>
+      <p>City: {{patient!.city}}</p>
+    </div>
+    <div class="col">
+      <p>Birthday: {{patient!.firstName}}</p>
+      <p>Age: {{patientAssessDto!.age}}</p>
+      <p>Sex: {{patient!.sex}}</p>
+      <p>Diabetes risk: {{patientAssessDto!.riskLevel}}</p>
+    </div>
+  </div>
   <form class="form-block" [formGroup]="noteForm" (ngSubmit)="onSubmit()">
     <h3>Add note</h3>
     <div class="row">

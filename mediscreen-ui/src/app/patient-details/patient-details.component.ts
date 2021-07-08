@@ -6,6 +6,9 @@ import {Note} from "../models/note";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
+import {Patient} from "../models/patient";
+import {DiabetesService} from "../services/diabetes.service";
+import {PatientAssessDto} from "../models/patientAssessDto";
 
 @Component({
   selector: 'app-patient-details',
@@ -15,13 +18,16 @@ import {HttpErrorResponse} from "@angular/common/http";
 export class PatientDetailsComponent implements OnInit {
 
   pid!: number;
+  patient: Patient | undefined;
   notes!: Note[];
   noteForm!: FormGroup;
   isEditing = false;
   editNote!: Note;
   error!: string;
+  patientAssessDto! : PatientAssessDto;
 
   constructor(private patientService: PatientService,
+              private diabetesService: DiabetesService,
               private route: ActivatedRoute,
               private noteService: NoteService,
               private formBuilder: FormBuilder) { }
@@ -29,7 +35,20 @@ export class PatientDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.initNote();
     this.initForm()
+    this.getPatient();
+    this.getDiabetesAssess();
 
+  }
+
+  getDiabetesAssess(){
+    this.diabetesService.getPatientAssessDtoById(this.pid);
+    this.diabetesService.patientAssessDtoSubject.subscribe((patientAssessDto) => {
+      this.patientAssessDto = patientAssessDto;
+    })
+  }
+
+  getPatient(){
+    this.patient = this.patientService.getById(''+this.pid);
   }
 
   initNote() {

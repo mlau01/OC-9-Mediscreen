@@ -1,8 +1,6 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import { Note } from 'src/app/models/note'
-import {FormGroup} from "@angular/forms";
+import { Subject} from 'rxjs';
 import {PatientAssessDto} from "../models/patientAssessDto";
 
 @Injectable({

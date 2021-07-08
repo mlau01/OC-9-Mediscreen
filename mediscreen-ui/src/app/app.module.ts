@@ -12,6 +12,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DatePipe} from "@angular/common";
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
 import { PatientNoteComponent } from './patient-note/patient-note.component';
+import {NoteService} from "./services/note.service";
+import {DiabetesService} from "./services/diabetes.service";
 
 //ROUTES CONFIGURATION
 const appRoutes: Routes = [
@@ -40,7 +42,9 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes)
   ],
   providers: [
-    PatientService
+    PatientService,
+    NoteService,
+    DiabetesService
   ],
   bootstrap: [AppComponent]
 })
