@@ -40,6 +40,12 @@ services:
     ports:
       - 8082:8080
     restart: always
+    
+  diabetesiahost:
+    image: mediscreen-diabetesia
+    ports:
+      - 8083:8080
+    restart: always
       
   uihost:
     image: mediscreen-ui
