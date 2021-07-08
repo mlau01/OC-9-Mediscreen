@@ -25,6 +25,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.abernathyclinic.mediscreen.exception.NoSuchPatientException;
 import com.abernathyclinic.mediscreen.model.Patient;
 import com.abernathyclinic.mediscreen.service.PatientService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -104,6 +105,15 @@ public class PatientControllerTest {
 		when(patientService.getByLastName("TEST")).thenReturn(patientTest);
 		
 		mockMvc.perform(get("/patients/lastname/TEST")).andExpect(status().isOk());
+		
+		verify(patientService, Mockito.times(1)).getByLastName("TEST");
+	}
+	
+	@Test
+	public void getUnknownPatientByLastNameTest_shouldReturnStatus404() throws Exception {
+		when(patientService.getByLastName("TEST")).thenThrow(NoSuchPatientException.class);
+		
+		mockMvc.perform(get("/patients/lastname/TEST")).andExpect(status().isNotFound());
 		
 		verify(patientService, Mockito.times(1)).getByLastName("TEST");
 	}
