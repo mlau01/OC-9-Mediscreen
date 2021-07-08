@@ -1,6 +1,7 @@
 package com.mediscreen.mediscreendiabetesia;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mediscreen.mediscreendiabetesia.dto.PatientAssessDto;
 import com.mediscreen.mediscreendiabetesia.model.PatientTestModel;
 import com.mediscreen.mediscreendiabetesia.proxy.Note;
 import com.mediscreen.mediscreendiabetesia.proxy.NoteProxy;
@@ -229,13 +231,17 @@ public class DiabetesServiceIT {
 	}
 	
 	@Test
-	public void getDiabetesRiskTest_shouldReturnCorrectRiskLevel() {
+	public void getDiabetesRiskTest_shouldReturnCorrectlyFilledPatientAssessDto() {
 		List<Patient> db_patients = patientProxy.getAllPatients();
 		
 		for(PatientTestModel pt : patients) {
 			for(Patient p : db_patients) {
 				if(pt.getLastName().equals(p.getLastName())) {
-					assertEquals(pt.getRiskLevel(), diabetesService.getDiabetesRiskLevel(p.getId()));
+					PatientAssessDto patientAssessDto = diabetesService.getPatientAssess(p.getId());
+					assertEquals(pt.getPatient().getFirstName(), patientAssessDto.getFirstName());
+					assertEquals(pt.getPatient().getLastName(), patientAssessDto.getLastName());
+					assertEquals(pt.getRiskLevel(), patientAssessDto.getRiskLevel());
+					assertTrue(patientAssessDto.getAge() >= 0);
 				}
 			}
 		}

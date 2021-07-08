@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -84,11 +85,11 @@ public class DiabetesServiceTest {
 		DiabetesService diabetesService = new DiabetesService(noteService, patientService, triggerService);
 		
 		doReturn(triggerCount).when(triggerService).getTriggerCount(any(List.class));
-		doReturn(new Patient(LocalDate.of(birthYear, 8, 30), sex)).when(patientService).getPatient(iteration);
+		when(noteService.getAllPatientNotes(iteration)).thenReturn(new ArrayList<Note>());
 		
-		assertEquals(riskLevelExpected, diabetesService.getDiabetesRiskLevel(iteration));
+		assertEquals(riskLevelExpected, diabetesService.getDiabetesRiskLevel(new Patient(iteration, LocalDate.of(birthYear, 8, 30), sex)));
 		
-		verify(patientService, Mockito.times(1)).getPatient(iteration);
+		verify(noteService, Mockito.times(1)).getAllPatientNotes(iteration);
 	}
 	
 	

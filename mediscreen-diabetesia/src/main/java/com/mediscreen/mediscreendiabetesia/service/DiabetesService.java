@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mediscreen.mediscreendiabetesia.dto.PatientAssessDto;
 import com.mediscreen.mediscreendiabetesia.proxy.Note;
 import com.mediscreen.mediscreendiabetesia.proxy.Patient;
 import com.mediscreen.mediscreendiabetesia.utils.AgeRange;
@@ -34,11 +35,36 @@ public class DiabetesService {
 		this.triggerService = triggerService;
 	}
 	
-	public RiskLevel getDiabetesRiskLevel(int pid) {
+	/**
+	 * Build a PatientAssessDto containing desired information of a patient
+	 * @param pid Patient ID
+	 * @return PatientAssessDto filled
+	 * 8 juil. 2021
+	 */
+	public PatientAssessDto getPatientAssess(int pid) {
+		PatientAssessDto patientAssessDto = new PatientAssessDto();
+		Patient patient = patientService.getPatient(pid);
+		
+		patientAssessDto.setFirstName(patient.getFirstName());
+		patientAssessDto.setLastName(patient.getLastName());
+		patientAssessDto.setAge(ageOf(patient.getDateOfBirth(), LocalDate.now()));
+		patientAssessDto.setRiskLevel(getDiabetesRiskLevel(patient));
+		
+		return patientAssessDto;
+		
+	}
+	
+	/**
+	 * Calculate RiskLevel of a patient by comparing patient/note informations to rules
+	 * @param Patient patient to examine
+	 * @return RiskLevel representing the diabetes risk
+	 * 8 juil. 2021
+	 */
+	public RiskLevel getDiabetesRiskLevel(Patient patient) {
 		RiskLevel result = RiskLevel.None;
 		
-		Patient patient = patientService.getPatient(pid);
-		List<Note> patientNotes = noteService.getAllPatientNotes(pid);
+		
+		List<Note> patientNotes = noteService.getAllPatientNotes(patient.getId());
 		int pTriggerCount = triggerService.getTriggerCount(patientNotes);
 		int pAge = ageOf(patient.getDateOfBirth(), LocalDate.now());
 		String pSex = patient.getSex();

@@ -23,7 +23,8 @@ public class Patient {
 	 private String address;
 	 private String city;
 	 
-	public Patient(LocalDate dateOfBirth, String sex) {
+	public Patient(Integer id, LocalDate dateOfBirth, String sex) {
+		this.id = id;
 		this.dateOfBirth = dateOfBirth;
 		this.sex = sex;
 	}
