@@ -1,6 +1,7 @@
 package com.mediscreen.mediscreendiabetesia;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mediscreen.mediscreendiabetesia.dto.PatientAssessDto;
+import com.mediscreen.mediscreendiabetesia.exception.NoSuchPatientException;
 import com.mediscreen.mediscreendiabetesia.model.PatientTestModel;
 import com.mediscreen.mediscreendiabetesia.proxy.Note;
 import com.mediscreen.mediscreendiabetesia.proxy.NoteProxy;
@@ -231,7 +233,12 @@ public class DiabetesServiceIT {
 	}
 	
 	@Test
-	public void getDiabetesRiskTest_shouldReturnCorrectlyFilledPatientAssessDto() {
+	public void getDiabetesRiskOfUnknownPatient_shouldThrowException() {
+		assertThrows(NoSuchPatientException.class, () -> diabetesService.getPatientAssess(9999));
+	}
+	
+	@Test
+	public void getDiabetesRiskTest_shouldReturnCorrectlyFilledPatientAssessDto() throws NoSuchPatientException {
 		List<Patient> db_patients = patientProxy.getAllPatients();
 		
 		for(PatientTestModel pt : patients) {

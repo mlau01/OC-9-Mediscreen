@@ -12,14 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mediscreen.mediscreendiabetesia.dto.PatientAssessDto;
+import com.mediscreen.mediscreendiabetesia.exception.NoSuchPatientException;
 import com.mediscreen.mediscreendiabetesia.proxy.Note;
 import com.mediscreen.mediscreendiabetesia.proxy.Patient;
 import com.mediscreen.mediscreendiabetesia.utils.AgeRange;
 import com.mediscreen.mediscreendiabetesia.utils.RiskLevel;
 import com.mediscreen.mediscreendiabetesia.utils.RiskRule;
 
+import feign.FeignException.NotFound;
+
 @Service
-public class DiabetesService {
+public class DiabetesService implements IDiabetesService {
 	
 	private static Logger logger = LoggerFactory.getLogger(DiabetesService.class);
 	
@@ -40,11 +43,19 @@ public class DiabetesService {
 	 * @param pid Patient ID
 	 * @return PatientAssessDto filled
 	 * 8 juil. 2021
+	 * @throws NoSuchPatientException 
 	 */
-	public PatientAssessDto getPatientAssess(int pid) {
-		PatientAssessDto patientAssessDto = new PatientAssessDto();
-		Patient patient = patientService.getPatient(pid);
+	public PatientAssessDto getPatientAssess(int pid) throws NoSuchPatientException {
 		
+		Patient patient = null;
+		try {
+			patient = patientService.getPatient(pid);
+		} catch (NotFound e) {
+			logger.error(""+e);
+			throw new NoSuchPatientException("Patient with id: " + pid + " not found");
+		}
+		
+		PatientAssessDto patientAssessDto = new PatientAssessDto();
 		patientAssessDto.setFirstName(patient.getFirstName());
 		patientAssessDto.setLastName(patient.getLastName());
 		patientAssessDto.setAge(ageOf(patient.getDateOfBirth(), LocalDate.now()));
