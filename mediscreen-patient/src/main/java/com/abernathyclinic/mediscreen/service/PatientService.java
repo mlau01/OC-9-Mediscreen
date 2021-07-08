@@ -109,4 +109,20 @@ public class PatientService implements IPatientService {
 		return patients;
 	}
 
+	/**
+	 * Get a patient by his last name
+	 * if multiple patient have the same name, return the first occurrence
+	 * @param lastname
+	 * @return Patient
+	 * 8 juil. 2021
+	 */
+	@Override
+	public Patient getByLastName(String lastname) throws NoSuchPatientException {
+		Optional<Patient> patient = patientRepository.findByLastName(lastname);
+		if( ! patient.isPresent()) {
+			throw new NoSuchPatientException("Patient with last name: " + lastname + " not found");
+		}
+		return patient.get();
+	}
+
 }

@@ -13,5 +13,6 @@ public interface IPatientService {
 	public Patient update(Patient patient) throws AlreadyExistsPatientException;
 	public void delete(String id) throws NoSuchPatientException;
 	public List<Patient> getAllPatient();
+	public Patient getByLastName(String lastname) throws NoSuchPatientException ;
 
 }

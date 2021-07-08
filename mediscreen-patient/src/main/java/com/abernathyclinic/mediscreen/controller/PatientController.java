@@ -101,6 +101,22 @@ public class PatientController {
 		}
 	}
 	
+	//READ
+	@ApiOperation(value = "Get a patient by his last name, return the first patient found")
+	 @ApiResponses(value = { 
+			 @ApiResponse(code = 404, message = "No patient found with this last name")
+			 })
+	@GetMapping(value = "patients/lastname/{lastname}")
+	public ResponseEntity<Patient> getPatientbyLastName(@PathVariable("lastname") String lastname) {
+		log.info("GET request to /patients/lastname/{}", lastname);
+		try {
+			return new ResponseEntity<Patient>(patientService.getByLastName(lastname), HttpStatus.OK);
+		} catch (NoSuchPatientException e) {
+			log.error(e.getMessage());
+			return new ResponseEntity<Patient>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	//UPDATE
 	@ApiOperation(value = "Update an existing patient based on id or create it if not exists")
 	 @ApiResponses(value = { 

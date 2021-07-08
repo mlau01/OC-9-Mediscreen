@@ -12,4 +12,5 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
 
 	boolean existsByFirstNameAndLastName(String firstName, String lastName);
 	Optional<Patient> findByFirstNameAndLastName(String firstName, String lastName);
+	Optional<Patient> findByLastName(String lastname);
 }

@@ -86,10 +86,13 @@ public class PatientServiceTest {
 		assertEquals(m_address, updatedPatient.getAddress());
 		assertEquals(m_city, updatedPatient.getCity());
 		
+		//Get the patient by last name
+		assertNotNull(patientService.getByLastName("Alister"));
+		assertThrows(NoSuchPatientException.class, () -> patientService.getByLastName("AZEERZRZR"));
+		
 		//Delete patient
 		int saveId = createdPatient.getId();
 		patientService.delete(String.valueOf(saveId));
-		//Assert
 		assertThrows(NoSuchPatientException.class, () -> patientService.read(saveId));
 		
 		

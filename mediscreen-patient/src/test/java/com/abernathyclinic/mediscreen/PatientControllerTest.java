@@ -100,6 +100,15 @@ public class PatientControllerTest {
 	}
 	
 	@Test
+	public void getPatientByLastNameTest() throws Exception {
+		when(patientService.getByLastName("TEST")).thenReturn(patientTest);
+		
+		mockMvc.perform(get("/patients/lastname/TEST")).andExpect(status().isOk());
+		
+		verify(patientService, Mockito.times(1)).getByLastName("TEST");
+	}
+	
+	@Test
 	public void putPatientTest() throws Exception {
 		when(patientService.update(patientTest)).thenReturn(patientTest);
 		
