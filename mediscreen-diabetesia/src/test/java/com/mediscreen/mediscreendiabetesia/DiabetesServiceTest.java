@@ -30,7 +30,7 @@ import com.mediscreen.mediscreendiabetesia.service.PatientService;
 import com.mediscreen.mediscreendiabetesia.service.TriggerService;
 import com.mediscreen.mediscreendiabetesia.utils.AgeRange;
 import com.mediscreen.mediscreendiabetesia.utils.RiskLevel;
-import com.mediscreen.mediscreendiabetesia.utils.RiskParam;
+import com.mediscreen.mediscreendiabetesia.utils.RiskRule;
 
 @ExtendWith(MockitoExtension.class)
 public class DiabetesServiceTest {
@@ -64,16 +64,16 @@ public class DiabetesServiceTest {
 	@Test
 	public void getRulesTest_shouldReturnOrderingRulesByTriggerLimitDesc() {
 		DiabetesService diabetesService = new DiabetesService(noteService, patientService, triggerService);
-		List<RiskParam> rules = diabetesService.getRules();
+		List<RiskRule> rules = diabetesService.getRules();
 		
-		Iterator<RiskParam> it = rules.iterator();
-		RiskParam previous = null;
+		Iterator<RiskRule> it = rules.iterator();
+		RiskRule previous = null;
 		while(it.hasNext()) {
 			if(previous == null) {
 				previous = it.next();
 			}
 			else {
-				RiskParam current = it.next();
+				RiskRule current = it.next();
 				assertTrue(current.getTriggerLimit() <= previous.getTriggerLimit());
 				previous = current;
 			}

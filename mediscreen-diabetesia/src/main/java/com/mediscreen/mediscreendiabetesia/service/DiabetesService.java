@@ -15,7 +15,7 @@ import com.mediscreen.mediscreendiabetesia.proxy.Note;
 import com.mediscreen.mediscreendiabetesia.proxy.Patient;
 import com.mediscreen.mediscreendiabetesia.utils.AgeRange;
 import com.mediscreen.mediscreendiabetesia.utils.RiskLevel;
-import com.mediscreen.mediscreendiabetesia.utils.RiskParam;
+import com.mediscreen.mediscreendiabetesia.utils.RiskRule;
 
 @Service
 public class DiabetesService {
@@ -43,8 +43,8 @@ public class DiabetesService {
 		int pAge = ageOf(patient.getDateOfBirth(), LocalDate.now());
 		String pSex = patient.getSex();
 		
-		List<RiskParam> rules = getRules();
-		for(RiskParam riskParam : rules){
+		List<RiskRule> rules = getRules();
+		for(RiskRule riskParam : rules){
 			int triggerLimit = riskParam.getTriggerLimit();
 			int ageMin = riskParam.getAgeRange().getStart();
 			int ageMax = riskParam.getAgeRange().getEnd();
@@ -75,15 +75,15 @@ public class DiabetesService {
 	 * @return SortedMap<RiskParam, RiskLevel>
 	 * 4 juil. 2021
 	 */
-	public List<RiskParam> getRules() {
-		List<RiskParam> rules = new ArrayList<RiskParam>();
-		rules.add(new RiskParam(2, new AgeRange(30, 200), null, RiskLevel.Borderline));
-		rules.add(new RiskParam(3, new AgeRange(0, 30), "M", RiskLevel.InDanger));
-		rules.add(new RiskParam(4, new AgeRange(0, 30), "F", RiskLevel.InDanger));
-		rules.add(new RiskParam(4, new AgeRange(30, 200), null, RiskLevel.InDanger));
-		rules.add(new RiskParam(5, new AgeRange(0, 30), "M", RiskLevel.EarlyOnset));
-		rules.add(new RiskParam(7, new AgeRange(0, 30), "F", RiskLevel.EarlyOnset));
-		rules.add(new RiskParam(8, new AgeRange(30, 200), null, RiskLevel.EarlyOnset));
+	public List<RiskRule> getRules() {
+		List<RiskRule> rules = new ArrayList<RiskRule>();
+		rules.add(new RiskRule(2, new AgeRange(30, 200), null, RiskLevel.Borderline));
+		rules.add(new RiskRule(3, new AgeRange(0, 30), "M", RiskLevel.InDanger));
+		rules.add(new RiskRule(4, new AgeRange(0, 30), "F", RiskLevel.InDanger));
+		rules.add(new RiskRule(4, new AgeRange(30, 200), null, RiskLevel.InDanger));
+		rules.add(new RiskRule(5, new AgeRange(0, 30), "M", RiskLevel.EarlyOnset));
+		rules.add(new RiskRule(7, new AgeRange(0, 30), "F", RiskLevel.EarlyOnset));
+		rules.add(new RiskRule(8, new AgeRange(30, 200), null, RiskLevel.EarlyOnset));
 		
 		return rules.stream().sorted().collect(Collectors.toList());
 		
