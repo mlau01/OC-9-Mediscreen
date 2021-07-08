@@ -38,6 +38,20 @@ public class DiabetesService implements IDiabetesService {
 		this.triggerService = triggerService;
 	}
 	
+
+	@Override
+	public PatientAssessDto getPatientAssess(String lastName) throws NoSuchPatientException {
+		Patient patient = null;
+		try {
+			patient = patientService.getPatient(lastName);
+		} catch (NotFound e) {
+			logger.error(""+e);
+			throw new NoSuchPatientException("Patient with last name: " + lastName + " not found");
+		}
+		
+		return buildPatientAssessDto(patient);
+	}
+	
 	/**
 	 * Build a PatientAssessDto containing desired information of a patient
 	 * @param pid Patient ID
@@ -55,6 +69,17 @@ public class DiabetesService implements IDiabetesService {
 			throw new NoSuchPatientException("Patient with id: " + pid + " not found");
 		}
 		
+
+		return buildPatientAssessDto(patient);
+	}
+	
+	/**
+	 * Private method to build the PatientAssessDto
+	 * @param patient
+	 * @return PatientAssessDto
+	 * 8 juil. 2021
+	 */
+	private PatientAssessDto buildPatientAssessDto(Patient patient) {
 		PatientAssessDto patientAssessDto = new PatientAssessDto();
 		patientAssessDto.setFirstName(patient.getFirstName());
 		patientAssessDto.setLastName(patient.getLastName());
@@ -62,7 +87,6 @@ public class DiabetesService implements IDiabetesService {
 		patientAssessDto.setRiskLevel(getDiabetesRiskLevel(patient));
 		
 		return patientAssessDto;
-		
 	}
 	
 	/**
@@ -138,5 +162,6 @@ public class DiabetesService implements IDiabetesService {
 		
 		return age.getYears();
 	}
+
 
 }

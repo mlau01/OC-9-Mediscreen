@@ -45,7 +45,8 @@ public class DiabetesControllerTest {
 			
 			when(diabetesService.getPatientAssess(99)).thenReturn(patientAssessDto);
 			
-			 mockMvc.perform(get("/assess/99"))
+			 mockMvc.perform(get("/assess/id")
+			.param("patId", "99"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.firstName", is("John")))
             .andExpect(jsonPath("$.lastName", is("Do")))
@@ -53,6 +54,28 @@ public class DiabetesControllerTest {
             .andExpect(jsonPath("$.riskLevel", is(RiskLevel.Borderline.toString())));
 			
 			verify(diabetesService, Mockito.times(1)).getPatientAssess(99);
+		}
+		
+		@Test
+		public void controllerEndpointAssessByLastNameTest_shouldCallServiceAndCorrectResponse() throws Exception {
+			PatientAssessDto patientAssessDto = new PatientAssessDto();
+			
+			patientAssessDto.setFirstName("John");
+			patientAssessDto.setLastName("Do");
+			patientAssessDto.setAge(19);
+			patientAssessDto.setRiskLevel(RiskLevel.Borderline);
+			
+			when(diabetesService.getPatientAssess("Do")).thenReturn(patientAssessDto);
+			
+			 mockMvc.perform(get("/assess/familyName")
+			.param("familyName", "Do"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.firstName", is("John")))
+            .andExpect(jsonPath("$.lastName", is("Do")))
+            .andExpect(jsonPath("$.age", is(19)))
+            .andExpect(jsonPath("$.riskLevel", is(RiskLevel.Borderline.toString())));
+			
+			verify(diabetesService, Mockito.times(1)).getPatientAssess("Do");
 		}
 		
 }

@@ -20,4 +20,8 @@ public class PatientService {
 		return patientProxy.getPatient(patientId);
 	}
 
+	public Patient getPatient(String lastName) {
+		return patientProxy.getPatient(lastName);
+	}
+
 }

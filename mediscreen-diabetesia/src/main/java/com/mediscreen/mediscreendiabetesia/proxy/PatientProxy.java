@@ -17,4 +17,7 @@ public interface PatientProxy {
 	@RequestLine("GET /patients")
 	List<Patient> getAllPatients();
 
+	@RequestLine("GET /patients/lastname/{lastName}")
+	Patient getPatient(@Param("lastName") String lastName);
+
 }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mediscreen.mediscreendiabetesia.dto.PatientAssessDto;
 import com.mediscreen.mediscreendiabetesia.exception.NoSuchPatientException;
@@ -28,14 +29,30 @@ public class DiabetesController {
 	}
 	
 	//READ
-	@ApiOperation(value = "Get a patient assessment")
+	@ApiOperation(value = "Get a patient assessment by id")
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "No patient found with this id") })
-	@GetMapping(value =  "assess/{id}")
-	public ResponseEntity<PatientAssessDto> getPatientAssessDto(@PathVariable("id") int id) {
+	@GetMapping(value =  "assess/id")
+	public ResponseEntity<PatientAssessDto> getPatientAssessDtoById(@RequestParam("patId") int id) {
 		logger.info("GET request to {}", "assess/" + id);
 	
 		try {
 			return new ResponseEntity<PatientAssessDto>(diabetesService.getPatientAssess(id), HttpStatus.OK);
+		} catch (NoSuchPatientException e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<PatientAssessDto>(HttpStatus.NOT_FOUND);
+		}
+
+	}
+	
+	//READ
+	@ApiOperation(value = "Get a patient assessment by lastname")
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "No patient found with this lastname") })
+	@GetMapping(value =  "assess/familyName")
+	public ResponseEntity<PatientAssessDto> getPatientAssessDtoByLastName(@RequestParam("familyName") String familyName) {
+		logger.info("GET request to {}", "assess/" + familyName);
+	
+		try {
+			return new ResponseEntity<PatientAssessDto>(diabetesService.getPatientAssess(familyName), HttpStatus.OK);
 		} catch (NoSuchPatientException e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<PatientAssessDto>(HttpStatus.NOT_FOUND);
