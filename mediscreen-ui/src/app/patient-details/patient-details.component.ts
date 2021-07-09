@@ -24,7 +24,7 @@ export class PatientDetailsComponent implements OnInit {
   isEditing = false;
   editNote!: Note;
   error!: string;
-  patientAssessDto! : PatientAssessDto;
+  patientAssessDto : PatientAssessDto = new PatientAssessDto('', '', 0, '');
 
   constructor(private patientService: PatientService,
               private diabetesService: DiabetesService,
