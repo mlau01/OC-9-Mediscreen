@@ -16,10 +16,22 @@ public class PatientServiceImpl implements IPatientService{
 		patientProxy = p_patientProxy;
 	}
 	
+	/**
+	 * Get a patient using Feign proxy
+	 * @param patientId
+	 * @return Patient
+	 * 9 juil. 2021
+	 */
 	public Patient getPatient(int patientId) {
 		return patientProxy.getPatient(patientId);
 	}
 
+	/**
+	 * Get a patient using Feign proxy
+	 * @param lastName
+	 * @return Patient
+	 * 9 juil. 2021
+	 */
 	public Patient getPatient(String lastName) {
 		return patientProxy.getPatient(lastName);
 	}

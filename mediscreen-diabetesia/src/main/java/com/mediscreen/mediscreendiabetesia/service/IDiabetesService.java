@@ -5,7 +5,18 @@ import com.mediscreen.mediscreendiabetesia.exception.NoSuchPatientException;
 
 public interface IDiabetesService {
 	
-	public PatientAssessDto getPatientAssess(int pid) throws NoSuchPatientException;
+	/**
+	 * Should return a PatientAssessDto filled by diabetes assessment result
+	 * @param patientId
+	 * 9 juil. 2021
+	 */
+	public PatientAssessDto getPatientAssess(int patientId) throws NoSuchPatientException;
+	
+	/**
+	 * Should return a PatientAssessDto filled by diabetes assessment result
+	 * @param lastName
+	 * 9 juil. 2021
+	 */
 	public PatientAssessDto getPatientAssess(String lastName) throws NoSuchPatientException;
 
 }

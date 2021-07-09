@@ -18,6 +18,12 @@ public class NoteServiceImpl implements INoteService {
 		noteProxy = p_noteProxy;
 	}
 	
+	/**
+	 * Get all patient notes using Feign proxy
+	 * @param patientId
+	 * @return List<Note>
+	 * 9 juil. 2021
+	 */
 	public List<Note> getAllPatientNotes(int patientId){
 		
 		return noteProxy.getAllPatientNotes(patientId);

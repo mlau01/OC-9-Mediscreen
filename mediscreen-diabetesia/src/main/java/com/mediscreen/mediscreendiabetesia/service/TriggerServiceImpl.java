@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 import com.mediscreen.mediscreendiabetesia.proxy.Note;
 
 @Service
+/**
+ * Triggers management
+ * 9 juil. 2021
+ */
 public class TriggerServiceImpl implements ITriggerService{
 	
 	private static Logger logger = LoggerFactory.getLogger(TriggerServiceImpl.class);

@@ -23,14 +23,14 @@ public class DiabetesServiceImpl implements IDiabetesService {
 	
 	private static Logger logger = LoggerFactory.getLogger(DiabetesServiceImpl.class);
 	
-	private NoteServiceImpl noteService;
-	private PatientServiceImpl patientService;
-	private TriggerServiceImpl triggerService;
-	private RuleServiceImpl ruleService;
+	private INoteService noteService;
+	private IPatientService patientService;
+	private ITriggerService triggerService;
+	private IRuleService ruleService;
 
 	
 	@Autowired
-	public DiabetesServiceImpl(NoteServiceImpl noteService, PatientServiceImpl patientService, TriggerServiceImpl triggerService, RuleServiceImpl ruleService) {
+	public DiabetesServiceImpl(INoteService noteService, IPatientService patientService, ITriggerService triggerService, IRuleService ruleService) {
 		this.noteService = noteService;
 		this.patientService = patientService;
 		this.triggerService = triggerService;
