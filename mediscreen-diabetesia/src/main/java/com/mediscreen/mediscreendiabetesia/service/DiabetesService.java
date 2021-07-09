@@ -96,6 +96,7 @@ public class DiabetesService implements IDiabetesService {
 	 * 8 juil. 2021
 	 */
 	public RiskLevel getDiabetesRiskLevel(Patient patient) {
+		logger.debug("Start assessment of patient id: " + patient.getId() + ", name: " + patient.getFirstName() + " " + patient.getLastName());
 		RiskLevel result = RiskLevel.None;
 		
 		
@@ -118,7 +119,8 @@ public class DiabetesService implements IDiabetesService {
 				if(pAge >= ageMin  && pAge < ageMax) {
 					logger.debug("Patient age: " + pAge + " >= ageMin:" + ageMin + " && < " + ageMax);
 					if(sex == null || pSex.equals(sex)) {
-						logger.debug("Patient sex: " + pSex + " == " + sex + " OR rule sex is null, returning: " + riskParam.getRiskLevel());
+						logger.debug("Patient sex: " + pSex + " == " + sex + " OR rule sex is null");
+						logger.debug("Returning result: " + riskParam.getRiskLevel());
 						logger.debug("-------------------------------------------------------------------");
 						return riskParam.getRiskLevel();
 					}
@@ -141,7 +143,7 @@ public class DiabetesService implements IDiabetesService {
 		rules.add(new RiskRule(2, new AgeRange(30, 200), null, RiskLevel.Borderline));
 		rules.add(new RiskRule(3, new AgeRange(0, 30), "M", RiskLevel.InDanger));
 		rules.add(new RiskRule(4, new AgeRange(0, 30), "F", RiskLevel.InDanger));
-		rules.add(new RiskRule(4, new AgeRange(30, 200), null, RiskLevel.InDanger));
+		rules.add(new RiskRule(6, new AgeRange(30, 200), null, RiskLevel.InDanger));
 		rules.add(new RiskRule(5, new AgeRange(0, 30), "M", RiskLevel.EarlyOnset));
 		rules.add(new RiskRule(7, new AgeRange(0, 30), "F", RiskLevel.EarlyOnset));
 		rules.add(new RiskRule(8, new AgeRange(30, 200), null, RiskLevel.EarlyOnset));

@@ -62,7 +62,7 @@ public class DiabetesServiceIT {
 				"Fergusen",
 				new Patient("Lucas", "Fergusen", LocalDate.of(1968, 6, 22), "M", "387-866-1399", "2 Warren Street", null),
 				noteFergusen, 
-				RiskLevel.InDanger));
+				RiskLevel.Borderline));
 		
 		
 		Note[] noteRees =  { 
@@ -79,7 +79,7 @@ public class DiabetesServiceIT {
 				"Rees",
 				new Patient("Pippa", "Rees", LocalDate.of(1952, 9, 27), "F", "628-423-0993", "745 West Valley Farms Drive", null),
 				noteRees, 
-				RiskLevel.InDanger));
+				RiskLevel.Borderline));
 		
 		Note[] noteArnold = {
 				new Note("Dr Strange", "Le patient déclare qu'il fume depuis peu"),
@@ -94,7 +94,7 @@ public class DiabetesServiceIT {
 				"Arnold",
 				new Patient("Edward", "Arnold", LocalDate.of(1952, 11, 11), "M", "123-727-2779", "599 East Garden Ave", null),
 				noteArnold, 
-				RiskLevel.InDanger));
+				RiskLevel.Borderline));
 		
 		Note[] noteSharp = {
 				new Note("Dr Strange", "Le patient déclare qu'il lui est devenu difficile de monter les escaliers\r\n"
@@ -202,7 +202,7 @@ public class DiabetesServiceIT {
 				"Bailey",
 				new Patient("Piers", "Bailey", LocalDate.of(1959, 6, 22), "M", "747-815-0557", "1202 Bumble Dr", null),
 				noteBailey, 
-				RiskLevel.InDanger));
+				RiskLevel.Borderline));
 		
 		
 	}
