@@ -22,16 +22,16 @@ public class TriggerService {
 	public List<String> getTriggers(){
 		List<String> triggers = new ArrayList<String>();
 		
-		triggers.add("Hémoglobine A1C");
+		triggers.add("HÃ©moglobine A1C");
 		triggers.add("Microalbumine");
 		triggers.add("Taille");
 		triggers.add("Poids");
 		triggers.add("Fumeur");
 		triggers.add("Anormal");
-		triggers.add("Cholestérol");
+		triggers.add("CholestÃ©rol");
 		triggers.add("Vertige");
 		triggers.add("Rechute");
-		triggers.add("Réaction");
+		triggers.add("RÃ©action");
 		triggers.add("Anticorps");
 		
 		return triggers;

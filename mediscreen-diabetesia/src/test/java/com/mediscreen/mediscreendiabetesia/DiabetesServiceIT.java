@@ -6,15 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,11 +25,6 @@ import com.mediscreen.mediscreendiabetesia.proxy.Patient;
 import com.mediscreen.mediscreendiabetesia.proxy.PatientProxy;
 import com.mediscreen.mediscreendiabetesia.service.DiabetesService;
 import com.mediscreen.mediscreendiabetesia.utils.RiskLevel;
-
-import feign.Feign;
-import feign.jackson.JacksonDecoder;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
 @SpringBootTest
 public class DiabetesServiceIT {
@@ -56,14 +48,14 @@ public class DiabetesServiceIT {
 		
 		patients = new ArrayList<PatientTestModel>();
 		Note[] noteFergusen =  { 
-				new Note("Dr Strange", "Le patient déclare qu'il « se sent très bien »\r\n"
-						+ "Poids égal ou inférieur au poids recommandé"),
-				new Note("Dr Strange", "Le patient déclare qu'il se sent fatigué pendant la journée\r\n"
-						+ "Il se plaint également de douleurs musculaires\r\n"
-						+ "Tests de laboratoire indiquant une microalbumine élevée"),
-				new Note("Dr Strange", "Le patient déclare qu'il ne se sent pas si fatigué que ça\r\n"
-						+ "Fumeur, il a arrêté dans les 12 mois précédents\r\n"
-						+ "Tests de laboratoire indiquant que les anticorps sont élevés")
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il Â« se sent trÃ¨s bien Â»\r\n"
+						+ "Poids Ã©gal ou infÃ©rieur au poids recommandÃ©"),
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il se sent fatiguÃ© pendant la journÃ©e\r\n"
+						+ "Il se plaint Ã©galement de douleurs musculaires\r\n"
+						+ "Tests de laboratoire indiquant une microalbumine Ã©levÃ©e"),
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il ne se sent pas si fatiguÃ© que Ã§a\r\n"
+						+ "Fumeur, il a arrÃªtÃ© dans les 12 mois prÃ©cÃ©dents\r\n"
+						+ "Tests de laboratoire indiquant que les anticorps sont Ã©levÃ©s")
 			};
 		
 		patients.add(new PatientTestModel(
@@ -74,14 +66,14 @@ public class DiabetesServiceIT {
 		
 		
 		Note[] noteRees =  { 
-				new Note("Dr Strange", "Le patient déclare qu'il ressent beaucoup de stress au travail\r\n"
-						+ "Il se plaint également que son audition est anormale dernièrement"),
-				new Note("Dr Strange", "Le patient déclare avoir fait une réaction aux médicaments au cours des 3 derniers mois\r\n"
-						+ "Il remarque également que son audition continue d'être anormale"),
-				new Note("Dr Strange", "Tests de laboratoire indiquant une microalbumine élevée\r\n"),
-				new Note("Dr Strange", "Le patient déclare que tout semble aller bien\r\n"
-						+ "Le laboratoire rapporte que l'hémoglobine A1C dépasse le niveau recommandé\r\n"
-						+ "Le patient déclare qu’il fume depuis longtemps")
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il ressent beaucoup de stress au travail\r\n"
+						+ "Il se plaint Ã©galement que son audition est anormale derniÃ¨rement"),
+				new Note("Dr Strange", "Le patient dÃ©clare avoir fait une rÃ©action aux mÃ©dicaments au cours des 3 derniers mois\r\n"
+						+ "Il remarque Ã©galement que son audition continue d'Ãªtre anormale"),
+				new Note("Dr Strange", "Tests de laboratoire indiquant une microalbumine Ã©levÃ©e"),
+				new Note("Dr Strange", "Le patient dÃ©clare que tout semble aller bien\r\n"
+						+ "Le laboratoire rapporte que l'hÃ©moglobine A1C dÃ©passe le niveau recommandÃ©\r\n"
+						+ "Le patient dÃ©clare quâ€™il fume depuis longtemps")
 			};
 		patients.add(new PatientTestModel(
 				"Rees",
@@ -90,12 +82,12 @@ public class DiabetesServiceIT {
 				RiskLevel.InDanger));
 		
 		Note[] noteArnold = {
-				new Note("Dr Strange", "Le patient déclare qu'il fume depuis peu\r\n"),
-				new Note("Dr Strange", "Tests de laboratoire indiquant une microalbumine élevée\r\n"),
-				new Note("Dr Strange", "Le patient déclare qu'il est fumeur et qu'il a cessé de fumer l'année dernière\r\n"
-						+ "Il se plaint également de crises d’apnée respiratoire anormales\r\n"
-						+ "Tests de laboratoire indiquant un taux de cholestérol LDL élevé"),
-				new Note("Dr Strange", "Tests de laboratoire indiquant un taux de cholestérol LDL élevé\r\n")
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il fume depuis peu"),
+				new Note("Dr Strange", "Tests de laboratoire indiquant une microalbumine Ã©levÃ©e"),
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il est fumeur et qu'il a cessÃ© de fumer l'annÃ©e derniÃ¨re\r\n"
+						+ "Il se plaint Ã©galement de crises dâ€™apnÃ©e respiratoire anormales\r\n"
+						+ "Tests de laboratoire indiquant un taux de cholestÃ©rol LDL Ã©levÃ©"),
+				new Note("Dr Strange", "Tests de laboratoire indiquant un taux de cholestÃ©rol LDL Ã©levÃ©")
 			};
 		
 		patients.add(new PatientTestModel(
@@ -105,13 +97,13 @@ public class DiabetesServiceIT {
 				RiskLevel.InDanger));
 		
 		Note[] noteSharp = {
-				new Note("Dr Strange", "Le patient déclare qu'il lui est devenu difficile de monter les escaliers\r\n"
-						+ "Il se plaint également d’être essoufflé\r\n"
-						+ "Tests de laboratoire indiquant que les anticorps sont élevés\r\n"
-						+ "Réaction aux médicaments"),
-				new Note("Dr Strange", "Le patient déclare qu'il a mal au dos lorsqu'il reste assis pendant longtemps\r\n"),
-				new Note("Dr Strange", "Le patient déclare avoir commencé à fumer depuis peu\r\n"
-						+ "Hémoglobine A1C supérieure au niveau recommandé")
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il lui est devenu difficile de monter les escaliers\r\n"
+						+ "Il se plaint Ã©galement dâ€™Ãªtre essoufflÃ©\r\n"
+						+ "Tests de laboratoire indiquant que les anticorps sont Ã©levÃ©s\r\n"
+						+ "RÃ©action aux mÃ©dicaments"),
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il a mal au dos lorsqu'il reste assis pendant longtemps"),
+				new Note("Dr Strange", "Le patient dÃ©clare avoir commencÃ© Ã  fumer depuis peu\r\n"
+						+ "HÃ©moglobine A1C supÃ©rieure au niveau recommandÃ©")
 			};
 		patients.add(new PatientTestModel(
 				"Sharp",
@@ -121,18 +113,17 @@ public class DiabetesServiceIT {
 		
 		
 		Note[] noteInce = {
-				new Note("Dr Strange", "Le patient déclare avoir des douleurs au cou occasionnellement\r\n"
-						+ "Le patient remarque également que certains aliments ont un goût différent\r\n"
-						+ "Réaction apparente aux médicaments\r\n"
-						+ "Poids corporel supérieur au poids recommandé"),
-				new Note("Dr Strange", "Le patient déclare avoir eu plusieurs épisodes de vertige depuis la dernière visite.\r\n"
-						+ "Taille incluse dans la fourchette concernée"),
-				new Note("Dr Strange", "Le patient déclare qu'il souffre encore de douleurs cervicales occasionnelles\r\n"
-						+ "Tests de laboratoire indiquant une microalbumine élevée\r\n"
-						+ "Fumeur, il a arrêté dans les 12 mois précédents"),
-				new Note("Dr Strange", "Le patient déclare avoir eu plusieurs épisodes de vertige depuis la dernière visite.\r\n"
-						+ "Tests de laboratoire indiquant que les anticorps sont élevés\r\n"
-						+ "")
+				new Note("Dr Strange", "Le patient dÃ©clare avoir des douleurs au cou occasionnellement\r\n"
+						+ "Le patient remarque Ã©galement que certains aliments ont un goÃ»t diffÃ©rent\r\n"
+						+ "RÃ©action apparente aux mÃ©dicaments\r\n"
+						+ "Poids corporel supÃ©rieur au poids recommandÃ©"),
+				new Note("Dr Strange", "Le patient dÃ©clare avoir eu plusieurs Ã©pisodes de vertige depuis la derniÃ¨re visite.\r\n"
+						+ "Taille incluse dans la fourchette concernÃ©e"),
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il souffre encore de douleurs cervicales occasionnelles\r\n"
+						+ "Tests de laboratoire indiquant une microalbumine Ã©levÃ©e\r\n"
+						+ "Fumeur, il a arrÃªtÃ© dans les 12 mois prÃ©cÃ©dents"),
+				new Note("Dr Strange", "Le patient dÃ©clare avoir eu plusieurs Ã©pisodes de vertige depuis la derniÃ¨re visite.\r\n"
+						+ "Tests de laboratoire indiquant que les anticorps sont Ã©levÃ©s")
 			};
 		
 		patients.add(new PatientTestModel(
@@ -142,9 +133,9 @@ public class DiabetesServiceIT {
 				RiskLevel.EarlyOnset));
 		
 		Note[] noteRoss = 	{
-				new Note("Dr Strange", "Le patient déclare qu'il se sent bien\r\n"
-						+ "Poids corporel supérieur au poids recommandé"),
-				new Note("Dr Strange", "Le patient déclare qu'il se sent bien\r\n")
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il se sent bien\r\n"
+						+ "Poids corporel supÃ©rieur au poids recommandÃ©"),
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il se sent bien\r\n")
 			};
 		
 		patients.add(new PatientTestModel(
@@ -155,10 +146,10 @@ public class DiabetesServiceIT {
 		
 		
 		Note[] noteWilson = {
-				new Note("Dr Strange", "Le patient déclare qu'il se réveille souvent avec une raideur articulaire\r\n"
-						+ "Il se plaint également de difficultés pour s’endormir\r\n"
-						+ "Poids corporel supérieur au poids recommandé\r\n"
-						+ "Tests de laboratoire indiquant un taux de cholestérol LDL élevé")
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il se rÃ©veille souvent avec une raideur articulaire\r\n"
+						+ "Il se plaint Ã©galement de difficultÃ©s pour sâ€™endormir\r\n"
+						+ "Poids corporel supÃ©rieur au poids recommandÃ©\r\n"
+						+ "Tests de laboratoire indiquant un taux de cholestÃ©rol LDL Ã©levÃ©")
 			};
 		
 		patients.add(new PatientTestModel(
@@ -168,8 +159,8 @@ public class DiabetesServiceIT {
 				RiskLevel.Borderline));
 		
 		Note[] noteBuckland = {
-				new Note("Dr Strange", "Les tests de laboratoire indiquent que les anticorps sont élevés\r\n"
-						+ "Hémoglobine A1C supérieure au niveau recommandé")	
+				new Note("Dr Strange", "Les tests de laboratoire indiquent que les anticorps sont Ã©levÃ©s\r\n"
+						+ "HÃ©moglobine A1C supÃ©rieure au niveau recommandÃ©")	
 			};
 		
 		patients.add(new PatientTestModel(
@@ -179,14 +170,14 @@ public class DiabetesServiceIT {
 				RiskLevel.Borderline));
 		
 		Note[] noteClark = {
-				new Note("Dr Strange", "Le patient déclare avoir de la difficulté à se concentrer sur ses devoirs scolaires\r\n"
-						+ "Hémoglobine A1C supérieure au niveau recommandé"),
-				new Note("Dr Strange", "Le patient déclare qu'il s’impatiente facilement en cas d’attente prolongée\r\n"
-						+ "Il signale également que les produits du distributeur automatique ne sont pas bons\r\n"
+				new Note("Dr Strange", "Le patient dÃ©clare avoir de la difficultÃ© Ã  se concentrer sur ses devoirs scolaires\r\n"
+						+ "HÃ©moglobine A1C supÃ©rieure au niveau recommandÃ©"),
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il sâ€™impatiente facilement en cas dâ€™attente prolongÃ©e\r\n"
+						+ "Il signale Ã©galement que les produits du distributeur automatique ne sont pas bons\r\n"
 						+ "Tests de laboratoire signalant des taux anormaux de cellules sanguines"),
-				new Note("Dr Strange", "Le patient signale qu'il est facilement irrité par des broutilles\r\n"
-						+ "Il déclare également que l'aspirateur des voisins fait trop de bruit\r\n"
-						+ "Tests de laboratoire indiquant que les anticorps sont élevés")
+				new Note("Dr Strange", "Le patient signale qu'il est facilement irritÃ© par des broutilles\r\n"
+						+ "Il dÃ©clare Ã©galement que l'aspirateur des voisins fait trop de bruit\r\n"
+						+ "Tests de laboratoire indiquant que les anticorps sont Ã©levÃ©s")
 			};
 		
 		patients.add(new PatientTestModel(
@@ -196,15 +187,15 @@ public class DiabetesServiceIT {
 				RiskLevel.Borderline));
 		
 		Note[] noteBailey = {
-				new Note("Dr Strange", "Le patient déclare qu'il n'a aucun problème\r\n"),
-				new Note("Dr Strange", "Le patient déclare qu'il n'a aucun problème\r\n"
-						+ "Taille incluse dans la fourchette concernée\r\n"
-						+ "Hémoglobine A1C supérieure au niveau recommandé"),
-				new Note("Dr Strange", "Le patient déclare qu'il n'a aucun problème\r\n"
-						+ "Poids corporel supérieur au poids recommandé\r\n"
-						+ "Le patient a signalé plusieurs épisodes de vertige depuis sa dernière visite"),
-				new Note("Dr Strange", "Le patient déclare qu'il n'a aucun problème\r\n"
-						+ "Tests de laboratoire indiquant une microalbumine élevée")
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il n'a aucun problÃ¨me"),
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il n'a aucun problÃ¨me\r\n"
+						+ "Taille incluse dans la fourchette concernÃ©e\r\n"
+						+ "HÃ©moglobine A1C supÃ©rieure au niveau recommandÃ©"),
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il n'a aucun problÃ¨me\r\n"
+						+ "Poids corporel supÃ©rieur au poids recommandÃ©\r\n"
+						+ "Le patient a signalÃ© plusieurs Ã©pisodes de vertige depuis sa derniÃ¨re visite"),
+				new Note("Dr Strange", "Le patient dÃ©clare qu'il n'a aucun problÃ¨me\r\n"
+						+ "Tests de laboratoire indiquant une microalbumine Ã©levÃ©e")
 			};
 		
 		patients.add(new PatientTestModel(
