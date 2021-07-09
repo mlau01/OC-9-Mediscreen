@@ -11,9 +11,9 @@ export class DiabetesService {
 
   apiUrl = 'http://localhost:8083';
   patientAssessDtoSubject = new Subject<PatientAssessDto>();
-  patientAssessDto!: PatientAssessDto;
+  patientAssessDto: PatientAssessDto = new PatientAssessDto('', '', 0, '');
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient)  { }
 
   getPatientAssessDtoById(id: number){
     let params = new HttpParams().set('patId', id);

@@ -86,4 +86,29 @@ export class PatientDetailsComponent implements OnInit {
     this.isEditing = false;
     this.noteForm.reset();
   }
+
+  getRiskLevelColor() : string {
+    switch (this.patientAssessDto.riskLevel){
+      case "None" : {
+        return '#d9e1f2';
+        break;
+      }
+      case "Borderline" : {
+        return '#c6e0b4';
+        break;
+      }
+      case "InDanger" : {
+        return '#ffe699';
+        break;
+      }
+      case "EarlyOnset": {
+        return '#ff0000';
+        break;
+      }
+      default: {
+        return '';
+        break;
+      }
+    }
+  }
 }

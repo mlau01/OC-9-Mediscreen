@@ -38,7 +38,7 @@
       </dl>
       <dl class="row">
         <dt class="col-sm-3">Diabetes risk:</dt>
-        <dd class="col-sm-9">{{patientAssessDto!.riskLevel}}</dd>
+        <dd class="col-sm-9" [ngStyle]="{backgroundColor: getRiskLevelColor()}">{{patientAssessDto!.riskLevel}}</dd>
       </dl>
     </div>
   </div>
