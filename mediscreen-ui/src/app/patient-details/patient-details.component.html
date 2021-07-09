@@ -2,25 +2,48 @@
 
 
   <button class="btn btn-secondary" routerLink="/patient">Back</button>
-  <h2>Patient Details</h2>
+  <h5>Patient Details</h5>
 
   <div class="row align-items-start">
-    <div class="col">
-      <p>First Name: {{patient!.firstName}}</p>
-      <p>Last Name: {{patient!.lastName}}</p>
-      <p>Address: {{patient!.address}}</p>
-      <p>Phone: {{patient!.phone}}</p>
-      <p>City: {{patient!.city}}</p>
+    <div class="col" id="details">
+      <dl class="row">
+        <dt class="col-sm-3">First Name:</dt>
+        <dd class="col-sm-9">{{patient!.firstName}}</dd>
+      </dl>
+      <dl class="row">
+        <dt class="col-sm-3">Last Name:</dt>
+        <dd class="col-sm-9">{{patient!.lastName}}</dd>
+      </dl>
+      <dl class="row">
+        <dt class="col-sm-3">Address:</dt>
+        <dd class="col-sm-9">{{patient!.address}}</dd>
+      </dl>
+      <dl class="row">
+        <dt class="col-sm-3">Phone:</dt>
+        <dd class="col-sm-9">{{patient!.phone}}</dd>
+      </dl>
     </div>
     <div class="col">
-      <p>Birthday: {{patient!.firstName}}</p>
-      <p>Age: {{patientAssessDto!.age}}</p>
-      <p>Sex: {{patient!.sex}}</p>
-      <p>Diabetes risk: {{patientAssessDto!.riskLevel}}</p>
+      <dl class="row">
+        <dt class="col-sm-3">Birthday:</dt>
+        <dd class="col-sm-9">{{patient!.dateOfBirth}}</dd>
+      </dl>
+      <dl class="row">
+        <dt class="col-sm-3">Age:</dt>
+        <dd class="col-sm-9">{{patientAssessDto!.age}}</dd>
+      </dl>
+      <dl class="row">
+        <dt class="col-sm-3">Sex:</dt>
+        <dd class="col-sm-9">{{patient!.sex}}</dd>
+      </dl>
+      <dl class="row">
+        <dt class="col-sm-3">Diabetes risk:</dt>
+        <dd class="col-sm-9">{{patientAssessDto!.riskLevel}}</dd>
+      </dl>
     </div>
   </div>
   <form class="form-block" [formGroup]="noteForm" (ngSubmit)="onSubmit()">
-    <h3>Add note</h3>
+    <h5>Add note</h5>
     <div class="row">
       <div class="col-xs-12 col-sm-6">
         <div class="form-group fl_icon">
@@ -41,6 +64,6 @@
     <button *ngIf="isEditing" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
   </form>
 
-  <h3 *ngIf="notes && notes.length">Notes</h3>
+  <h5 *ngIf="notes && notes.length">Notes</h5>
   <app-patient-note *ngFor="let note of notes" [note]="note"></app-patient-note>
 </div>
