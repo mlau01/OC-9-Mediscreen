@@ -11,7 +11,8 @@ export class DiabetesService {
 
   apiUrl = 'http://localhost:8083';
   patientAssessDtoSubject = new Subject<PatientAssessDto>();
-  patientAssessDto: PatientAssessDto = new PatientAssessDto('', '', 0, '');
+  patientAssessDto!: PatientAssessDto;
+  lastPatientId!: number;
 
   constructor(private httpClient: HttpClient)  { }
 
@@ -19,13 +20,18 @@ export class DiabetesService {
     let params = new HttpParams().set('patId', id);
     this.httpClient.get<PatientAssessDto>(this.apiUrl + '/assess/id', {params}).subscribe((patientAssessDto) => {
       this.patientAssessDto = patientAssessDto;
+      this.lastPatientId = id;
       this.emitPatientAssessDto();
     }, (error) => {
       console.log(error);
     });
   }
 
-  private emitPatientAssessDto() {
+  public emitPatientAssessDto() {
     this.patientAssessDtoSubject.next(this.patientAssessDto);
+  }
+
+  public refresh(){
+    this.getPatientAssessDtoById(this.lastPatientId);
   }
 }

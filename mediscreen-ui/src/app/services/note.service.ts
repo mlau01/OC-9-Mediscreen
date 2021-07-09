@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import { Note } from 'src/app/models/note'
 import {FormGroup} from "@angular/forms";
+import {DiabetesService} from "./diabetes.service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class NoteService {
   noteEditionSubject = new Subject<Note>();
   noteSubject = new Subject<Note[]>();
   notes! : Note[];
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private diabetesService: DiabetesService) { }
 
   public getPatientNote(pid: number){
     return this.httpClient.get<Note[]>(this.apiUrl + '/notes/patient/' + pid).subscribe((notes) => {
@@ -31,7 +33,8 @@ export class NoteService {
     note.patientId = pid;
     this.httpClient.post<Note>(this.apiUrl + '/notes', note).subscribe((noteCreated) => {
       this.notes.unshift(noteCreated);
-      this.emitNote();
+      this.diabetesService.refresh();
+      this.diabetesService.emitPatientAssessDto();
     }, (error) => {
       console.log(error);
     })
@@ -45,6 +48,7 @@ export class NoteService {
         if ( this.notes[i].id === noteUpdated.id) {
           this.notes[i] = noteUpdated;
           this.emitNote();
+          this.diabetesService.refresh();
         }
       }
     });
@@ -56,6 +60,7 @@ export class NoteService {
         if (this.notes[i].id === id) {
           this.notes.splice(i, 1);
           this.emitNote();
+          this.diabetesService.refresh();
         }
       }
     }, (error) => {
