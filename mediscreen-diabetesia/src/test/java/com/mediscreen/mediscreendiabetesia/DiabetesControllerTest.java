@@ -18,7 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.mediscreen.mediscreendiabetesia.dto.PatientAssessDto;
-import com.mediscreen.mediscreendiabetesia.service.DiabetesService;
+import com.mediscreen.mediscreendiabetesia.service.DiabetesServiceImpl;
 import com.mediscreen.mediscreendiabetesia.utils.RiskLevel;
 
 @SpringBootTest
@@ -31,7 +31,7 @@ public class DiabetesControllerTest {
 		private MockMvc mockMvc;
 
 		@MockBean
-		private DiabetesService diabetesService;
+		private DiabetesServiceImpl diabetesService;
 		
 		
 		@Test

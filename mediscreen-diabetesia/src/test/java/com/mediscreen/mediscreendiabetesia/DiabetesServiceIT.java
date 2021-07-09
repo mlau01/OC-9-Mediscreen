@@ -23,14 +23,14 @@ import com.mediscreen.mediscreendiabetesia.proxy.Note;
 import com.mediscreen.mediscreendiabetesia.proxy.NoteProxy;
 import com.mediscreen.mediscreendiabetesia.proxy.Patient;
 import com.mediscreen.mediscreendiabetesia.proxy.PatientProxy;
-import com.mediscreen.mediscreendiabetesia.service.DiabetesService;
+import com.mediscreen.mediscreendiabetesia.service.DiabetesServiceImpl;
 import com.mediscreen.mediscreendiabetesia.utils.RiskLevel;
 
 @SpringBootTest
 public class DiabetesServiceIT {
 	
 	@Autowired
-	private DiabetesService diabetesService;
+	private DiabetesServiceImpl diabetesService;
 	
 	@Autowired
 	ObjectMapper objectMapper;

@@ -9,12 +9,12 @@ import com.mediscreen.mediscreendiabetesia.proxy.Note;
 import com.mediscreen.mediscreendiabetesia.proxy.NoteProxy;
 
 @Service
-public class NoteService {
+public class NoteServiceImpl implements INoteService {
 	
 	private NoteProxy noteProxy;
 	
 	@Autowired
-	public NoteService(NoteProxy p_noteProxy) {
+	public NoteServiceImpl(NoteProxy p_noteProxy) {
 		noteProxy = p_noteProxy;
 	}
 	

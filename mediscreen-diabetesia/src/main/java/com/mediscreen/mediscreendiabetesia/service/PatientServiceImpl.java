@@ -7,12 +7,12 @@ import com.mediscreen.mediscreendiabetesia.proxy.Patient;
 import com.mediscreen.mediscreendiabetesia.proxy.PatientProxy;
 
 @Service
-public class PatientService {
+public class PatientServiceImpl implements IPatientService{
 	
 	PatientProxy patientProxy;
 	
 	@Autowired
-	public PatientService(PatientProxy p_patientProxy) {
+	public PatientServiceImpl(PatientProxy p_patientProxy) {
 		patientProxy = p_patientProxy;
 	}
 	

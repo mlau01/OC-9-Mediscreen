@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import com.mediscreen.mediscreendiabetesia.proxy.Note;
 
 @Service
-public class TriggerService {
+public class TriggerServiceImpl implements ITriggerService{
 	
-	private static Logger logger = LoggerFactory.getLogger(TriggerService.class);
+	private static Logger logger = LoggerFactory.getLogger(TriggerServiceImpl.class);
 	
 	/**
 	 * List of trigger term

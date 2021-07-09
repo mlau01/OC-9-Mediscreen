@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.mediscreen.mediscreendiabetesia.proxy.Note;
-import com.mediscreen.mediscreendiabetesia.service.TriggerService;
+import com.mediscreen.mediscreendiabetesia.service.TriggerServiceImpl;
 
 public class TriggerServiceTest {
 	
@@ -17,7 +17,7 @@ public class TriggerServiceTest {
 	
 	@Test
 	public void getTriggersTest_shouldReturnTriggerList() {
-		TriggerService triggerService = new TriggerService();
+		TriggerServiceImpl triggerService = new TriggerServiceImpl();
 		
 		List<String> triggers = triggerService.getTriggers();
 		
@@ -26,7 +26,7 @@ public class TriggerServiceTest {
 	
 	@Test
 	public void getTriggersCount_shouldReturnCorrectNumber() {
-		TriggerService triggerService = new TriggerService();
+		TriggerServiceImpl triggerService = new TriggerServiceImpl();
 		Note noteWithAllTrigger = new Note();
 		noteWithAllTrigger.setNote("Hémoglobine A1CMicroalbumineTaillePoidsFumeurAnormalCholestérolVertigeRechuteRéactionAnticorps");
 		List<Note> notes = new ArrayList<Note>();

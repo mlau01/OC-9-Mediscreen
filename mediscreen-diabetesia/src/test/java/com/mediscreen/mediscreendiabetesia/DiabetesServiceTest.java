@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -25,10 +26,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.mediscreen.mediscreendiabetesia.proxy.Patient;
 import com.mediscreen.mediscreendiabetesia.proxy.Note;
-import com.mediscreen.mediscreendiabetesia.service.DiabetesService;
-import com.mediscreen.mediscreendiabetesia.service.NoteService;
-import com.mediscreen.mediscreendiabetesia.service.PatientService;
-import com.mediscreen.mediscreendiabetesia.service.TriggerService;
+import com.mediscreen.mediscreendiabetesia.service.DiabetesServiceImpl;
+import com.mediscreen.mediscreendiabetesia.service.NoteServiceImpl;
+import com.mediscreen.mediscreendiabetesia.service.PatientServiceImpl;
+import com.mediscreen.mediscreendiabetesia.service.RuleServiceImpl;
+import com.mediscreen.mediscreendiabetesia.service.TriggerServiceImpl;
 import com.mediscreen.mediscreendiabetesia.utils.AgeRange;
 import com.mediscreen.mediscreendiabetesia.utils.RiskLevel;
 import com.mediscreen.mediscreendiabetesia.utils.RiskRule;
@@ -37,17 +39,20 @@ import com.mediscreen.mediscreendiabetesia.utils.RiskRule;
 public class DiabetesServiceTest {
 	
 	@Mock
-	NoteService noteService;
+	NoteServiceImpl noteService;
 	
 	@Mock
-	PatientService patientService;
+	PatientServiceImpl patientService;
 	
 	@Mock
-	TriggerService triggerService;
+	TriggerServiceImpl triggerService;
+	
+	@Mock
+	RuleServiceImpl ruleService;
 	
 	@Test
 	public void AgeOfTest_shouldReturnCorrectAge() {
-		DiabetesService diabetesService = new DiabetesService(noteService, patientService, triggerService);
+		DiabetesServiceImpl diabetesService = new DiabetesServiceImpl(noteService, patientService, triggerService, ruleService);
 		
 		LocalDate birth = LocalDate.of(1986, 8, 30);
 		
@@ -62,30 +67,12 @@ public class DiabetesServiceTest {
 		assertEquals(35, diabetesService.ageOf(birth, date3));
 	}
 	
-	@Test
-	public void getRulesTest_shouldReturnOrderingRulesByTriggerLimitDesc() {
-		DiabetesService diabetesService = new DiabetesService(noteService, patientService, triggerService);
-		List<RiskRule> rules = diabetesService.getRules();
-		
-		Iterator<RiskRule> it = rules.iterator();
-		RiskRule previous = null;
-		while(it.hasNext()) {
-			if(previous == null) {
-				previous = it.next();
-			}
-			else {
-				RiskRule current = it.next();
-				assertTrue(current.getTriggerLimit() <= previous.getTriggerLimit());
-				previous = current;
-			}
-		}
-	}
-	
 	private void diabetesRiskLevelTest(int iteration, int triggerCount, int birthYear, String sex, RiskLevel riskLevelExpected) {
-		DiabetesService diabetesService = new DiabetesService(noteService, patientService, triggerService);
+		DiabetesServiceImpl diabetesService = new DiabetesServiceImpl(noteService, patientService, triggerService, ruleService);
 		
 		doReturn(triggerCount).when(triggerService).getTriggerCount(any(List.class));
 		when(noteService.getAllPatientNotes(iteration)).thenReturn(new ArrayList<Note>());
+		when(ruleService.getRules()).thenReturn(getRules());
 		
 		assertEquals(riskLevelExpected, diabetesService.getDiabetesRiskLevel(new Patient(iteration, LocalDate.of(birthYear, 8, 30), sex)));
 		
@@ -123,14 +110,17 @@ public class DiabetesServiceTest {
 		diabetesRiskLevelTest(9, 6, 1995, "M", RiskLevel.EarlyOnset);
 	}
 	
-	/*
-	 	rules.put(new RiskParam(2, new AgeRange(30, 200), null), RiskLevel.Borderline);
-		rules.put(new RiskParam(3, new AgeRange(0, 30), "M"), RiskLevel.InDanger);
-		rules.put(new RiskParam(4, new AgeRange(0, 30), "F"), RiskLevel.InDanger);
-		rules.put(new RiskParam(4, new AgeRange(30, 200), null), RiskLevel.InDanger);
-		rules.put(new RiskParam(5, new AgeRange(0, 30), "M"), RiskLevel.EarlyOnset);
-		rules.put(new RiskParam(7, new AgeRange(0, 30), "F"), RiskLevel.EarlyOnset);
-		rules.put(new RiskParam(8, new AgeRange(30, 200), null), RiskLevel.EarlyOnset);
+	private List<RiskRule> getRules() {
+		List<RiskRule> rules = new ArrayList<RiskRule>();
+		rules.add(new RiskRule(2, new AgeRange(30, 200), null, RiskLevel.Borderline));
+		rules.add(new RiskRule(3, new AgeRange(0, 30), "M", RiskLevel.InDanger));
+		rules.add(new RiskRule(4, new AgeRange(0, 30), "F", RiskLevel.InDanger));
+		rules.add(new RiskRule(6, new AgeRange(30, 200), null, RiskLevel.InDanger));
+		rules.add(new RiskRule(5, new AgeRange(0, 30), "M", RiskLevel.EarlyOnset));
+		rules.add(new RiskRule(7, new AgeRange(0, 30), "F", RiskLevel.EarlyOnset));
+		rules.add(new RiskRule(8, new AgeRange(30, 200), null, RiskLevel.EarlyOnset));
 		
-	 */
+		return rules.stream().sorted().collect(Collectors.toList());
+		
+	}
 }

@@ -10,7 +10,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 
 import com.mediscreen.mediscreendiabetesia.proxy.NoteProxy;
-import com.mediscreen.mediscreendiabetesia.service.NoteService;
+import com.mediscreen.mediscreendiabetesia.service.NoteServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class NoteServiceTest {
@@ -20,7 +20,7 @@ public class NoteServiceTest {
 
 	@Test
 	public void getPatientNoteTest_shouldCallNoteProxy() {
-		NoteService noteService = new NoteService(noteProxy);
+		NoteServiceImpl noteService = new NoteServiceImpl(noteProxy);
 		
 		noteService.getAllPatientNotes(99);
 		

@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.mediscreen.mediscreendiabetesia.proxy.PatientProxy;
-import com.mediscreen.mediscreendiabetesia.service.PatientService;
+import com.mediscreen.mediscreendiabetesia.service.PatientServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class PatientServiceTest {
@@ -19,7 +19,7 @@ public class PatientServiceTest {
 
 	@Test
 	public void getPatientNoteTest_shouldCallNoteProxy() {
-		PatientService patientService = new PatientService(patientProxy);
+		PatientServiceImpl patientService = new PatientServiceImpl(patientProxy);
 		
 		patientService.getPatient(99);
 		
