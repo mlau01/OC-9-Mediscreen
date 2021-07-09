@@ -60,7 +60,7 @@ task stopBackDocker (type: Exec) {
 }
 
 task runDocker (type: Exec) {
-	dependsOn "mediscreen-patient:buildDocker", "mediscreen-note:buildDocker"
+	dependsOn "mediscreen-patient:buildDocker", "mediscreen-note:buildDocker", "mediscreen-diabetesia:buildDocker"
 	group = "Docker"
 	description = "Start all project micro services"
 	commandLine "docker" ,"compose", "-p", "mediscreen", "-f", "docker/docker-compose.yml", "up", "-d"
