@@ -34,7 +34,7 @@ public class PatientController {
 	}
 	
 	@Deprecated
-	@ApiOperation(value = "Deprecated URI for old curl request, return same responses as /patient")
+	@ApiOperation(value = "Deprecated URI for old curl request, return same responses as /patients")
 	@PostMapping(value = "patient/add") //For old curl request
 	public ResponseEntity<Patient> oldAddPatient(@Valid Patient patient) {
     	log.info("POST Request to /patients/add with value: {}", patient);
