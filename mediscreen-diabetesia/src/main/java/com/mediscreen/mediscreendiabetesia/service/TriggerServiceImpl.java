@@ -60,9 +60,7 @@ public class TriggerServiceImpl implements ITriggerService{
 				}
 			}
 		}
-		
 		logger.trace("Found a total of " + count + " triggers");
-		
 		return count;
 	}
 
