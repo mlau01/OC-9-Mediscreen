@@ -95,9 +95,9 @@ public class DiabetesServiceImpl implements IDiabetesService {
 	 * 8 juil. 2021
 	 */
 	public RiskLevel getDiabetesRiskLevel(Patient patient) {
-		logger.debug("Start assessment of patient id: " + patient.getId() + ", name: " + patient.getFirstName() + " " + patient.getLastName());
+		logger.debug("Start assessment of patient id: " + patient.getId() 
+		+ ", name: " + patient.getFirstName() + " " + patient.getLastName());
 		RiskLevel result = RiskLevel.None;
-		
 		
 		List<Note> patientNotes = noteService.getAllPatientNotes(patient.getId());
 		int pTriggerCount = triggerService.getTriggerCount(patientNotes);
@@ -105,30 +105,27 @@ public class DiabetesServiceImpl implements IDiabetesService {
 		String pSex = patient.getSex();
 		
 		List<RiskRule> rules = ruleService.getRules();
-		for(RiskRule riskParam : rules){
-			int triggerLimit = riskParam.getTriggerLimit();
-			int ageMin = riskParam.getAgeRange().getStart();
-			int ageMax = riskParam.getAgeRange().getEnd();
-			String sex = riskParam.getSex();
+		for(RiskRule riskRule : rules){
+			int triggerLimit = riskRule.getTriggerLimit();
+			int ageMin = riskRule.getAgeRange().getStart();
+			int ageMax = riskRule.getAgeRange().getEnd();
+			String sex = riskRule.getSex();
 			
-			logger.debug("-------------------------------------------------------------------");
-			logger.debug("Start examine Rules(" + riskParam + ") for patient with triggerCount: " + pTriggerCount + ", age: " + pAge + ", sex: " + pSex);
+			logger.debug("Start examine Rules(" + riskRule 
+					+ ") for patient with triggerCount: " + pTriggerCount 
+					+ ", age: " + pAge + ", sex: " + pSex);
 			if(pTriggerCount >= triggerLimit) {
 				logger.debug("pTriggerCount: " + pTriggerCount + " >= triggerLimit: " + triggerLimit);
 				if(pAge >= ageMin  && pAge < ageMax) {
 					logger.debug("Patient age: " + pAge + " >= ageMin:" + ageMin + " && < " + ageMax);
 					if(sex == null || pSex.equals(sex)) {
 						logger.debug("Patient sex: " + pSex + " == " + sex + " OR rule sex is null");
-						logger.debug("Returning result: " + riskParam.getRiskLevel());
-						logger.debug("-------------------------------------------------------------------");
-						return riskParam.getRiskLevel();
+						logger.debug("Returning result: " + riskRule.getRiskLevel());
+						return riskRule.getRiskLevel();
 					}
 				}
 			}
-			logger.debug("-------------------------------------------------------------------");
 		}
-		
-		
 		return result;
 	}
 	
