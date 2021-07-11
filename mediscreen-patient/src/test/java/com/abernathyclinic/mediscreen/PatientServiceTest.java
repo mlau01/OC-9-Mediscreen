@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 import javax.validation.ConstraintViolationException;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,8 @@ import com.abernathyclinic.mediscreen.service.PatientService;
 
 @SpringBootTest
 public class PatientServiceTest {
+
+	private static Patient patientTest;
 	
 	@Autowired
 	private PatientService patientService;
@@ -29,8 +32,8 @@ public class PatientServiceTest {
 		
 	}
 	
-	@Test
-	public void createNewPatientTest_shouldCreatePatientCorrectly() throws AlreadyExistsPatientException, NoSuchPatientException {
+	@BeforeAll
+	public static void setUpPatientTest() {
 		//Set data
 		LocalDate dateOfBirth = LocalDate.of(1984, 8, 30);
 		String firstName = "John";
@@ -40,23 +43,58 @@ public class PatientServiceTest {
 		String address = "524 Ch Rastine";
 		String city = "Antibes";
 		
-		Patient patient = new Patient(firstName, lastName, dateOfBirth, sex, phone, address, city);
-
-		//Create patient
-		Patient createdPatient = patientService.create(patient);
-		
-		//Already exists assert
-		assertThrows(AlreadyExistsPatientException.class, () -> patientService.create(patient));
+		patientTest = new Patient(firstName, lastName, dateOfBirth, sex, phone, address, city);
+	}
+	
+	@Test
+	public void createNewPatientThenDeleteTest_shouldCreatePatientCorrectly() throws AlreadyExistsPatientException, NoSuchPatientException {
+		Patient createdPatient = patientService.create(patientTest);
 		
 		//Assert
 		assertNotNull(patientService.read(createdPatient.getId()));
-		assertEquals(firstName, createdPatient.getFirstName());
-		assertEquals(lastName, createdPatient.getLastName());
-		assertEquals(dateOfBirth, createdPatient.getDateOfBirth());
-		assertEquals(phone, createdPatient.getPhone());
-		assertEquals(sex, createdPatient.getSex());
-		assertEquals(address, createdPatient.getAddress());
-		assertEquals(city, createdPatient.getCity());
+		assertEquals(patientTest.getFirstName(), createdPatient.getFirstName());
+		assertEquals(patientTest.getLastName(), createdPatient.getLastName());
+		assertEquals(patientTest.getDateOfBirth(), createdPatient.getDateOfBirth());
+		assertEquals(patientTest.getPhone(), createdPatient.getPhone());
+		assertEquals(patientTest.getSex(), createdPatient.getSex());
+		assertEquals(patientTest.getAddress(), createdPatient.getAddress());
+		assertEquals(patientTest.getCity(), createdPatient.getCity());
+		
+		//Clean up
+		patientService.delete(String.valueOf(createdPatient.getId()));
+		assertThrows(NoSuchPatientException.class, () -> patientService.read(createdPatient.getId()));
+	}
+	
+	@Test
+	public void createDuplicatePatientTest_shouldThrowException() throws AlreadyExistsPatientException, NoSuchPatientException {
+		Patient patientCreated = patientService.create(patientTest);
+		assertThrows(AlreadyExistsPatientException.class, () -> patientService.create(patientTest));
+		
+		//Clean up
+		patientService.delete(String.valueOf(patientCreated.getId()));
+		assertThrows(NoSuchPatientException.class, () -> patientService.read(patientCreated.getId()));
+	}
+	
+	@Test
+	public void getPatientByLastNameTest_shouldReturnPatientByLastName() throws AlreadyExistsPatientException, NoSuchPatientException {
+		Patient createdPatient = patientService.create(patientTest);
+		
+		assertNotNull(patientService.getByLastName(createdPatient.getLastName()));
+		
+		//Clean up
+		patientService.delete(String.valueOf(createdPatient.getId()));
+		assertThrows(NoSuchPatientException.class, () -> patientService.read(createdPatient.getId()));
+	}
+	
+	@Test
+	public void getPatientByUnknownLastNameTest_shouldThrowException() {
+		assertThrows(NoSuchPatientException.class, () -> patientService.getByLastName("AZEERZRZR"));
+	}
+	
+	@Test
+	public void updatePatientTest_shouldUpdatePatientCorrectly() throws AlreadyExistsPatientException, NoSuchPatientException {
+		
+		Patient patientCreated = patientService.create(patientTest);
 		
 		//Update the patient
 		LocalDate m_dateOfBirth = LocalDate.of(1914, 1, 2);
@@ -67,17 +105,19 @@ public class PatientServiceTest {
 		String m_address = "19 Rue Cartel";
 		String m_city = "Nice";
 		
-		createdPatient.setFirstName(m_firstName);
-		createdPatient.setLastName(m_lastName);
-		createdPatient.setAddress(m_address);
-		createdPatient.setDateOfBirth(m_dateOfBirth);
-		createdPatient.setSex(m_sex);
-		createdPatient.setPhone(m_phone);
-		createdPatient.setCity(m_city);
-		Patient updatedPatient = patientService.update(createdPatient);
+		Patient patient = new Patient();
+		patient.setId(patientCreated.getId());
+		patient.setFirstName(m_firstName);
+		patient.setLastName(m_lastName);
+		patient.setAddress(m_address);
+		patient.setDateOfBirth(m_dateOfBirth);
+		patient.setSex(m_sex);
+		patient.setPhone(m_phone);
+		patient.setCity(m_city);
+		
+		Patient updatedPatient = patientService.update(patient);
 		
 		//Assert
-		assertEquals(createdPatient.getId(), updatedPatient.getId());
 		assertEquals(m_firstName, updatedPatient.getFirstName());
 		assertEquals(m_lastName, updatedPatient.getLastName());
 		assertEquals(m_dateOfBirth, updatedPatient.getDateOfBirth());
@@ -86,18 +126,11 @@ public class PatientServiceTest {
 		assertEquals(m_address, updatedPatient.getAddress());
 		assertEquals(m_city, updatedPatient.getCity());
 		
-		//Get the patient by last name
-		assertNotNull(patientService.getByLastName("Alister"));
-		assertThrows(NoSuchPatientException.class, () -> patientService.getByLastName("AZEERZRZR"));
-		
-		//Delete patient
-		int saveId = createdPatient.getId();
-		patientService.delete(String.valueOf(saveId));
-		assertThrows(NoSuchPatientException.class, () -> patientService.read(saveId));
-		
-		
+		//Clean up
+		patientService.delete(String.valueOf(patientCreated.getId()));
+		assertThrows(NoSuchPatientException.class, () -> patientService.read(patientCreated.getId()));
 	}
-	
+
 	@Test
 	public void createPatientWithConstraintViolationTest_shouldThrowException() {
 		
