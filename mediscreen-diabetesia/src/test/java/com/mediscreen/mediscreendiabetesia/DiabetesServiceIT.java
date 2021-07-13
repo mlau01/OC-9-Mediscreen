@@ -26,7 +26,7 @@ import com.mediscreen.mediscreendiabetesia.proxy.PatientProxy;
 import com.mediscreen.mediscreendiabetesia.service.DiabetesServiceImpl;
 import com.mediscreen.mediscreendiabetesia.utils.RiskLevel;
 
-@SpringBootTest
+@SpringBootTest(properties = { "patientapi.socket=http://localhost:8081", "noteapi.socket=http://localhost:8082" })
 public class DiabetesServiceIT {
 	
 	@Autowired
