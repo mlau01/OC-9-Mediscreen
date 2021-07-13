@@ -1,12 +1,13 @@
 package com.mediscreen.mediscreendiabetesia.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import com.mediscreen.mediscreendiabetesia.utils.RiskLevel;
 
-@Data
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
 @NoArgsConstructor
 public class PatientAssessDto {
 	
