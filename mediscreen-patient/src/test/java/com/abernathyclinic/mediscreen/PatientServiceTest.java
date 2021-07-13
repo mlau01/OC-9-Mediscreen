@@ -3,6 +3,7 @@ package com.abernathyclinic.mediscreen;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 
@@ -44,6 +45,47 @@ public class PatientServiceTest {
 		String city = "Antibes";
 		
 		patientTest = new Patient(firstName, lastName, dateOfBirth, sex, phone, address, city);
+	}
+	
+	@Test
+	public void patientModelTest_gettersAndSettersShouldWorkCorrectly() {
+		LocalDate dateOfBirth = LocalDate.of(1984, 8, 30);
+		String firstName = "John";
+		String lastName = "Do";
+		String phone = "555-5534";
+		String sex = "M";
+		String address = "524 Ch Rastine";
+		String city = "Antibes";
+		
+		Patient patient = new Patient();
+		patient.setFirstName(firstName);
+		patient.setLastName(lastName);
+		patient.setPhone(phone);
+		patient.setAddress(address);
+		patient.setSex(sex);
+		patient.setCity(city);
+		patient.setDateOfBirth(dateOfBirth);
+		
+		assertEquals(firstName, patient.getFirstName());
+		assertEquals(lastName, patient.getLastName());
+		assertEquals(phone, patient.getPhone());
+		assertEquals(sex, patient.getSex());
+		assertEquals(address, patient.getAddress());
+		assertEquals(city, patient.getCity());
+		assertEquals(dateOfBirth, patient.getDateOfBirth());
+		
+		String firstName2 = "Walter";
+		String lastName2 = "Who";
+		
+		patient.setDob("1986-08-30");
+		patient.setGiven(firstName2);
+		patient.setFamily(lastName2);
+		
+		assertEquals(firstName2, patient.getFirstName());
+		assertEquals(lastName2, patient.getLastName());
+		assertEquals(LocalDate.of(1986, 8, 30), patient.getDateOfBirth());
+		
+		assertTrue(patient.hashCode() != 0);
 	}
 	
 	@Test
