@@ -1,7 +1,7 @@
 # Mediscreen
 Mediscreen is an application about managing patient.
 It offer services to doctors, clinics or other medical compagnies to handle patients file.
-In future releases Mediscreen will be able to warn medical assistant of potencial deseases risks.
+It can releases Mediscreen will be able to warn medical assistant of potencial deseases risks.
 
 
 This application use different technologies to achieve his purpose like:
@@ -33,6 +33,12 @@ https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.
 
 https://docs.docker.com/engine/install/
 
+3. For Angular front end you need:
+
+- Node.js : https://nodejs.org/en/download/
+- Npm : `npm install -g npm@lasted`
+- Angular/cli: `npm install -g @angular/cli`
+
 ### Installing App
 
 1.Clone this project using git:
@@ -43,7 +49,23 @@ https://docs.docker.com/engine/install/
 
 `gradlew runDocker`
 
-this will build all micro services needed and add them to your docker environment.
+This will build all micro services needed and add them to your docker environment.
+
+This also build the Angular UI and add an image to docker environment.
+
+If you want build and run only the back end (without Angular UI), you can use this task:
+
+`gradlew runBackDocker`
+
+### Clean Docker environment
+
+1. If you want to uninstall all microservices and clean your Docker environment, use :
+
+`gradlew stopDocker`
+
+OR
+
+`gradlew stopBackDocker`
 
 ### Running Tests
 
@@ -59,10 +81,10 @@ Docker will open sockets for each micro services:
 
 - Mediscreen UI: http://localhost:4200
 - Mediscreen Patient restful API: http://localhost:8081
-- Mediscreen Patient Note restful API: NOT YET AVAILABLE
-- Mediscreen Patient Disease IA restful API: NOT YET AVAILABLE
-- Mediscreen MongoDB http://localhost:27000
-- Mediscreen MySQL http://localhost:3600
+- Mediscreen Patient Note restful API: http://localhost:8082
+- Mediscreen Patient Diabetes IA API: http://localhost:8083
+- Mediscreen MongoDB http://localhost:27017
+- Mediscreen MySQL http://localhost:3306
 
 ### Docs
 
