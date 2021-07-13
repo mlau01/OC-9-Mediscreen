@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.validation.ConstraintViolationException;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,47 +24,66 @@ public class NoteServiceTest {
 	@Autowired
 	private INoteService noteService;
 	
-	@Test
-	public void CRUDNoteTest() throws NoSuchNoteException {
-		//Prepare
+	private static NoteModel noteTest;
+	
+	@BeforeAll
+	public static void setUp(){
 		String author = "Laurent Vouaze";
 		LocalDateTime created = LocalDateTime.of(2020, 01, 01, 12, 00);
 		int patientId = 21;
 		String note_content = "Hello world!";
 		
-		NoteModel note = new NoteModel();
-		note.setAuthor(author);
-		note.setCreated(created);
-		note.setPatientId(patientId);
-		note.setNote(note_content);
+		noteTest = new NoteModel();
+		noteTest.setAuthor(author);
+		noteTest.setCreated(created);
+		noteTest.setPatientId(patientId);
+		noteTest.setNote(note_content);
+	}
+	
+	@Test
+	public void createNoteTest_shouldCreateNoteCorrectly() throws NoSuchNoteException {
+		NoteModel noteCreated = noteService.create(noteTest);
 		
-		//Create
-		
-		NoteModel noteCreated = noteService.create(note);
 		assertNotNull(noteCreated.getId());
+		assertEquals(noteTest.getAuthor(), noteCreated.getAuthor());
+		assertNotNull(noteCreated.getCreated());
+		assertEquals(noteTest.getPatientId(), noteCreated.getPatientId());
+		assertEquals(noteTest.getNote(), noteCreated.getNote());
 		
-		//Read
+		//Clean up
+		String id = noteCreated.getId();
+		noteService.delete(noteCreated.getId());
+		assertThrows(NoSuchNoteException.class, () -> noteService.getById(id));
+	}
+	
+	@Test
+	public void readNoteTest_shouldReadNoteCorrectly() throws NoSuchNoteException {
+		NoteModel noteCreated = noteService.create(noteTest);
+		
 		NoteModel noteGetted = noteService.getById(noteCreated.getId());
 		
-		assertEquals(author, noteGetted.getAuthor());
+		assertNotNull(noteGetted.getId());
+		assertEquals(noteTest.getAuthor(), noteGetted.getAuthor());
 		assertNotNull(noteGetted.getCreated());
-		assertEquals(patientId, noteGetted.getPatientId());
-		assertEquals(note_content, noteGetted.getNote());
+		assertEquals(noteTest.getPatientId(), noteGetted.getPatientId());
+		assertEquals(noteTest.getNote(), noteGetted.getNote());
 		
-		//Update
-		noteGetted.setAuthor("Test");
-		noteGetted.setNote("Hello Modified!");
+		//Clean up
+		String id = noteCreated.getId();
+		noteService.delete(noteCreated.getId());
+		assertThrows(NoSuchNoteException.class, () -> noteService.getById(id));
+	}
+	
+	@Test
+	public void updateNoteTest_shouldUpdateNoteCorrectly() {
+		NoteModel noteCreated = noteService.create(noteTest);
+		noteCreated.setAuthor("Test");
+		noteCreated.setNote("Hello Modified!");
 		
-		NoteModel noteUpdated = noteService.put(noteGetted);
+		NoteModel noteUpdated = noteService.put(noteCreated);
 		
 		assertEquals("Test", noteUpdated.getAuthor());
 		assertEquals("Hello Modified!", noteUpdated.getNote());
-		
-		//Delete
-		String saveId = noteGetted.getId();
-		noteService.delete(saveId);
-		
-		assertThrows(NoSuchNoteException.class, () -> noteService.getById(saveId));
 	}
 	
 	@Test
