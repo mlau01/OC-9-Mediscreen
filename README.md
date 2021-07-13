@@ -12,6 +12,22 @@ This application use different technologies to achieve his purpose like:
 
 Mediscreen is built on a multi service architecture.
 
+Services are:
+
+Mediscreen-patient: Manage patient personnal informations
+
+Mediscreen-note: Manage patient notes
+
+Mediscreen-diabetesia: Diabetes IA detection
+
+Mediscreen-ui: Angular Front End
+
+There is also two database system: 
+
+- MySQL
+
+- MongoDB
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -53,6 +69,8 @@ This will build all micro services needed and add them to your docker environmen
 
 This also build the Angular UI and add it to docker environment.
 
+Two database will be containerized: Mysql and MongoDB
+
 If you want build and run only the back end (without Angular UI), you can use this task:
 
 `gradlew runBackDocker`
@@ -77,7 +95,7 @@ Run tests:
 
 ### URLs
 
-Docker will open sockets for each micro services:
+Docker will open sockets for each services:
 
 - Mediscreen UI: http://localhost:4200
 - Mediscreen Patient restful API: http://localhost:8081
