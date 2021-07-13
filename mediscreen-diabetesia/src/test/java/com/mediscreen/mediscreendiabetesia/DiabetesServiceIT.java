@@ -228,6 +228,10 @@ public class DiabetesServiceIT {
 		assertThrows(NoSuchPatientException.class, () -> diabetesService.getPatientAssess(9999));
 	}
 	
+	/**
+	 * This integration test need services note and patient access to work
+	 * you can override socket url in annotation @SpringBootTest at the head of this file
+	 */
 	@Test
 	public void getDiabetesRiskTest_shouldReturnCorrectlyFilledPatientAssessDto() throws NoSuchPatientException {
 		List<Patient> db_patients = patientProxy.getAllPatients();

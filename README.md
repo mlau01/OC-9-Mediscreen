@@ -49,9 +49,9 @@ https://docs.docker.com/engine/install/
 
 `gradlew runDocker`
 
-This will build all micro services needed and add them to your docker environment.
+This will build all micro services needed and add them to your docker environment in a fat container named 'mediscreen'
 
-This also build the Angular UI and add an image to docker environment.
+This also build the Angular UI and add it to docker environment.
 
 If you want build and run only the back end (without Angular UI), you can use this task:
 
@@ -88,4 +88,4 @@ Docker will open sockets for each micro services:
 
 ### Docs
 
-A swagger doc is available for all Java micro services at http://localhost:<microservice port>/swagger-ui.html#/
+A swagger doc is available for all Java micro services at http://localhost:[microservice port]>/swagger-ui.html#/
