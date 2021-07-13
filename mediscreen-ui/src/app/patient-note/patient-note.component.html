@@ -3,5 +3,5 @@
   <span class="be-comment-time">{{note.created | date}}
     <a (click)="onEdit()" class="btn-comment-action">Edit</a>
     <a (click)="onDelete()" class="btn-comment-action">Delete</a></span>
-  <p class="be-comment-text">{{note.note}}</p>
+  <p class="be-comment-text" [innerText]="note.note"></p>
 </div>

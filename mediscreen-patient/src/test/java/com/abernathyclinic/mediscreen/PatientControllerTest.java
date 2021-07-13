@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,6 +26,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.abernathyclinic.mediscreen.exception.AlreadyExistsPatientException;
 import com.abernathyclinic.mediscreen.exception.NoSuchPatientException;
 import com.abernathyclinic.mediscreen.model.Patient;
 import com.abernathyclinic.mediscreen.service.PatientService;
@@ -60,7 +62,7 @@ public class PatientControllerTest {
 	}
 
 	@Test
-	public void postPatientTest() throws Exception {
+	public void postPatientTest_shouldReturnStatusCreated() throws Exception {
 	
 		when(patientService.create(patientTest)).thenReturn(patientTest);
 		
@@ -72,9 +74,23 @@ public class PatientControllerTest {
 		verify(patientService, Mockito.times(1)).create(patientTest);
 
 	}
+	
+	@Test
+	public void postAlreadyExistsPatientTest_shouldReturnError400() throws Exception {
+	
+		when(patientService.create(patientTest)).thenThrow(AlreadyExistsPatientException.class);
+		
+		mockMvc.perform(post("/patients")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(oMapper.writeValueAsString(patientTest)))
+				.andExpect(status().isBadRequest());
+		
+		verify(patientService, Mockito.times(1)).create(patientTest);
+
+	}
 
 	@Test
-	public void deletePatientTest_() throws Exception {
+	public void deletePatientTest_shouldReturnStatusOk() throws Exception {
 		
 		mockMvc.perform(delete("/patients/0"))
 				.andExpect(status().isOk());
@@ -83,7 +99,7 @@ public class PatientControllerTest {
 	}
 	
 	@Test
-	public void getAllPatientTest() throws Exception {
+	public void getAllPatientTest_shouldReturnStatusOk() throws Exception {
 		when(patientService.getAllPatient()).thenReturn(new ArrayList<Patient>());
 		
 		mockMvc.perform(get("/patients")).andExpect(status().isOk());
@@ -92,7 +108,16 @@ public class PatientControllerTest {
 	}
 	
 	@Test
-	public void getSinglePatientTest() throws Exception {
+	public void getNullPatientTest_shouldReturnError500() throws Exception {
+		when(patientService.getAllPatient()).thenReturn(null);
+		
+		mockMvc.perform(get("/patients")).andExpect(status().isInternalServerError());
+		
+		verify(patientService, Mockito.times(1)).getAllPatient();
+	}
+	
+	@Test
+	public void getSinglePatientTest_shouldReturnStatusOk() throws Exception {
 		when(patientService.read(0)).thenReturn(patientTest);
 		
 		mockMvc.perform(get("/patients/0")).andExpect(status().isOk());
@@ -101,7 +126,25 @@ public class PatientControllerTest {
 	}
 	
 	@Test
-	public void getPatientByLastNameTest() throws Exception {
+	public void getSinglePatientUnparseableIdTest_shouldReturnStatusBadRequest() throws Exception {
+		when(patientService.read(0)).thenThrow(NumberFormatException.class);
+		
+		mockMvc.perform(get("/patients/0")).andExpect(status().isBadRequest());
+		
+		verify(patientService, Mockito.times(1)).read(0);
+	}
+	
+	@Test
+	public void getSingleUnknownPatientTest_shouldReturnStatusNotFound() throws Exception {
+		when(patientService.read(0)).thenThrow(NoSuchPatientException.class);
+		
+		mockMvc.perform(get("/patients/0")).andExpect(status().isNotFound());
+		
+		verify(patientService, Mockito.times(1)).read(0);
+	}
+	
+	@Test
+	public void getPatientByLastNameTest_shouldReturnStatusOk() throws Exception {
 		when(patientService.getByLastName("TEST")).thenReturn(patientTest);
 		
 		mockMvc.perform(get("/patients/lastname/TEST")).andExpect(status().isOk());
@@ -119,13 +162,26 @@ public class PatientControllerTest {
 	}
 	
 	@Test
-	public void putPatientTest() throws Exception {
+	public void putPatientTest_shouldReturnStatusCreated() throws Exception {
 		when(patientService.update(patientTest)).thenReturn(patientTest);
 		
 		mockMvc.perform(put("/patients")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(oMapper.writeValueAsString(patientTest)))
 				.andExpect(status().isCreated());
+		
+		verify(patientService, Mockito.times(1)).update(patientTest);
+		
+	}
+	
+	@Test
+	public void putAlreadyExistPatientTest_shouldReturnStatusBadRequest() throws Exception {
+		when(patientService.update(patientTest)).thenThrow(AlreadyExistsPatientException.class);
+		
+		mockMvc.perform(put("/patients")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(oMapper.writeValueAsString(patientTest)))
+				.andExpect(status().isBadRequest());
 		
 		verify(patientService, Mockito.times(1)).update(patientTest);
 		

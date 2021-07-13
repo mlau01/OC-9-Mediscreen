@@ -60,7 +60,7 @@ task stopBackDocker (type: Exec) {
 }
 
 task runDocker (type: Exec) {
-	dependsOn "mediscreen-patient:buildDocker", "mediscreen-note:buildDocker", "mediscreen-diabetesia:buildDocker"
+	dependsOn "mediscreen-patient:buildDocker", "mediscreen-note:buildDocker", "mediscreen-diabetesia:buildDocker", "mediscreen-ui:buildAngularDocker"
 	group = "Docker"
 	description = "Start all project micro services"
 	commandLine "docker" ,"compose", "-p", "mediscreen", "-f", "docker/docker-compose.yml", "up", "-d"
@@ -70,5 +70,5 @@ task stopDocker (type: Exec) {
 	group = "Docker"
 	description = "Stop all project micro services"
 	commandLine "docker" ,"compose", "-p", "mediscreen", "-f", "docker/docker-compose.yml", "down"
-	finalizedBy "mediscreen-patient:cleanDocker", "mediscreen-note:cleanDocker", "mediscreen-diabetesia:cleanDocker"
+	finalizedBy "mediscreen-patient:cleanDocker", "mediscreen-note:cleanDocker", "mediscreen-diabetesia:cleanDocker", "mediscreen-ui:cleanAngularDocker"
 }

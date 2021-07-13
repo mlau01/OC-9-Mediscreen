@@ -14,8 +14,8 @@ import com.mediscreen.mediscreendiabetesia.utils.RiskRule;
 public class RuleServiceImpl implements IRuleService{
 	
 	/**
-	 * Return a sorted map by RiskParam.triggerLimit descendant
-	 * @return SortedMap<RiskParam, RiskLevel>
+	 * Return a sorted list by RiskRule.triggerLimit descendant
+	 * @return List<RiskRule>
 	 * 4 juil. 2021
 	 */
 	public List<RiskRule> getRules() {

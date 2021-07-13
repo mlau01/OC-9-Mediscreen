@@ -100,7 +100,7 @@ public class NoteController {
 		if(noteUpdated != null) {
 			return new ResponseEntity<NoteModel>(noteUpdated, HttpStatus.CREATED);
 		} else {
-			return new ResponseEntity<NoteModel>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<NoteModel>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
@@ -109,7 +109,7 @@ public class NoteController {
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "No note found with this id") })
 	
 	@DeleteMapping(value = CRUD_ENDPOINT_NAME + "/{id}")
-	public ResponseEntity<String> deleteNote(@PathVariable("id") String id)  {
+	public ResponseEntity<Boolean> deleteNote(@PathVariable("id") String id)  {
 
     	log.info("DELETE Request to: {}",CRUD_ENDPOINT_NAME + "/"+id);
 
@@ -117,13 +117,8 @@ public class NoteController {
 			noteService.delete(id);
 		} catch (NoSuchNoteException e) {
 			log.error(e.getMessage());
-			return new ResponseEntity<String>(jsonify(e.getMessage()), HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>( HttpStatus.OK);
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
-
-	private String jsonify(String string){
-		return "\"" + string + "\"";
-	}
-
 }

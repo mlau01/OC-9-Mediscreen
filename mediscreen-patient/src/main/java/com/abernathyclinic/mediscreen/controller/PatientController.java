@@ -34,7 +34,7 @@ public class PatientController {
 	}
 	
 	@Deprecated
-	@ApiOperation(value = "Deprecated URI for old curl request, return same responses as /patient")
+	@ApiOperation(value = "Deprecated URI for old curl request, return same responses as /patients")
 	@PostMapping(value = "patient/add") //For old curl request
 	public ResponseEntity<Patient> oldAddPatient(@Valid Patient patient) {
     	log.info("POST Request to /patients/add with value: {}", patient);
@@ -144,7 +144,7 @@ public class PatientController {
 			 @ApiResponse(code = 404, message = "No patient found with this id")
 			 })
 	@DeleteMapping(value = "patients/{id}")
-	public ResponseEntity<String> deletePatient(@PathVariable("id") String id)  {
+	public ResponseEntity<Boolean> deletePatient(@PathVariable("id") String id)  {
 
     	log.info("DELETE Request to /patients/{}", id);
 
@@ -152,13 +152,8 @@ public class PatientController {
 			patientService.delete(id);
 		} catch (NoSuchPatientException e) {
 			log.error(e.getMessage());
-			return new ResponseEntity<String>(jsonify(e.getMessage()), HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>( HttpStatus.OK);
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
-
-	private String jsonify(String string){
-		return "\"" + string + "\"";
-	}
-
 }

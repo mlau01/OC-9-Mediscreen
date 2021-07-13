@@ -28,7 +28,7 @@ public class TriggerServiceTest {
 	public void getTriggersCount_shouldReturnCorrectNumber() {
 		TriggerServiceImpl triggerService = new TriggerServiceImpl();
 		Note noteWithAllTrigger = new Note();
-		noteWithAllTrigger.setNote("Hémoglobine A1CMicroalbumineTaillePoidsFumeurAnormalCholestérolVertigeRechuteRéactionAnticorps");
+		noteWithAllTrigger.setNote("HÃ©moglobine A1CMicroalbumineTaillePoidsFumeurAnormalCholestÃ©rolVertigeRechuteRÃ©actionAnticorps");
 		List<Note> notes = new ArrayList<Note>();
 		notes.add(noteWithAllTrigger);
 		notes.add(noteWithAllTrigger);
