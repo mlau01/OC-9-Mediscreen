@@ -22,6 +22,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.abernathyclinic.mediscreennote.exception.NoSuchNoteException;
 import com.abernathyclinic.mediscreennote.model.NoteModel;
 import com.abernathyclinic.mediscreennote.service.NoteServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,7 +56,7 @@ public class NoteControllerTest {
 	}
 
 	@Test
-	public void postNoteTest() throws Exception {
+	public void postNoteTest_shouldReturnStatusCreated() throws Exception {
 	
 		when(noteService.create(noteTest)).thenReturn(noteTest);
 		
@@ -67,9 +68,23 @@ public class NoteControllerTest {
 		verify(noteService, Mockito.times(1)).create(noteTest);
 
 	}
+	
+	@Test
+	public void postNoteFailedTest_shouldReturnStatusBadRequest() throws Exception {
+	
+		when(noteService.create(noteTest)).thenReturn(null);
+		
+		mockMvc.perform(post(CRUD_ENDPOINT_NAME)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(oMapper.writeValueAsString(noteTest)))
+				.andExpect(status().isBadRequest());
+		
+		verify(noteService, Mockito.times(1)).create(noteTest);
+
+	}
 
 	@Test
-	public void deleteNoteTest_() throws Exception {
+	public void deleteNoteTest_shouldReturnStatusOk() throws Exception {
 		
 		mockMvc.perform(delete(CRUD_ENDPOINT_NAME + "/0"))
 				.andExpect(status().isOk());
@@ -78,8 +93,17 @@ public class NoteControllerTest {
 	}
 	
 	@Test
-	public void getAllNoteTest() throws Exception {
+	public void getAllNoteTest_shouldReturnStatusOk() throws Exception {
 		when(noteService.getByPatientIdOrderedDesc(0)).thenReturn(new ArrayList<NoteModel>());
+		
+		mockMvc.perform(get(CRUD_ENDPOINT_NAME + "/patient/0")).andExpect(status().isOk());
+		
+		verify(noteService, Mockito.times(1)).getByPatientIdOrderedDesc(0);
+	}
+	
+	@Test
+	public void getAllNoteUnknownPatientIdTest_shouldReturnEmptyListButResponseOk() throws Exception {
+		when(noteService.getByPatientIdOrderedDesc(0)).thenThrow(NoSuchNoteException.class);
 		
 		mockMvc.perform(get(CRUD_ENDPOINT_NAME + "/patient/0")).andExpect(status().isOk());
 		
@@ -91,6 +115,15 @@ public class NoteControllerTest {
 		when(noteService.getById("0")).thenReturn(noteTest);
 		
 		mockMvc.perform(get(CRUD_ENDPOINT_NAME + "/0")).andExpect(status().isOk());
+		
+		verify(noteService, Mockito.times(1)).getById("0");
+	}
+	
+	@Test
+	public void getUnknownNoteTest_shouldReturnStatusNotFound() throws Exception {
+		when(noteService.getById("0")).thenThrow(NoSuchNoteException.class);
+		
+		mockMvc.perform(get(CRUD_ENDPOINT_NAME + "/0")).andExpect(status().isNotFound());
 		
 		verify(noteService, Mockito.times(1)).getById("0");
 	}
