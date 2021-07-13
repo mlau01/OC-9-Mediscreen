@@ -1,7 +1,7 @@
 # Mediscreen
 Mediscreen is an application about managing patient.
 It offer services to doctors, clinics or other medical compagnies to handle patients file.
-It can releases Mediscreen will be able to warn medical assistant of potencial deseases risks.
+Mediscreen is able to warn medical assistant of potencial diabetes risks.
 
 
 This application use different technologies to achieve his purpose like:
@@ -14,13 +14,13 @@ Mediscreen is built on a multi service architecture.
 
 Services are:
 
-Mediscreen-patient: Manage patient personnal informations
+- Mediscreen-patient: Manage patient personnal informations
 
-Mediscreen-note: Manage patient notes
+- Mediscreen-note: Manage patient notes
 
-Mediscreen-diabetesia: Diabetes IA detection
+- Mediscreen-diabetesia: Diabetes IA detection
 
-Mediscreen-ui: Angular Front End
+- Mediscreen-ui: Angular Front End
 
 There is also two database system: 
 
