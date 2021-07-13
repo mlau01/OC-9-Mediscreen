@@ -1,3 +1,4 @@
 include 'mediscreen-patient'
 include 'mediscreen-note'
 include 'mediscreen-diabetesia'
+include 'mediscreen-ui'
