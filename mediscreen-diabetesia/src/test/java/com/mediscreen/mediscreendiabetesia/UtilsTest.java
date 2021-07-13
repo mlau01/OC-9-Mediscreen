@@ -1,6 +1,7 @@
 package com.mediscreen.mediscreendiabetesia;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,7 @@ public class UtilsTest {
 		
 		assertEquals(10, ageRange.getStart());
 		assertEquals(100, ageRange.getEnd());
+		assertTrue(ageRange.hashCode() != 0);
 	}
 	
 	@Test
@@ -35,6 +37,7 @@ public class UtilsTest {
 		assertEquals(ageRange, riskRule.getAgeRange());
 		assertEquals("M", riskRule.getSex());
 		assertEquals(RiskLevel.Borderline, riskRule.getRiskLevel());
+		assertTrue(riskRule.hashCode() != 0);
 	}
 
 }
