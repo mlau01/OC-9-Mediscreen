@@ -95,7 +95,11 @@ Run tests:
 
 ### Jacoco reports
 
-![DiabetesIA](https://user-images.githubusercontent.com/55598818/125614738-aa400835-3e4d-462b-95bf-7b37187146b8.PNG)
+![DiabetesIA](https://user-images.githubusercontent.com/55598818/125615311-e75a26a4-5231-4ef3-a722-fa97eaba51bc.PNG)
+
+![Patient](https://user-images.githubusercontent.com/55598818/125615529-9ed05cc7-b073-4572-8206-d668e3bad84f.png)
+
+![Note](https://user-images.githubusercontent.com/55598818/125615708-e91150d1-d186-4e0d-97fd-d9bea3a22950.PNG)
 
 ### URLs
 
