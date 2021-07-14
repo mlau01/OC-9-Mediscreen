@@ -93,6 +93,10 @@ Run tests:
 
 `gradlew test`
 
+### Jacoco reports
+
+![DiabetesIA](https://user-images.githubusercontent.com/55598818/125614738-aa400835-3e4d-462b-95bf-7b37187146b8.PNG)
+
 ### URLs
 
 Docker will open sockets for each services:

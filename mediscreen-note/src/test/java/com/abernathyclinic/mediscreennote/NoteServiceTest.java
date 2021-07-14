@@ -76,7 +76,7 @@ public class NoteServiceTest {
 	}
 	
 	@Test
-	public void updateNoteTest_shouldUpdateNoteCorrectly() {
+	public void updateNoteTest_shouldUpdateNoteCorrectly() throws NoSuchNoteException {
 		NoteModel noteCreated = noteService.create(noteTest);
 		noteCreated.setAuthor("Test");
 		noteCreated.setNote("Hello Modified!");
@@ -85,6 +85,11 @@ public class NoteServiceTest {
 		
 		assertEquals("Test", noteUpdated.getAuthor());
 		assertEquals("Hello Modified!", noteUpdated.getNote());
+		
+		//Clean up
+		String id = noteCreated.getId();
+		noteService.delete(noteCreated.getId());
+		assertThrows(NoSuchNoteException.class, () -> noteService.getById(id));
 	}
 	
 	@Test

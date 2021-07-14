@@ -2,6 +2,7 @@ package com.abernathyclinic.mediscreennote;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -58,28 +59,28 @@ public class NoteControllerTest {
 	@Test
 	public void postNoteTest_shouldReturnStatusCreated() throws Exception {
 	
-		when(noteService.create(noteTest)).thenReturn(noteTest);
+		when(noteService.create(any(NoteModel.class))).thenReturn(noteTest);
 		
 		mockMvc.perform(post(CRUD_ENDPOINT_NAME)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(oMapper.writeValueAsString(noteTest)))
 				.andExpect(status().isCreated());
 		
-		verify(noteService, Mockito.times(1)).create(noteTest);
+		verify(noteService, Mockito.times(1)).create(any(NoteModel.class));
 
 	}
 	
 	@Test
 	public void postNoteFailedTest_shouldReturnStatusBadRequest() throws Exception {
 	
-		when(noteService.create(noteTest)).thenReturn(null);
+		when(noteService.create(any(NoteModel.class))).thenReturn(null);
 		
 		mockMvc.perform(post(CRUD_ENDPOINT_NAME)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(oMapper.writeValueAsString(noteTest)))
 				.andExpect(status().isBadRequest());
 		
-		verify(noteService, Mockito.times(1)).create(noteTest);
+		verify(noteService, Mockito.times(1)).create(any(NoteModel.class));
 
 	}
 
@@ -129,15 +130,15 @@ public class NoteControllerTest {
 	}
 	
 	@Test
-	public void putnoteTest() throws Exception {
-		when(noteService.put(noteTest)).thenReturn(noteTest);
+	public void putNoteTest_shouldReturnStatusCreated() throws Exception {
+		when(noteService.put(any(NoteModel.class))).thenReturn(noteTest);
 		
 		mockMvc.perform(put(CRUD_ENDPOINT_NAME)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(oMapper.writeValueAsString(noteTest)))
 				.andExpect(status().isCreated());
 		
-		verify(noteService, Mockito.times(1)).put(noteTest);
+		verify(noteService, Mockito.times(1)).put(any(NoteModel.class));
 		
 	}
 

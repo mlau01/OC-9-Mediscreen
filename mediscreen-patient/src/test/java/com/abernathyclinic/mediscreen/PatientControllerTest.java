@@ -64,28 +64,28 @@ public class PatientControllerTest {
 	@Test
 	public void postPatientTest_shouldReturnStatusCreated() throws Exception {
 	
-		when(patientService.create(patientTest)).thenReturn(patientTest);
+		when(patientService.create(any(Patient.class))).thenReturn(patientTest);
 		
 		mockMvc.perform(post("/patients")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(oMapper.writeValueAsString(patientTest)))
 				.andExpect(status().isCreated());
 		
-		verify(patientService, Mockito.times(1)).create(patientTest);
+		verify(patientService, Mockito.times(1)).create(any(Patient.class));
 
 	}
 	
 	@Test
 	public void postAlreadyExistsPatientTest_shouldReturnError400() throws Exception {
 	
-		when(patientService.create(patientTest)).thenThrow(AlreadyExistsPatientException.class);
+		when(patientService.create(any(Patient.class))).thenThrow(AlreadyExistsPatientException.class);
 		
 		mockMvc.perform(post("/patients")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(oMapper.writeValueAsString(patientTest)))
 				.andExpect(status().isBadRequest());
 		
-		verify(patientService, Mockito.times(1)).create(patientTest);
+		verify(patientService, Mockito.times(1)).create(any(Patient.class));
 
 	}
 
@@ -163,27 +163,27 @@ public class PatientControllerTest {
 	
 	@Test
 	public void putPatientTest_shouldReturnStatusCreated() throws Exception {
-		when(patientService.update(patientTest)).thenReturn(patientTest);
+		when(patientService.update(any(Patient.class))).thenReturn(patientTest);
 		
 		mockMvc.perform(put("/patients")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(oMapper.writeValueAsString(patientTest)))
 				.andExpect(status().isCreated());
 		
-		verify(patientService, Mockito.times(1)).update(patientTest);
+		verify(patientService, Mockito.times(1)).update(any(Patient.class));
 		
 	}
 	
 	@Test
 	public void putAlreadyExistPatientTest_shouldReturnStatusBadRequest() throws Exception {
-		when(patientService.update(patientTest)).thenThrow(AlreadyExistsPatientException.class);
+		when(patientService.update(any(Patient.class))).thenThrow(AlreadyExistsPatientException.class);
 		
 		mockMvc.perform(put("/patients")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(oMapper.writeValueAsString(patientTest)))
 				.andExpect(status().isBadRequest());
 		
-		verify(patientService, Mockito.times(1)).update(patientTest);
+		verify(patientService, Mockito.times(1)).update(any(Patient.class));
 		
 	}
 
