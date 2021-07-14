@@ -19,5 +19,9 @@ public interface PatientProxy {
 
 	@RequestLine("GET /patients/lastname/{lastName}")
 	Patient getPatient(@Param("lastName") String lastName);
+	
+	@RequestLine("DELETE /patients/id")
+	@Headers("Content-Type: application/json;charset=UTF-8")
+	Patient deletePatient(@Param("id") String string);
 
 }

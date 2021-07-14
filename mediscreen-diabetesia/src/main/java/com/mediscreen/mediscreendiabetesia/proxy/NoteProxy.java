@@ -14,5 +14,9 @@ public interface NoteProxy {
 	@RequestLine("POST /notes")
 	@Headers("Content-Type: application/json;charset=UTF-8")
 	void addNote(String string);
+	
+	@RequestLine("DELETE /notes/{id}")
+	@Headers("Content-Type: application/json;charset=UTF-8")
+	void deleteNote(@Param("id") String string);
 
 }
