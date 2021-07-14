@@ -1,15 +1,14 @@
 package com.mediscreen.mediscreendiabetesia;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,20 +32,23 @@ public class DiabetesServiceIT {
 	private DiabetesServiceImpl diabetesService;
 	
 	@Autowired
-	ObjectMapper objectMapper;
+	private ObjectMapper objectMapper;
 	
 	@Autowired
-	NoteProxy noteProxy;
+	private NoteProxy noteProxy;
 	
 	@Autowired
-	PatientProxy patientProxy;
+	private PatientProxy patientProxy;
 	
-	public static List<PatientTestModel> patients;
 	
-	@BeforeAll
-	public static void setUp() {
+	@Test
+	public void diabetesAssessTest_shouldAddTestDatasAndGetCorrectDiabetesAssess() throws JsonProcessingException, NoSuchPatientException {
 		
-		patients = new ArrayList<PatientTestModel>();
+		// Prepare datas
+		Map<PatientTestModel, Patient> patientMap = new Hashtable<PatientTestModel, Patient>();
+		List<Note> noteCreated = new ArrayList<Note>();
+		List<PatientTestModel> patients = new ArrayList<PatientTestModel>();
+		
 		Note[] noteFergusen =  { 
 				new Note("Dr Strange", "Le patient déclare qu'il « se sent très bien »\r\n"
 						+ "Poids égal ou inférieur au poids recommandé"),
@@ -204,48 +206,42 @@ public class DiabetesServiceIT {
 				noteBailey, 
 				RiskLevel.Borderline));
 		
-		
-	}
-	
-	@Test
-	@Disabled //Execute this only one time to add demonstration datas
-	public void addDemoPatients() 
-						throws JsonProcessingException{
-		
+		// Add datas
 		for(PatientTestModel pt : patients) {
-			int id = patientProxy.addPatient(objectMapper.writeValueAsString(pt.getPatient())).getId();
+			Patient patient = patientProxy.addPatient(objectMapper.writeValueAsString(pt.getPatient()));
+			patientMap.put(pt, patient);
 			Note[] pNotes = pt.getNotes();
 			for(int i = 0; i < pNotes.length; i++) {
-				pNotes[i].setPatientId(id);
-				noteProxy.addNote(objectMapper.writeValueAsString(pNotes[i]));
+				pNotes[i].setPatientId(patient.getId());
+				Note note = noteProxy.addNote(objectMapper.writeValueAsString(pNotes[i]));
+				noteCreated.add(note);
 			}
 		}
 		
-	}
-	
-	@Test
-	public void getDiabetesRiskOfUnknownPatient_shouldThrowException() {
-		assertThrows(NoSuchPatientException.class, () -> diabetesService.getPatientAssess(9999));
-	}
-	
-	/**
-	 * This integration test need services note and patient access to work
-	 * you can override socket url in annotation @SpringBootTest at the head of this file
-	 */
-	@Test
-	public void getDiabetesRiskTest_shouldReturnCorrectlyFilledPatientAssessDto() throws NoSuchPatientException {
-		List<Patient> db_patients = patientProxy.getAllPatients();
+		// Assert
 		
-		for(PatientTestModel pt : patients) {
-			for(Patient p : db_patients) {
-				if(pt.getLastName().equals(p.getLastName())) {
-					PatientAssessDto patientAssessDto = diabetesService.getPatientAssess(p.getId());
-					assertEquals(pt.getPatient().getFirstName(), patientAssessDto.getFirstName());
-					assertEquals(pt.getPatient().getLastName(), patientAssessDto.getLastName());
-					assertEquals(pt.getRiskLevel(), patientAssessDto.getRiskLevel());
-					assertTrue(patientAssessDto.getAge() >= 0);
-				}
+		patientMap.forEach((patientTestModel, patient) -> {
+			PatientAssessDto patientAssessDto = null;
+			try {
+				patientAssessDto = diabetesService.getPatientAssess(patient.getId());
+			} catch (NoSuchPatientException e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
 			}
+			
+			assertEquals(patientTestModel.getPatient().getFirstName(), patientAssessDto.getFirstName());
+			assertEquals(patientTestModel.getPatient().getLastName(), patientAssessDto.getLastName());
+			assertEquals(patientTestModel.getRiskLevel(), patientAssessDto.getRiskLevel());
+			assertTrue(patientAssessDto.getAge() >= 0);
+		});
+		
+		
+		// Clean up
+		for(Patient patient : patientMap.values()) {
+			patientProxy.deletePatient(String.valueOf(patient.getId()));
+		}
+		for(Note note : noteCreated) {
+			noteProxy.deleteNote(note.getId());
 		}
 		
 	}
