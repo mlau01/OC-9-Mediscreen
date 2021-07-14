@@ -84,8 +84,6 @@ public class PatientServiceTest {
 		assertEquals(firstName2, patient.getFirstName());
 		assertEquals(lastName2, patient.getLastName());
 		assertEquals(LocalDate.of(1986, 8, 30), patient.getDateOfBirth());
-		
-		assertTrue(patient.hashCode() != 0);
 	}
 	
 	@Test

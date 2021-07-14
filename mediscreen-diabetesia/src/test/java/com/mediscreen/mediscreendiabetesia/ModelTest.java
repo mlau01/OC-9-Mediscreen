@@ -1,8 +1,6 @@
 package com.mediscreen.mediscreendiabetesia;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,8 +36,6 @@ public class ModelTest {
 		assertEquals("123456789", patient.getPhone());
 		assertEquals("NC", patient.getCity());
 		assertEquals("M", patient.getSex());
-		assertTrue(patient.hashCode() != 0);
-		assertNotNull(patient.toString());
 	}
 	
 	@Test
@@ -58,8 +54,6 @@ public class ModelTest {
 		assertEquals(dateCreated, note.getCreated());
 		assertEquals("Hello World!", note.getNote());
 		assertEquals(99, note.getPatientId());
-		assertTrue(note.hashCode() != 0);
-		assertNotNull(note.toString());
 	}
 	
 	@Test
@@ -74,8 +68,6 @@ public class ModelTest {
 		assertEquals("Who", patientAssessDto.getLastName());
 		assertEquals(10, patientAssessDto.getAge());
 		assertEquals(RiskLevel.None, patientAssessDto.getRiskLevel());
-		assertTrue(patientAssessDto.hashCode() != 0);
-		assertNotNull(patientAssessDto.toString());
 	}
 
 }

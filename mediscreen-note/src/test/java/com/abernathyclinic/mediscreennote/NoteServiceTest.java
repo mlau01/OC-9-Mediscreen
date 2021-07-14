@@ -39,8 +39,6 @@ public class NoteServiceTest {
 		noteTest.setCreated(created);
 		noteTest.setPatientId(patientId);
 		noteTest.setNote(note_content);
-		
-		assertTrue(noteTest.hashCode() != 0);
 	}
 	
 	@Test
