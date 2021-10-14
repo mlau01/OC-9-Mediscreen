@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +36,4 @@ public class TriggerServiceTest {
 		
 		assertEquals(22, triggerService.getTriggerCount(notes));
 	}
-	
-	
-
 }

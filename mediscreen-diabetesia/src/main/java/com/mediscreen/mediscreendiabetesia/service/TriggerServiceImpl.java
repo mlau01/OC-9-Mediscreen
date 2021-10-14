@@ -43,22 +43,19 @@ public class TriggerServiceImpl implements ITriggerService{
 	
 	/**
 	 * Get the number of trigger term found in a list of note
-	 * Not case sensitive
+	 * No case sensitive
+	 * Use stream to count
 	 * @param List<Note>
 	 * @return number of term found
 	 * 3 juil. 2021
 	 */
 	public int getTriggerCount(List<Note> patientNotes) {
 		logger.trace("Looking for trigger in patient notes...");
+		List<String> triggers = getTriggers();
 		int count = 0;
 		for(Note note : patientNotes) {
-			String content = note.getNote().toLowerCase();
-			for(String trigger : getTriggers()) {
-				if(content.contains(trigger.toLowerCase())) {
-					logger.trace("Found trigger: " + trigger);
-					count++;
-				}
-			}
+			String comment = note.getNote().toLowerCase();
+			count += triggers.stream().filter(trigger -> comment.contains(trigger.toLowerCase())).count();
 		}
 		logger.trace("Found a total of " + count + " triggers");
 		
