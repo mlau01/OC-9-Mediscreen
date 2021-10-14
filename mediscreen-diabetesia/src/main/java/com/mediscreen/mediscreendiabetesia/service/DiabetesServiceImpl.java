@@ -65,8 +65,6 @@ public class DiabetesServiceImpl implements IDiabetesService {
 	 */
 	public PatientAssessDto getPatientAssessById(String pid) throws NoSuchPatientException {
 		
-		Optional.ofNullable(pid).orElseThrow(() -> new NoSuchPatientException("Null patient id"));
-		
 		Patient patient = null;
 		try {
 			patient = patientService.getPatientById(Integer.valueOf(pid));
