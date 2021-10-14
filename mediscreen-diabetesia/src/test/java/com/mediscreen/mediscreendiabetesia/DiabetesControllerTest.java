@@ -70,13 +70,13 @@ public class DiabetesControllerTest {
 		
 		@Test
 		public void assessByEmptyIdTest_shouldReturnNotFound() throws Exception {
-			when(diabetesService.getPatientAssessById("99")).thenThrow(NoSuchPatientException.class);
+			when(diabetesService.getPatientAssessById("")).thenThrow(NoSuchPatientException.class);
 			
 			 mockMvc.perform(get("/assess/id")
 			.param("patId", ""))
            .andExpect(status().isNotFound());
 			
-			verify(diabetesService, Mockito.times(1)).getPatientAssessById("99");
+			verify(diabetesService, Mockito.times(1)).getPatientAssessById("");
 		}
 		
 		@Test
