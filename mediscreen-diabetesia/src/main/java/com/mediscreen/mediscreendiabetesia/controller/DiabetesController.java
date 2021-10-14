@@ -33,11 +33,11 @@ public class DiabetesController {
 	@ApiOperation(value = "Get a patient assessment by id")
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "No patient found with this id") })
 	@GetMapping(value =  "assess/id")
-	public ResponseEntity<PatientAssessDto> getPatientAssessDtoById(@RequestParam("patId") int id) {
+	public ResponseEntity<PatientAssessDto> getPatientAssessDtoById(@RequestParam("patId") String id) {
 		logger.info("GET request to {}", "assess/" + id);
 	
 		try {
-			return new ResponseEntity<PatientAssessDto>(diabetesService.getPatientAssess(id), HttpStatus.OK);
+			return new ResponseEntity<PatientAssessDto>(diabetesService.getPatientAssessById(id), HttpStatus.OK);
 		} catch (NoSuchPatientException e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<PatientAssessDto>(HttpStatus.NOT_FOUND);
@@ -53,7 +53,7 @@ public class DiabetesController {
 		logger.info("GET request to {}", "assess/" + familyName);
 	
 		try {
-			return new ResponseEntity<PatientAssessDto>(diabetesService.getPatientAssess(familyName), HttpStatus.OK);
+			return new ResponseEntity<PatientAssessDto>(diabetesService.getPatientAssessByLastName(familyName), HttpStatus.OK);
 		} catch (NoSuchPatientException e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<PatientAssessDto>(HttpStatus.NOT_FOUND);

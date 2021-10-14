@@ -223,7 +223,7 @@ public class DiabetesServiceIT {
 		patientMap.forEach((patientTestModel, patient) -> {
 			PatientAssessDto patientAssessDto = null;
 			try {
-				patientAssessDto = diabetesService.getPatientAssess(patient.getId());
+				patientAssessDto = diabetesService.getPatientAssessById(String.valueOf(patient.getId()));
 			} catch (NoSuchPatientException e) {
 				System.out.println(e.getMessage());
 				e.printStackTrace();

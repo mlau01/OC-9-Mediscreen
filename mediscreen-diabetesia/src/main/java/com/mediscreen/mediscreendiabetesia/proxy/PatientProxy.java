@@ -8,7 +8,7 @@ import feign.RequestLine;
 
 public interface PatientProxy {
 	@RequestLine("GET /patients/{patientId}")
-	Patient getPatient(@Param("patientId") int patientId);
+	Patient getPatientById(@Param("patientId") int patientId);
 	
 	@RequestLine("POST /patients")
 	@Headers("Content-Type: application/json;charset=UTF-8")
@@ -18,7 +18,7 @@ public interface PatientProxy {
 	List<Patient> getAllPatients();
 
 	@RequestLine("GET /patients/lastname/{lastName}")
-	Patient getPatient(@Param("lastName") String lastName);
+	Patient getPatientByLastName(@Param("lastName") String lastName);
 	
 	@RequestLine("DELETE /patients/{id}")
 	void deletePatient(@Param("id") String string);

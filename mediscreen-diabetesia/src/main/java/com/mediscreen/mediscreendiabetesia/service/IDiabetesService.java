@@ -10,13 +10,13 @@ public interface IDiabetesService {
 	 * @param patientId
 	 * 9 juil. 2021
 	 */
-	public PatientAssessDto getPatientAssess(int patientId) throws NoSuchPatientException;
+	public PatientAssessDto getPatientAssessById(String patientId) throws NoSuchPatientException;
 	
 	/**
 	 * Should return a PatientAssessDto filled by diabetes assessment result
 	 * @param lastName
 	 * 9 juil. 2021
 	 */
-	public PatientAssessDto getPatientAssess(String lastName) throws NoSuchPatientException;
+	public PatientAssessDto getPatientAssessByLastName(String lastName) throws NoSuchPatientException;
 
 }

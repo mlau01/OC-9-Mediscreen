@@ -22,8 +22,8 @@ public class PatientServiceImpl implements IPatientService{
 	 * @return Patient
 	 * 9 juil. 2021
 	 */
-	public Patient getPatient(int patientId) {
-		return patientProxy.getPatient(patientId);
+	public Patient getPatientById(int patientId) {
+		return patientProxy.getPatientById(patientId);
 	}
 
 	/**
@@ -32,8 +32,8 @@ public class PatientServiceImpl implements IPatientService{
 	 * @return Patient
 	 * 9 juil. 2021
 	 */
-	public Patient getPatient(String lastName) {
-		return patientProxy.getPatient(lastName);
+	public Patient getPatientByLastName(String lastName) {
+		return patientProxy.getPatientByLastName(lastName);
 	}
 
 }

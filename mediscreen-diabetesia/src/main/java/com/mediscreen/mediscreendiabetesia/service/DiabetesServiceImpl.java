@@ -3,12 +3,17 @@ package com.mediscreen.mediscreendiabetesia.service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.Optional;
+
+import javax.management.BadStringOperationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.support.NullValue;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Objects;
 import com.mediscreen.mediscreendiabetesia.dto.PatientAssessDto;
 import com.mediscreen.mediscreendiabetesia.exception.NoSuchPatientException;
 import com.mediscreen.mediscreendiabetesia.proxy.Note;
@@ -39,10 +44,10 @@ public class DiabetesServiceImpl implements IDiabetesService {
 	
 
 	@Override
-	public PatientAssessDto getPatientAssess(String lastName) throws NoSuchPatientException {
+	public PatientAssessDto getPatientAssessByLastName(String lastName) throws NoSuchPatientException {
 		Patient patient = null;
 		try {
-			patient = patientService.getPatient(lastName);
+			patient = patientService.getPatientByLastName(lastName);
 		} catch (NotFound e) {
 			logger.error(""+e);
 			throw new NoSuchPatientException("Patient with last name: " + lastName + " not found");
@@ -58,11 +63,13 @@ public class DiabetesServiceImpl implements IDiabetesService {
 	 * 8 juil. 2021
 	 * @throws NoSuchPatientException 
 	 */
-	public PatientAssessDto getPatientAssess(int pid) throws NoSuchPatientException {
+	public PatientAssessDto getPatientAssessById(String pid) throws NoSuchPatientException {
+		
+		Optional.ofNullable(pid).orElseThrow(() -> new NoSuchPatientException("Null patient id"));
 		
 		Patient patient = null;
 		try {
-			patient = patientService.getPatient(pid);
+			patient = patientService.getPatientById(Integer.valueOf(pid));
 		} catch (NotFound e) {
 			logger.error(""+e);
 			throw new NoSuchPatientException("Patient with id: " + pid + " not found");
@@ -95,8 +102,7 @@ public class DiabetesServiceImpl implements IDiabetesService {
 	 * 8 juil. 2021
 	 */
 	public RiskLevel getDiabetesRiskLevel(Patient patient) {
-		logger.debug("Start assessment of patient id: " + patient.getId() 
-		+ ", name: " + patient.getFirstName() + " " + patient.getLastName());
+		logger.debug("Start assessment of patient id: " + patient.getId() + ", name: " + patient.getFirstName() + " " + patient.getLastName());
 		RiskLevel result = RiskLevel.None;
 		
 		List<Note> patientNotes = noteService.getAllPatientNotes(patient.getId());
@@ -111,9 +117,7 @@ public class DiabetesServiceImpl implements IDiabetesService {
 			int ageMax = riskRule.getAgeRange().getEnd();
 			String sex = riskRule.getSex();
 			
-			logger.debug("Start examine Rules(" + riskRule 
-					+ ") for patient with triggerCount: " + pTriggerCount 
-					+ ", age: " + pAge + ", sex: " + pSex);
+			logger.debug("Start examine Rules(" + riskRule + ") for patient with triggerCount: " + pTriggerCount + ", age: " + pAge + ", sex: " + pSex);
 			if(pTriggerCount >= triggerLimit) {
 				logger.debug("pTriggerCount: " + pTriggerCount + " >= triggerLimit: " + triggerLimit);
 				if(pAge >= ageMin  && pAge < ageMax) {

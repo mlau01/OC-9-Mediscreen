@@ -44,7 +44,7 @@ public class DiabetesControllerTest {
 			patientAssessDto.setAge(19);
 			patientAssessDto.setRiskLevel(RiskLevel.Borderline);
 			
-			when(diabetesService.getPatientAssess(99)).thenReturn(patientAssessDto);
+			when(diabetesService.getPatientAssessById("99")).thenReturn(patientAssessDto);
 			
 			 mockMvc.perform(get("/assess/id")
 			.param("patId", "99"))
@@ -54,18 +54,29 @@ public class DiabetesControllerTest {
             .andExpect(jsonPath("$.age", is(19)))
             .andExpect(jsonPath("$.riskLevel", is(RiskLevel.Borderline.toString())));
 			
-			verify(diabetesService, Mockito.times(1)).getPatientAssess(99);
+			verify(diabetesService, Mockito.times(1)).getPatientAssessById("99");
 		}
 		
 		@Test
 		public void assessByUnknownIdTest_shouldReturnNotFound() throws Exception {
-			when(diabetesService.getPatientAssess(99)).thenThrow(NoSuchPatientException.class);
+			when(diabetesService.getPatientAssessById("99")).thenThrow(NoSuchPatientException.class);
 			
 			 mockMvc.perform(get("/assess/id")
 			.param("patId", "99"))
            .andExpect(status().isNotFound());
 			
-			verify(diabetesService, Mockito.times(1)).getPatientAssess(99);
+			verify(diabetesService, Mockito.times(1)).getPatientAssessById("99");
+		}
+		
+		@Test
+		public void assessByEmptyIdTest_shouldReturnNotFound() throws Exception {
+			when(diabetesService.getPatientAssessById("99")).thenThrow(NoSuchPatientException.class);
+			
+			 mockMvc.perform(get("/assess/id")
+			.param("patId", ""))
+           .andExpect(status().isNotFound());
+			
+			verify(diabetesService, Mockito.times(1)).getPatientAssessById("99");
 		}
 		
 		@Test
@@ -77,7 +88,7 @@ public class DiabetesControllerTest {
 			patientAssessDto.setAge(19);
 			patientAssessDto.setRiskLevel(RiskLevel.Borderline);
 			
-			when(diabetesService.getPatientAssess("Do")).thenReturn(patientAssessDto);
+			when(diabetesService.getPatientAssessByLastName("Do")).thenReturn(patientAssessDto);
 			
 			 mockMvc.perform(get("/assess/familyName")
 			.param("familyName", "Do"))
@@ -87,18 +98,18 @@ public class DiabetesControllerTest {
             .andExpect(jsonPath("$.age", is(19)))
             .andExpect(jsonPath("$.riskLevel", is(RiskLevel.Borderline.toString())));
 			
-			verify(diabetesService, Mockito.times(1)).getPatientAssess("Do");
+			verify(diabetesService, Mockito.times(1)).getPatientAssessByLastName("Do");
 		}
 		
 		@Test
 		public void assessByUnknownLastNameTest_shouldReturnNotFound() throws Exception {
-			when(diabetesService.getPatientAssess("Do")).thenThrow(NoSuchPatientException.class);
+			when(diabetesService.getPatientAssessByLastName("Do")).thenThrow(NoSuchPatientException.class);
 			
 			 mockMvc.perform(get("/assess/familyName")
 			.param("familyName", "Do"))
            .andExpect(status().isNotFound());
 			
-			verify(diabetesService, Mockito.times(1)).getPatientAssess("Do");
+			verify(diabetesService, Mockito.times(1)).getPatientAssessByLastName("Do");
 		}
 		
 }

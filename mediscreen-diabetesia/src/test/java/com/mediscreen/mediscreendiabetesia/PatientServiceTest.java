@@ -21,8 +21,8 @@ public class PatientServiceTest {
 	public void getPatientNoteTest_shouldCallNoteProxy() {
 		PatientServiceImpl patientService = new PatientServiceImpl(patientProxy);
 		
-		patientService.getPatient(99);
+		patientService.getPatientById(99);
 		
-		verify(patientProxy, Mockito.times(1)).getPatient(99);
+		verify(patientProxy, Mockito.times(1)).getPatientById(99);
 	}
 }
